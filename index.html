@@ -40,7 +40,142 @@
 .excluded-payment-amounts{display:flex;flex-wrap:wrap;gap:5px 15px;font-size:12px;color:#485f73;margin:9px 0}
 .excluded-payment-reason{font-size:12px;font-weight:700;color:#98601d}
 @media(max-width:740px){.refund-hero{min-height:0;flex-direction:column;align-items:flex-start;gap:2px;padding:20px}.refund-hero .hero-number{font-size:clamp(28px,8vw,38px)}.excluded-payments{padding:12px}}
-</style></head>
+</style>
+<style id="v5-4-iphone-design">
+/* Common visual tokens; the behavior, form IDs and JS calculations are unchanged. */
+:root{--ink:#20364a;--muted:#6a7d8c;--line:#e5edf1;--page:#f6f8fa;--card:#fff;--teal:#087d7e;--teal-light:#eaf6f4;--shadow:0 3px 15px rgba(18,48,63,.035)}
+.card{border-radius:17px;box-shadow:var(--shadow)}
+.button{border-radius:11px;font-weight:700;transition:background .15s,border-color .15s;box-shadow:none}
+.button.primary{background:#087e80;border-color:#087e80}
+.button.primary:hover{background:#086e71}
+.control,.month-picker-wrap{border-radius:11px}
+.pill{letter-spacing:0;border-radius:9px}
+.hero{background:linear-gradient(118deg,#17475d 0%,#0d7475 100%);border-radius:18px;box-shadow:none}
+.kpi .title{font-weight:700}
+.kpi .value{font-variant-numeric:tabular-nums}
+.info-box{background:#f0f8f6;border-color:#d9ece8;color:#315d63}
+.rowline{gap:9px}
+.table-scroll{-webkit-overflow-scrolling:touch}
+@media(max-width:740px){
+  html,body{overflow-x:clip}
+  body{font-size:14px;line-height:1.52;-webkit-text-size-adjust:100%}
+  .mobile-top{height:calc(54px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 17px 0;border-bottom-color:#e9eef1;background:rgba(255,255,255,.98)}
+  .mobile-top .brand-small{font-size:16px;gap:9px;letter-spacing:-.01em}
+  .mobile-top .brand-small i{width:30px;height:30px;font-size:20px;border-radius:10px}
+  .main{padding:17px 14px calc(96px + env(safe-area-inset-bottom))}
+  .topbar{gap:11px;margin-bottom:15px}
+  .topbar .eyebrow{display:none}
+  .topbar h1{font-size:23px;font-weight:800;letter-spacing:-.035em}
+  .topbar .top-actions{width:100%;margin:0;justify-content:flex-start}
+  .top-actions .button{flex:0 0 auto}
+  .month-controls{display:flex;gap:8px;width:100%;align-items:center}
+  .month-controls .button.icon{min-width:44px;min-height:44px;font-size:22px;padding:6px 12px;background:#fff}
+  .month-controls .month-picker-wrap{flex:1;min-height:44px}
+  .month-display{font-size:14px;min-width:0;width:100%;padding:9px 8px}
+  .month-controls>strong{flex:1;text-align:center;font-size:16px!important}
+  .home-buttons{gap:9px;margin-bottom:14px}
+  .home-buttons .button{font-size:13px;min-height:48px;padding:10px 5px;line-height:1.4;white-space:normal}
+  .card{border-radius:16px;padding:17px 15px}
+  .card-heading{margin-bottom:12px;gap:8px}
+  .card-heading h2,.section-header h2{font-size:16px}
+  .section-header{margin:22px 0 10px}
+  .hero{border-radius:17px;padding:20px 19px;margin-bottom:13px;gap:5px}
+  .hero h2{font-size:15px;line-height:1.45;margin:0 0 6px}
+  .hero-number,.salary-hero .hero-number{font-size:clamp(29px,8vw,35px);line-height:1.26;letter-spacing:-.055em;white-space:normal;overflow-wrap:anywhere}
+  .salary-hero{padding:19px 19px}
+  .kpi-grid{gap:9px}
+  .kpi{padding:15px 13px;min-height:115px}
+  .kpi .title{font-size:11px;line-height:1.4;gap:6px;white-space:normal}
+  .kpi .value{font-size:clamp(19px,5.5vw,25px);line-height:1.3;margin:13px 0 5px;white-space:normal;overflow-wrap:anywhere}
+  .kpi .detail{font-size:11px;line-height:1.3;color:#8496a2}
+  .dot{flex:none;width:7px;height:7px}
+  .section-grid{gap:13px}
+  .rowline{gap:10px;padding:12px 0;align-items:flex-start}
+  .rowline .lead{flex:1;min-width:0;align-items:center}
+  .rowline .lead>div:nth-child(2){min-width:0}
+  .rowline .names{font-size:13px;max-width:100%;display:block;line-height:1.45}
+  .rowline .sub{font-size:11px;line-height:1.45;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+  .rowline .money{font-size:14px}
+  .rowline .actions{margin-top:5px;gap:9px}
+  .rowline .text-button{font-size:12px}
+  .date-badge{min-width:48px;padding:6px 7px}
+  .empty{padding:23px 12px;border-radius:12px;background:#fbfcfd}
+  .empty .big{font-size:23px;margin-bottom:4px;color:#90a8b4}
+  .empty b{font-size:13px}
+  .empty .muted{font-size:12px}
+  .mobile-nav{padding:7px 8px calc(6px + env(safe-area-inset-bottom));gap:4px;border-top-color:#e4ecf0;box-shadow:0 -3px 19px rgba(21,52,73,.06)}
+  .mobile-nav button{flex:1;min-width:0;min-height:51px;border-radius:11px;padding:5px 2px;font-size:11px;font-weight:650;line-height:1.3;gap:4px;white-space:nowrap;color:#718494}
+  .mobile-nav button svg{width:20px;height:20px}
+  .mobile-nav button.active{background:#eaf6f4;color:#086e73}
+  .weekday{font-size:11px;padding:6px 0 9px}
+  .calendar-card{padding:12px 7px}
+  .calendar-card .card-heading{margin-bottom:8px}
+  .calendar-legend{font-size:10px}
+  .day{min-height:77px;padding:6px 3px;gap:2px}
+  .day-num{font-size:12px;width:24px;height:24px}
+  .day-total{font-size:11px;letter-spacing:-.04em;word-break:break-all}
+  .day-add{font-size:10px}
+  .year-bars{height:172px}
+  .bar-label{font-size:10px}
+  .table-scroll{margin-left:-2px;margin-right:-2px}
+  table{font-size:12px}
+  th,td{padding:10px 9px}
+  .legend{gap:12px;font-size:11px}
+  .month-sub{font-size:11px;line-height:1.45}
+  #tax-form .form-grid{grid-template-columns:1fr}
+  .tax-earnings-grid{gap:10px;margin:10px 0}
+  .tax-earning{padding:14px 13px}
+  .tax-earning span,.tax-forecast-total span{font-size:12px}
+  .tax-earning strong{font-size:22px;margin:7px 0 2px}
+  .tax-forecast-total{padding:15px 14px;border-radius:13px}
+  .tax-forecast-total strong{font-size:26px;overflow-wrap:anywhere}
+  .tax-forecast-total small{font-size:11px}
+  .refund-card h2{margin-bottom:13px}
+  .refund-card .rowline{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
+  .refund-card .rowline>strong{font-size:13px;white-space:nowrap;text-align:right}
+  .refund-hero{padding:18px;margin-bottom:13px}
+  .refund-hero h2{font-size:15px;margin:0}
+  .refund-hero .hero-number{font-size:clamp(29px,8vw,37px)}
+  .split-summaries{gap:9px}
+  .small-stat{padding:13px 11px;border-radius:13px}
+  .small-stat strong{font-size:clamp(17px,5.1vw,23px);overflow-wrap:anywhere}
+  .setting-row{gap:10px;padding:12px 0}
+  .setting-row>div:first-child{min-width:0;flex:1}
+  .setting-row .actions{gap:6px}
+  .setting-row .actions .button{min-height:42px}
+  .settings-grid{gap:13px}
+  .foot-action{gap:9px}
+  .foot-action .button{min-height:44px}
+  .backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .backup-actions .button{font-size:12px;padding:10px 6px;min-width:0;white-space:normal}
+  .modal-wrap{padding:6px 0 0}
+  .modal{width:100%;border-radius:20px 20px 0 0;max-height:92dvh;padding:20px 17px calc(15px + env(safe-area-inset-bottom))}
+  .modal-top{margin-bottom:15px;align-items:center}
+  .modal-top h2{font-size:20px}
+  .modal-top .eyebrow{display:none}
+  .modal-top>.button.icon{min-width:44px;min-height:44px}
+  .modal-bottom{gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .modal-bottom .button{min-height:44px}
+  .form-grid{gap:12px}
+  .field label{font-size:13px}
+  .control{font-size:16px;min-height:46px}
+  textarea.control{min-height:85px}
+  .help{font-size:11px;line-height:1.45}
+  .info-box{font-size:12px;padding:12px 13px;border-radius:12px}
+  .excluded-payments{padding:13px;margin-top:15px}
+  .excluded-payment{padding:12px}
+}
+@media(max-width:360px){
+ .main{padding-left:11px;padding-right:11px}
+ .home-buttons .button{font-size:12px}
+ .mobile-nav{gap:1px;padding-left:4px;padding-right:4px}
+ .mobile-nav button{font-size:10px}
+ .kpi .value{font-size:19px}
+ .day{min-height:70px}
+ .backup-actions{grid-template-columns:1fr}
+}
+</style>
+</head>
 <body>
 <div class="shell">
  <aside class="sidebar">
@@ -48,7 +183,7 @@
   <nav id="side-nav" aria-label="メインメニュー"></nav>
   <div class="sidebar-bottom"><span class="side-pill">無料・個人用</span><div>給与データはこの端末のブラウザ内に保存します。</div></div>
  </aside>
- <div class="mobile-top"><div class="brand-small"><i>＋</i>ドクターペイ</div><span style="font-size:11px;color:var(--muted)">個人用給与管理</span></div>
+ <div class="mobile-top"><div class="brand-small"><i>＋</i>ドクターペイ</div></div>
  <main class="main" id="app" aria-live="polite"></main>
  <nav class="mobile-nav" id="mobile-nav" aria-label="モバイルメニュー"></nav>
 </div>
@@ -161,13 +296,13 @@ function aggregate(shifts,settlements,validPaymentIds){
 }
 function kpi(title,value,sub,color){return `<div class="card kpi"><div class="title"><i class="dot ${color||''}"></i>${title}</div><div class="value">${value}</div><div class="detail">${sub}</div></div>`}
 function nav(){return pages.map(([id,name])=>`<button class="side-link ${state.tab===id?'active':''}" data-action="nav" data-tab="${id}" aria-current="${state.tab===id?'page':'false'}">${svg[id==='analytics'?'chart':id]}<span>${name}</span></button>`).join('')}
-function mobileNav(){return pages.map(([id,name])=>`<button data-action="nav" data-tab="${id}" class="${state.tab===id?'active':''}" aria-label="${name}">${svg[id==='analytics'?'chart':id]}<span>${name}</span></button>`).join('')}
+function mobileNav(){const labels={home:'給与登録',calendar:'カレンダー',analytics:'集計',tax:'税金',settings:'設定'};return pages.map(([id,name])=>`<button data-action="nav" data-tab="${id}" class="${state.tab===id?'active':''}" aria-label="${name}">${svg[id==='analytics'?'chart':id]}<span>${labels[id]}</span></button>`).join('')}
 function monthControl(){return `<div class="month-controls"><button class="button icon" data-action="prev-month" aria-label="前月">‹</button><label class="month-picker-wrap"><span class="month-display">${monthTitle(state.month)} ▾</span><input class="month-picker" type="month" id="month-picker" value="${state.month}" aria-label="対象月"></label><button class="button icon" data-action="next-month" aria-label="翌月">›</button></div>`}
 function yearControl(){return `<div class="month-controls"><button class="button icon" data-action="prev-year" aria-label="前年">‹</button><strong style="font-size:17px;padding:0 8px">${state.year}年</strong><button class="button icon" data-action="next-year" aria-label="翌年">›</button></div>`}
 function header(title,subtitle='',showMonth=true){
  return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>${title}</h1>${subtitle?`<div class="month-sub">${subtitle}</div>`:''}</div><div class="top-actions">${showMonth?monthControl():''}</div></div>`;
 }
-function shiftLine(x){const dt=new Date(x.date+'T12:00:00'),md=(dt.getMonth()+1)+'/'+dt.getDate();return `<div class="rowline"><div class="lead"><div class="date-badge">${md}<div class="muted">${'日月火水木金土'[dt.getDay()]}</div></div><div style="min-width:0"><div class="names">${esc(employerName(x.employerId))} <span class="pill gray">${esc(workTypeName(x.workTypeId))}</span></div><div class="sub">交通費なし ${money(x.base)}${x.memo?' ・ '+esc(x.memo):''}</div></div></div><div><div class="money">${money(x.base+x.travel)}</div><div class="actions"><button class="text-button" data-action="edit-shift" data-id="${esc(x.id)}">編集</button><button class="text-button" data-action="bulk-from-shift" data-id="${esc(x.id)}">コピー</button></div></div></div>`}
+function shiftLine(x){const dt=new Date(x.date+'T12:00:00'),md=(dt.getMonth()+1)+'/'+dt.getDate();return `<div class="rowline"><div class="lead"><div class="date-badge">${md}<div class="muted">${'日月火水木金土'[dt.getDay()]}</div></div><div style="min-width:0"><div class="names">${esc(employerName(x.employerId))} <span class="pill gray">${esc(workTypeName(x.workTypeId))}</span></div><div class="sub">交通費抜 ${money(x.base)}${x.memo?' ・ '+esc(x.memo):''}</div></div></div><div><div class="money">${money(x.base+x.travel)}</div><div class="actions"><button class="text-button" data-action="edit-shift" data-id="${esc(x.id)}">編集</button><button class="text-button" data-action="bulk-from-shift" data-id="${esc(x.id)}">コピー</button></div></div></div>`}
 function settlementLine(x){
  const withholding=calculatedWithholding(x);
  return `<div class="rowline"><div class="lead"><div class="date-badge">${esc(x.depositDate.slice(5).replace('-','/'))}</div><div style="min-width:0"><div class="names">${esc(employerName(x.employerId))}</div><div class="sub">${x.employerId==='all'?'旧形式・勤務への紐づけなし':`対象 ${esc(periodLabel(x.periodEnd,x.employerId))}・${x.shiftIds?.length||0}件`} ／ 源泉徴収額 ${withholding===null?'要確認':money(withholding)}${x.memo?' ・ '+esc(x.memo):''}</div></div></div><div><div class="money">${money(x.net)}</div><div class="actions"><button class="text-button" data-action="edit-payment" data-id="${esc(x.id)}">編集</button></div></div></div>`;
@@ -178,8 +313,8 @@ function home(){
  return header('給与登録')+`<div class="home-buttons"><button class="button primary" data-action="add-shift">＋ 勤務を登録</button><button class="button" data-action="add-payment">＋ 給与振込を登録</button></div>
  <div class="hero salary-hero"><div><h2>${title}の給与（交通費込）</h2><div class="hero-number">${money(a.gross)}</div></div></div>
  <div class="kpi-grid">${kpi('交通費込み額面',money(a.gross),s.length+'件の勤務記録')}${kpi('交通費抜き額面',money(a.base),'交通費 '+money(a.travel),'blue')}${kpi('源泉徴収額',a.hasValidPayment?money(a.tax):'—','振込月ベース','amber')}${kpi('手取り',a.hasPayment?money(a.net):'—','振込月ベース','pink')}</div>
- <div class="section-grid" style="margin-top:19px"><section class="card"><div class="card-heading"><h2>勤務の一覧 <span class="pill gray">${s.length}件</span></h2></div>${s.length?s.slice(0,8).map(shiftLine).join(''):empty('この月の勤務登録はありません','上の「勤務を登録」から追加できます。')}</section>
- <section class="card"><div class="card-heading"><h2>給与振込 <span class="pill gray">${p.length}件</span></h2></div>${p.length?p.map(settlementLine).join(''):empty('今月の振込記録はありません','上の「給与振込を登録」から追加できます。')}</section></div>`;
+ <div class="section-grid" style="margin-top:19px"><section class="card"><div class="card-heading"><h2>勤務の一覧 <span class="pill gray">${s.length}件</span></h2></div>${s.length?s.slice(0,8).map(shiftLine).join(''):empty('まだ勤務がありません','')}</section>
+ <section class="card"><div class="card-heading"><h2>給与振込 <span class="pill gray">${p.length}件</span></h2></div>${p.length?p.map(settlementLine).join(''):empty('まだ振込がありません','')}</section></div>`;
 }
 function calendar(){const [year,month]=state.month.split('-').map(Number);const first=new Date(year,month-1,1).getDay(),last=new Date(year,month,0).getDate();const totalCells=Math.ceil((first+last)/7)*7;let cells='';const ss=monthShifts(state.month),byDate=new Map();for(const item of ss){if(!byDate.has(item.date))byDate.set(item.date,[]);byDate.get(item.date).push(item)}for(let i=0;i<totalCells;i++){const day=i-first+1,valid=day>0&&day<=last;let date,items=[];if(valid){date=state.month+'-'+String(day).padStart(2,'0');items=byDate.get(date)||[]}let gross=items.reduce((n,x)=>n+x.base+x.travel,0);cells+=`<button class="day ${valid?'':'other'} ${date===TODAY?'today':''}" ${valid?`data-action="open-day" data-date="${date}" aria-label="${day}日、${items.length}件、額面${money(gross)}"`:'disabled aria-hidden="true"'}><span class="day-num">${valid?day:''}</span>${items.length?`<span class="day-total">${shortMoney(gross)}</span>${items.slice(0,2).map(x=>`<span class="day-company">${esc(employerName(x.employerId))}・${esc(workTypeName(x.workTypeId))}</span>`).join('')}${items.length>2?`<span class="day-add">他${items.length-2}件</span>`:''}`:valid?'<span class="day-add">＋</span>':''}</button>`}return header('勤務カレンダー')+`<div class="card calendar-card calendar-wrap"><div class="card-heading" style="padding:2px 6px 0"><h2>${monthTitle(state.month)}</h2><span class="calendar-legend">金額は交通費込みの額面</span></div><div class="weekday-grid">${['日','月','火','水','木','金','土'].map(x=>`<div class="weekday">${x}</div>`).join('')}</div><div class="calendar-grid">${cells}</div></div><div class="section-header"><h2>この月の勤務 <span class="pill gray">${ss.length}件</span></h2></div><div class="card">${ss.length?ss.map(shiftLine).join(''):empty('勤務の登録がありません','カレンダーの日付をタップしてください。')}</div>`}
 function analytics(){const months=Array.from({length:12},(_,i)=>state.year+'-'+String(i+1).padStart(2,'0'));const records=data.shifts.filter(x=>x.date.startsWith(String(state.year)+'-'));const pays=data.settlements.filter(x=>x.depositDate.startsWith(String(state.year)+'-'));const validPaymentIds=new Set(validatedPayments().valid.map(p=>p.id));const agg=aggregate(records,pays,validPaymentIds);const per=months.map(m=>aggregate(monthShifts(m),deposits(m),validPaymentIds));const max=Math.max(1,...per.map(x=>x.gross));const bars=per.map((x,i)=>`<div class="bar-col"><div class="bar-inner"><div class="bar" style="height:${x.gross?Math.max(2,100*x.gross/max):0}%" title="${i+1}月 額面 ${money(x.gross)}"></div><div class="bar net" style="height:${x.hasPayment?Math.max(2,100*x.net/max):0}%" title="${i+1}月 手取り ${x.hasPayment?money(x.net):'未入力'}"></div></div><span class="bar-label">${i+1}月</span></div>`).join('');const annualDeposit=data.settlements.filter(x=>x.depositDate.startsWith(String(state.year)+'-')).reduce((n,x)=>n+x.net,0);const byCompany=data.employers.map(e=>{const sr=records.filter(x=>x.employerId===e.id),pr=pays.filter(x=>x.employerId===e.id);return{company:e.name,a:aggregate(sr,pr),count:sr.length}}).filter(x=>x.count>0||x.a.hasPayment).sort((a,b)=>b.a.gross-a.a.gross);return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>集計・分析</h1></div><div class="top-actions">${yearControl()}<button class="button" data-action="export-shifts">CSV出力</button></div></div><div class="kpi-grid">${kpi('年間額面（交通費込）',money(agg.gross),records.length+'件の勤務')}${kpi('年間額面（交通費抜）',money(agg.base),'交通費 '+money(agg.travel),'blue')}${kpi('年間源泉徴収額',agg.hasValidPayment?money(agg.tax):'—',agg.hasPayment?'振込月ベース':'未入力','amber')}${kpi('年間手取り',agg.hasPayment?money(agg.net):'—',agg.hasPayment?'振込月ベース':'未入力','pink')}</div><section class="card" style="margin-top:18px"><div class="card-heading"><div><h2>月別の収入推移</h2><div class="month-sub">額面は勤務月、手取り・源泉徴収額は振込月／単位：円</div></div><div class="legend"><span><b style="background:#9ed4d0"></b>交通費込み額面</span><span><b style="background:#226b86"></b>手取り</span></div></div><div class="year-bars" aria-label="月別の棒グラフ">${bars}</div><div class="table-scroll" style="margin-top:19px"><table><thead><tr><th>月</th><th class="num">額面（込）</th><th class="num">額面（抜）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${per.map((a,i)=>`<tr><td>${i+1}月</td><td class="num">${money(a.gross)}</td><td class="num">${money(a.base)}</td><td class="num">${money(a.travel)}</td><td class="num">${a.hasValidPayment?money(a.tax):'—'}</td><td class="num">${a.hasPayment?money(a.net):'—'}</td></tr>`).join('')}</tbody></table></div></section><div class="section-header"><h2>勤務先別の年間集計</h2><span class="pill gray">${state.year}年</span></div><section class="card"><div class="table-scroll"><table><thead><tr><th>勤務先</th><th class="num">勤務件数</th><th class="num">額面（込）</th><th class="num">額面（抜）</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${byCompany.length?byCompany.map(x=>`<tr><td>${esc(x.company)}</td><td class="num">${x.count||'—'}</td><td class="num">${x.count?money(x.a.gross):'—'}</td><td class="num">${x.count?money(x.a.base):'—'}</td><td class="num">${x.a.hasValidPayment?money(x.a.tax):'—'}</td><td class="num">${x.a.hasPayment?money(x.a.net):'—'}</td></tr>`).join(''):`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:25px">まだデータはありません</td></tr>`}</tbody></table></div></section><div class="section-header"><h2>仕事の種類別の年間集計</h2><span class="pill gray">${state.year}年</span></div><section class="card"><div class="table-scroll"><table><thead><tr><th>仕事の種類</th><th class="num">件数</th><th class="num">交通費抜き</th><th class="num">交通費</th><th class="num">額面合計</th></tr></thead><tbody>${[...new Set(records.map(x=>x.workTypeId||''))].map(id=>{const rs=records.filter(x=>(x.workTypeId||'')===id);return {name:workTypeName(id),count:rs.length,base:rs.reduce((n,x)=>n+x.base,0),travel:rs.reduce((n,x)=>n+x.travel,0)}}).sort((a,b)=>b.base-a.base).map(x=>`<tr><td>${esc(x.name)}</td><td class="num">${x.count}</td><td class="num">${money(x.base)}</td><td class="num">${money(x.travel)}</td><td class="num">${money(x.base+x.travel)}</td></tr>`).join('')||'<tr><td colspan="5" class="muted" style="text-align:center">まだ勤務記録はありません</td></tr>'}</tbody></table></div></section>`}
@@ -189,7 +324,7 @@ function settings(){return `<div class="topbar"><div><div class="eyebrow">DOCTOR
 <div style="margin-top:16px">${data.employers.length?data.employers.map(e=>`<div class="setting-row"><div><b>${esc(e.name)}</b><small>${esc(scheduleLabel(e))} ／ 勤務${data.shifts.filter(x=>x.employerId===e.id).length}件</small></div><div class="actions"><button class="button sm" data-action="schedule-employer" data-id="${esc(e.id)}">変更</button><button class="button sm danger" data-action="delete-employer" data-id="${esc(e.id)}">削除</button></div></div>`).join(''):empty('勤務先がありません','先に勤務先を登録してください。')}</div></section>
 <section class="card"><h2>仕事の種類</h2><form id="worktype-form" class="foot-action"><input id="new-worktype" class="control" type="text" maxlength="100" required placeholder="例：当直、健診" style="flex:1;min-width:150px"><button class="button primary" type="submit">＋ 追加</button></form><div style="margin-top:15px">${data.workTypes.map(t=>`<div class="setting-row"><div><b>${esc(t.name)}</b></div><div class="actions"><button class="button sm" data-action="rename-worktype" data-id="${esc(t.id)}">名前</button><button class="button sm danger" data-action="delete-worktype" data-id="${esc(t.id)}">削除</button></div></div>`).join('')}</div></section>
 <section class="card"><h2>定型バイト</h2>${data.templates.length?data.templates.map(t=>`<div class="setting-row"><div><b>${esc(t.name)}</b><small>${esc(employerName(t.employerId))}・${money(t.base+t.travel)}</small></div><button class="button sm danger" data-action="template-delete" data-id="${esc(t.id)}">削除</button></div>`).join(''):empty('まだありません','勤務登録時に「定型バイトに保存」で追加できます。')}</section>
-<section class="card"><h2>バックアップ・書き出し</h2><p class="detail-note">データはこの端末に保存されます。別端末へはJSONバックアップを移して読み込みます。</p><div class="foot-action"><button class="button primary" data-action="export-json">バックアップを保存</button><button class="button" data-action="import-json">バックアップを読み込む</button></div><input class="hidden" type="file" id="import-file" accept=".json,application/json" aria-label="バックアップファイル"><div class="divider"></div><div class="foot-action"><button class="button" data-action="export-shifts">勤務CSV</button><button class="button" data-action="export-payments">振込CSV</button></div><div class="info-box warning" style="margin-top:15px">更新前にはバックアップを保存してください。別端末への読み込みでは、その端末の既存データが置き換えられます。</div><div class="divider"></div><button class="button danger sm" data-action="delete-all">すべての記録を削除</button></section>
+<section class="card"><h2>バックアップ・書き出し</h2><p class="detail-note">データはiPhone内に保存されます。</p><div class="foot-action backup-actions"><button class="button primary" data-action="export-json">バックアップを保存</button><button class="button" data-action="import-json">バックアップを読み込む</button></div><input class="hidden" type="file" id="import-file" accept=".json,application/json" aria-label="バックアップファイル"><div class="divider"></div><div class="foot-action"><button class="button" data-action="export-shifts">勤務CSV</button><button class="button" data-action="export-payments">振込CSV</button></div><div class="info-box warning" style="margin-top:15px">更新前にはバックアップを保存してください。別端末への読み込みでは、その端末の既存データが置き換えられます。</div><div class="divider"></div><button class="button danger sm" data-action="delete-all">すべての記録を削除</button></section>
 </div>`}
 const TAX_FIELDS=['social','pension','medical','futureIncome'];
 function getTaxProfile(y){const p=data.taxProfiles[String(y)]||{};return {social:num(p.social),pension:num(p.pension),medical:num(p.medical),futureIncome:num(p.futureIncome),salaryOverride:p.salaryOverride==null?null:num(p.salaryOverride),withheldOverride:p.withheldOverride==null?null:num(p.withheldOverride)}}
@@ -229,11 +364,11 @@ function tax(){
  return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>税金・ふるさと納税</h1></div><div class="top-actions">${yearControl()}</div></div>
  ${supported?`
  <form class="card" id="tax-form">
- <div class="card-heading"><h2>${year}年の給与収入（予測）</h2><span class="pill">勤務記録と自動連動</span></div>
- <div class="tax-earnings-grid"><div class="tax-earning"><span>登録済み勤務の支払予定年の額面（交通費抜き）</span><strong>${money(r.salaryFromShifts)}</strong><small>勤務済み ${money(r.autoSalaryPast)} / 登録済みの未来日付 ${money(r.autoSalaryFuture)}</small></div><div class="tax-earning emphasis"><span>今後の未登録バイトの収入見込み</span><div class="tax-number-input"><input class="control" type="number" id="tax-futureIncome" min="0" max="1000000000" step="1" inputmode="numeric" value="${p.futureIncome}" placeholder="例：500000"></div><small>上の登録済み勤務と重ならない分だけ入力（交通費抜き）</small></div></div>
- <div class="tax-forecast-total"><span>ふるさと納税の計算に使用する年間給与収入</span><strong>${money(r.salary)}</strong><small>${p.salaryOverride!==null?'年間給与額を補正しています。':''}登録済み給与${p.salaryOverride===null?'':'（補正後）'} ${money(r.salaryBase)} ＋ 未登録の予定収入 ${money(p.futureIncome)}</small></div>
- <div class="section-header"><h2>${year}年の年間控除</h2><span class="pill gray">寄附上限・所得税の計算で共通</span></div>
- <div class="info-box"><strong>基礎控除は自動で計算します</strong>入力するのは社会保険料・本人拠出の確定拠出年金・医療費控除額だけです。</div>
+ <div class="card-heading"><h2>${year}年の給与収入（予測）</h2></div>
+ <div class="tax-earnings-grid"><div class="tax-earning"><span>登録済み給与（交通費抜）</span><strong>${money(r.salaryFromShifts)}</strong></div><div class="tax-earning emphasis"><span>未登録の予定収入</span><div class="tax-number-input"><input class="control" type="number" id="tax-futureIncome" min="0" max="1000000000" step="1" inputmode="numeric" value="${p.futureIncome}" placeholder="例：500000"></div><small>未登録分のみ入力（交通費抜）</small></div></div>
+ <div class="tax-forecast-total"><span>ふるさと納税の予測年収</span><strong>${money(r.salary)}</strong><small>${p.salaryOverride!==null?'年間給与額を補正しています。':''}登録済み給与${p.salaryOverride===null?'':'（補正後）'} ${money(r.salaryBase)} ＋ 未登録の予定収入 ${money(p.futureIncome)}</small></div>
+ <div class="section-header"><h2>${year}年の年間控除</h2></div>
+ <div class="info-box">基礎控除は自動計算されます。</div>
  <div class="form-grid" style="margin-top:15px">
  ${taxNumberField('social','社会保険料控除額（年間）',p.social,'本人負担の健康保険料・国民年金等を合計。')}
  ${taxNumberField('pension','確定拠出年金の本人掛金（年間）',p.pension,'控除対象となるiDeCo・企業型DCの本人拠出分。')}
@@ -241,7 +376,7 @@ function tax(){
  </div>
  <details class="advanced"><summary>年間額の補正（源泉徴収票と異なる場合のみ）</summary><p class="detail-note">年間給与収入が異なる場合のみ補正できます。</p><div class="form-grid">${taxNumberField('salaryOverride','登録済み給与の代わりに使う年間収入（空欄なら自動）',p.salaryOverride,'この数値に「今後の未登録収入見込み」が加算されます。')}</div></details>
  <div class="modal-bottom"><button class="button primary" type="submit">保存して再計算</button></div></form>
- <div class="hero" style="margin-top:18px"><div><h2>${year}年のふるさと納税</h2><p>予想年間給与収入 ${money(r.salary)} をもとに計算</p></div><div><div class="hero-label">寄附上限額（推定）</div><div class="hero-number">${r.salary>0?money(r.cap):'—'}</div></div></div>
+ <div class="hero" style="margin-top:18px"><div><h2>${year}年のふるさと納税</h2></div><div><div class="hero-label">寄附上限額（推定）</div><div class="hero-number">${r.salary>0?money(r.cap):'—'}</div></div></div>
  <section class="card refund-card"><h2>還付・追加納税の概算</h2>
  <div class="hero refund-hero"><div><h2>${r.difference===null?'現時点の暫定還付差額':r.difference>=0?'現時点の暫定還付差額':'現時点の暫定追加納税差額'}</h2></div><div class="hero-number">${r.difference===null?'—':money(Math.abs(r.difference))}</div></div>
  <div class="split-summaries"><div class="small-stat"><span>源泉徴収額（自動計算）</span><strong>${r.hasWithholding?money(r.annualWithholding):'—'}</strong></div><div class="small-stat"><span>年間所得税の概算</span><strong>${r.matchedSalary>0?money(r.estimatedIncomeTax):'—'}</strong></div></div>
