@@ -175,6 +175,62 @@
  .backup-actions{grid-template-columns:1fr}
 }
 </style>
+<style id="v5-5-styles">
+/* Compact, non-sticky mobile page header; controls are on the same row as page title. */
+@media(max-width:740px){
+ .mobile-top{display:none!important}
+ .main{padding-top:calc(18px + env(safe-area-inset-top));}
+ .topbar{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:7px;min-width:0;margin-bottom:15px}
+ .topbar>.page-heading{min-width:0;flex:0 1 auto}
+ .topbar h1{font-size:clamp(17px,5vw,22px);white-space:nowrap;line-height:1.35}
+ .topbar .top-actions{width:auto;flex:0 0 auto;margin:0;justify-content:flex-end}
+ .topbar .month-controls{width:auto;gap:3px;flex-wrap:nowrap}
+ .topbar .month-controls .button.icon{min-width:32px;min-height:37px;font-size:20px;padding:3px 6px;border-radius:9px}
+ .topbar .month-controls .month-picker-wrap{min-height:37px;flex:0 1 auto;width:104px;min-width:0}
+ .topbar .month-display{font-size:12px;padding:7px 3px;width:100%;min-width:0}
+ .topbar .month-controls>strong{flex:0 0 54px;font-size:14px!important;padding:0 1px!important}
+ .topbar:has(.month-controls>strong) h1{font-size:clamp(15px,4.8vw,21px)}
+ .day-total,.day-expense{display:block;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.055em;font-size:10px;line-height:1.2;overflow:hidden;text-overflow:clip;max-width:100%}
+ .day{gap:3px;min-height:81px}
+ .calendar-legend{font-size:10px;white-space:nowrap}
+ .pie-layout{flex-direction:column;gap:16px}
+ .pie-circle{width:182px;height:182px;flex:0 0 182px}
+ .pie-legend{width:100%}
+}
+@media(max-width:370px){
+ .topbar h1{font-size:16px}
+ .topbar:has(.month-controls>strong) h1{font-size:14px}
+ .topbar .month-controls .button.icon{min-width:29px;padding:3px 4px}
+ .topbar .month-controls .month-picker-wrap{width:93px}
+ .topbar .month-display{font-size:11px}
+ .day-total,.day-expense{font-size:9px}
+}
+.income-money{color:#087e80!important}
+.expense-money{color:#c44c68!important}
+.day-expense{margin-top:2px}
+.calendar-legend b{font-weight:700}
+.day-expense-heading{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.expense-button{color:#a83d59;border-color:#edd0d7}
+.expense-summary{border-color:#f1dce2}
+.expense-sum-label{font-size:12px;color:var(--muted);font-weight:700}
+.expense-sum-number{font-size:clamp(25px,4vw,34px);font-weight:800;letter-spacing:-.04em;margin-top:4px;font-variant-numeric:tabular-nums}
+.expense-details{margin-top:14px;border-top:1px solid var(--line);padding-top:11px}
+.expense-details summary{cursor:pointer;color:var(--teal);font-weight:700;font-size:13px}
+.expense-details .rowline{gap:8px}
+.expense-details .rowline .names{white-space:normal;overflow-wrap:anywhere}
+.pie-toggle{color:#087e80;border-color:#c8e2df}
+.pie-layout{display:flex;gap:23px;align-items:center;justify-content:flex-start;margin-bottom:17px;padding:16px 3px;border-bottom:1px solid var(--line)}
+.pie-circle{flex:0 0 200px;width:200px;height:200px;border-radius:50%;display:grid;place-items:center}
+.pie-hole{display:flex;flex-direction:column;align-items:center;justify-content:center;width:58%;height:58%;border-radius:50%;background:white;text-align:center;box-shadow:0 1px 9px #0001}
+.pie-hole small{font-size:11px;color:var(--muted)}
+.pie-hole strong{font-size:18px;color:var(--ink)}
+.pie-legend{min-width:0;flex:1;display:grid;gap:9px}
+.pie-legend-item{display:grid;grid-template-columns:9px minmax(0,1fr) 46px auto;align-items:center;gap:6px;font-size:12px}
+.pie-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pie-dot{width:9px;height:9px;border-radius:50%}
+.pie-legend-item strong{font-size:11px;text-align:right}
+.pie-amount{font-size:11px;color:var(--muted);text-align:right;white-space:nowrap}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -183,8 +239,7 @@
   <nav id="side-nav" aria-label="メインメニュー"></nav>
   <div class="sidebar-bottom"><span class="side-pill">無料・個人用</span><div>給与データはこの端末のブラウザ内に保存します。</div></div>
  </aside>
- <div class="mobile-top"><div class="brand-small"><i>＋</i>ドクターペイ</div></div>
- <main class="main" id="app" aria-live="polite"></main>
+  <main class="main" id="app" aria-live="polite"></main>
  <nav class="mobile-nav" id="mobile-nav" aria-label="モバイルメニュー"></nav>
 </div>
 <div id="modal-root"></div><div id="toast-root" role="status" aria-live="polite"></div>
@@ -195,20 +250,21 @@ const KEY='doctorpay_local_v1';
 const svg={home:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-8h6v8"/></svg>',calendar:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>',chart:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round"><path d="M4 21V3M4 21h17M9 17v-5M14 17V7M19 17v-9"/></svg>',tax:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',settings:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M10 2h4l.7 2.4 2 1.2 2.4-.6 2 3.5-1.7 1.8v2.4l1.7 1.8-2 3.5-2.4-.6-2 1.2L14 21h-4l-.7-2.4-2-1.2-2.4.6-2-3.5 1.7-1.8v-2.4L3 8.5 5 5l2.4.6 2-1.2z"/></svg>'};
 const pages=[['home','給与登録'],['calendar','カレンダー'],['analytics','集計・分析'],['tax','税金・ふるさと納税'],['settings','設定']];
 const TODAY=localISO(new Date());
-let state={tab:'home',month:TODAY.slice(0,7),year:Number(TODAY.slice(0,4)),day:null,employerScope:'year'};
+let state={tab:'home',month:TODAY.slice(0,7),year:Number(TODAY.slice(0,4)),day:null,employerScope:'year',pies:{company:false,type:false}};
 let data=load();
 function localISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function monthOffset(s,n){const [y,m]=s.split('-').map(Number); const d=new Date(y,m-1+n,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
 function monthTitle(s){const [y,m]=s.split('-').map(Number);return y+'年'+m+'月'}
-function money(n){return new Intl.NumberFormat('ja-JP').format(Math.round(Number(n)||0))+'円'}
-function shortMoney(n){n=Number(n)||0;return n>=100000 ? (n/10000).toLocaleString('ja-JP',{maximumFractionDigits:1})+'万' : new Intl.NumberFormat('ja-JP').format(n)}
+const JA_NUMBER=new Intl.NumberFormat('ja-JP');
+function money(n){return JA_NUMBER.format(Math.round(Number(n)||0))+'円'}
+function shortMoney(n){n=Number(n)||0;return n>=100000 ? (n/10000).toLocaleString('ja-JP',{maximumFractionDigits:1})+'万' : JA_NUMBER.format(n)}
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function validMonth(s){return typeof s==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(s)}
 function validDate(s){if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T12:00:00');return !isNaN(d)&&localISO(d)===s}
 function uid(){return 'id-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10)}
 function num(v){let n=Number(v);return Number.isFinite(n)?Math.max(0,Math.round(n)):0}
 function normalize(v){
- if(!v||![1,2,3,4,5].includes(v.version)||!Array.isArray(v.shifts)||!Array.isArray(v.employers)||!Array.isArray(v.settlements))throw Error('対応していないバックアップ形式です');
+ if(!v||![1,2,3,4,5,6].includes(v.version)||!Array.isArray(v.shifts)||!Array.isArray(v.employers)||!Array.isArray(v.settlements))throw Error('対応していないバックアップ形式です');
  const employers=v.employers.filter(x=>x&&x.id&&x.name).map(x=>({id:String(x.id),name:String(x.name).slice(0,100),closingDay:payDayNum(x.closingDay,'last'),payDay:payDayNum(x.payDay,'last'),payMonthOffset:[0,1,2].includes(Number(x.payMonthOffset))?Number(x.payMonthOffset):1}));
  const ids=new Set(employers.map(x=>x.id));
  const defaults=[{id:'type-night',name:'当直'},{id:'type-checkup',name:'健診'},{id:'type-influenza',name:'インフル問診'}];
@@ -229,7 +285,8 @@ function normalize(v){
   if(!/^20\d{2}$/.test(y)||!t||typeof t!=='object')continue;
   taxProfiles[y]={social:num(t.social),pension:num(t.pension),medical:num(t.medical),futureIncome:num(t.futureIncome),salaryOverride:t.salaryOverride==null?null:num(t.salaryOverride),withheldOverride:t.withheldOverride==null?null:num(t.withheldOverride)};
  }
- return {version:5,employers,workTypes,shifts,settlements,templates,taxProfiles,updatedAt:typeof v.updatedAt==='string'?v.updatedAt:null};
+ const expenses=(Array.isArray(v.expenses)?v.expenses:[]).filter(x=>x&&validDate(x.date)&&Number.isSafeInteger(Number(x.amount))&&Number(x.amount)>0&&Number(x.amount)<=1000000000).map(x=>({id:String(x.id||uid()),date:x.date,amount:num(x.amount),memo:String(x.memo||'').slice(0,300)}));
+ return {version:6,employers,workTypes,shifts,settlements,templates,taxProfiles,expenses,updatedAt:typeof v.updatedAt==='string'?v.updatedAt:null};
 }
 function payDayNum(v,def='last'){return v==='last'||v===31||v==='31'?'last':(Number.isInteger(Number(v))&&Number(v)>=1&&Number(v)<=30?Number(v):def)}
 function lastDayOfMonth(month){const [y,m]=month.split('-').map(Number);return localISO(new Date(y,m,0))}
@@ -284,9 +341,12 @@ function excludedPaymentList(payments){
  return `<section class="excluded-payments" aria-label="還付試算から除外した給与振込"><div class="excluded-payments-heading"><strong>還付試算から除外した振込 ${payments.length}件</strong></div>${payments.map(({payment:p,reason,gross,shiftCount})=>`<div class="excluded-payment"><div class="excluded-payment-top"><div><strong>${esc(employerName(p.employerId))}</strong><span class="excluded-payment-date">振込日 ${esc(p.depositDate.replaceAll('-','/'))}</span></div>${p.employerId==='all'?'':`<button type="button" class="button sm" data-action="edit-payment" data-id="${esc(p.id)}">編集</button>`}</div><div class="excluded-payment-amounts"><span>手取り ${money(p.net)}</span><span>対象勤務 ${shiftCount}件</span><span>交通費込み額面 ${shiftCount?money(gross):'—'}</span></div><div class="excluded-payment-reason">${esc(reason)}</div></div>`).join('')}</section>`;
 }
 function load(){try{const txt=localStorage.getItem(KEY);if(txt)return normalize(JSON.parse(txt))}catch(e){console.error('データ読み込み失敗:',e);setTimeout(()=>toast('保存データを読み込めません。設定からバックアップを確認してください。'),0)}return normalize({version:1,employers:[],shifts:[],settlements:[],updatedAt:null})}
-function save(){try{data.version=5;data.updatedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(data));render();return true}catch(e){alert('端末への保存に失敗しました。ブラウザの空き容量・プライベートモードを確認してください。');return false}}
+function save(){try{data.version=6;data.updatedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(data));render();return true}catch(e){alert('端末への保存に失敗しました。ブラウザの空き容量・プライベートモードを確認してください。');return false}}
 function employerName(id){return id==='all'?'旧式の一括振込（要修正）':(data.employers.find(e=>e.id===id)||{}).name||'不明な勤務先'}
 function workTypeName(id){return (data.workTypes.find(t=>t.id===id)||{}).name||'未設定'}
+function monthExpenses(m){return data.expenses.filter(x=>x.date.slice(0,7)===m).sort((a,b)=>a.date.localeCompare(b.date)||a.id.localeCompare(b.id))}
+function expenseTotal(items){return items.reduce((total,x)=>total+x.amount,0)}
+function expenseLine(x){return `<div class="rowline expense-row"><div class="lead"><div class="date-badge">${esc(x.date.slice(5).replace('-','/'))}</div><div style="min-width:0"><div class="names">${esc(x.memo||'支出')}</div></div></div><div><div class="money expense-money">−${money(x.amount)}</div><div class="actions"><button class="text-button" data-action="edit-expense" data-id="${esc(x.id)}">編集</button></div></div></div>`}
 function monthShifts(m){return data.shifts.filter(x=>x.date.slice(0,7)===m).sort((a,b)=>a.date.localeCompare(b.date)||employerName(a.employerId).localeCompare(employerName(b.employerId),'ja'))}
 function deposits(m){return data.settlements.filter(x=>x.depositDate.slice(0,7)===m).sort((a,b)=>a.depositDate.localeCompare(b.depositDate))}
 function aggregate(shifts,settlements,validPaymentIds){
@@ -300,7 +360,7 @@ function mobileNav(){const labels={home:'給与登録',calendar:'カレンダー
 function monthControl(){return `<div class="month-controls"><button class="button icon" data-action="prev-month" aria-label="前月">‹</button><label class="month-picker-wrap"><span class="month-display">${monthTitle(state.month)} ▾</span><input class="month-picker" type="month" id="month-picker" value="${state.month}" aria-label="対象月"></label><button class="button icon" data-action="next-month" aria-label="翌月">›</button></div>`}
 function yearControl(){return `<div class="month-controls"><button class="button icon" data-action="prev-year" aria-label="前年">‹</button><strong style="font-size:17px;padding:0 8px">${state.year}年</strong><button class="button icon" data-action="next-year" aria-label="翌年">›</button></div>`}
 function header(title,subtitle='',showMonth=true){
- return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>${title}</h1>${subtitle?`<div class="month-sub">${subtitle}</div>`:''}</div><div class="top-actions">${showMonth?monthControl():''}</div></div>`;
+ return `<div class="topbar"><div class="page-heading"><h1>${title}</h1>${subtitle?`<div class="month-sub">${subtitle}</div>`:''}</div>${showMonth?`<div class="top-actions">${monthControl()}</div>`:''}</div>`;
 }
 function shiftLine(x){const dt=new Date(x.date+'T12:00:00'),md=(dt.getMonth()+1)+'/'+dt.getDate();return `<div class="rowline"><div class="lead"><div class="date-badge">${md}<div class="muted">${'日月火水木金土'[dt.getDay()]}</div></div><div style="min-width:0"><div class="names">${esc(employerName(x.employerId))} <span class="pill gray">${esc(workTypeName(x.workTypeId))}</span></div><div class="sub">交通費抜 ${money(x.base)}${x.memo?' ・ '+esc(x.memo):''}</div></div></div><div><div class="money">${money(x.base+x.travel)}</div><div class="actions"><button class="text-button" data-action="edit-shift" data-id="${esc(x.id)}">編集</button><button class="text-button" data-action="bulk-from-shift" data-id="${esc(x.id)}">コピー</button></div></div></div>`}
 function settlementLine(x){
@@ -316,15 +376,79 @@ function home(){
  <div class="section-grid" style="margin-top:19px"><section class="card"><div class="card-heading"><h2>勤務の一覧 <span class="pill gray">${s.length}件</span></h2></div>${s.length?s.slice(0,8).map(shiftLine).join(''):empty('まだ勤務がありません','')}</section>
  <section class="card"><div class="card-heading"><h2>給与振込 <span class="pill gray">${p.length}件</span></h2></div>${p.length?p.map(settlementLine).join(''):empty('まだ振込がありません','')}</section></div>`;
 }
-function calendar(){const [year,month]=state.month.split('-').map(Number);const first=new Date(year,month-1,1).getDay(),last=new Date(year,month,0).getDate();const totalCells=Math.ceil((first+last)/7)*7;let cells='';const ss=monthShifts(state.month),byDate=new Map();for(const item of ss){if(!byDate.has(item.date))byDate.set(item.date,[]);byDate.get(item.date).push(item)}for(let i=0;i<totalCells;i++){const day=i-first+1,valid=day>0&&day<=last;let date,items=[];if(valid){date=state.month+'-'+String(day).padStart(2,'0');items=byDate.get(date)||[]}let gross=items.reduce((n,x)=>n+x.base+x.travel,0);cells+=`<button class="day ${valid?'':'other'} ${date===TODAY?'today':''}" ${valid?`data-action="open-day" data-date="${date}" aria-label="${day}日、${items.length}件、額面${money(gross)}"`:'disabled aria-hidden="true"'}><span class="day-num">${valid?day:''}</span>${items.length?`<span class="day-total">${shortMoney(gross)}</span>${items.slice(0,2).map(x=>`<span class="day-company">${esc(employerName(x.employerId))}・${esc(workTypeName(x.workTypeId))}</span>`).join('')}${items.length>2?`<span class="day-add">他${items.length-2}件</span>`:''}`:valid?'<span class="day-add">＋</span>':''}</button>`}return header('勤務カレンダー')+`<div class="card calendar-card calendar-wrap"><div class="card-heading" style="padding:2px 6px 0"><h2>${monthTitle(state.month)}</h2><span class="calendar-legend">金額は交通費込みの額面</span></div><div class="weekday-grid">${['日','月','火','水','木','金','土'].map(x=>`<div class="weekday">${x}</div>`).join('')}</div><div class="calendar-grid">${cells}</div></div><div class="section-header"><h2>この月の勤務 <span class="pill gray">${ss.length}件</span></h2></div><div class="card">${ss.length?ss.map(shiftLine).join(''):empty('勤務の登録がありません','カレンダーの日付をタップしてください。')}</div>`}
-function analytics(){const months=Array.from({length:12},(_,i)=>state.year+'-'+String(i+1).padStart(2,'0'));const records=data.shifts.filter(x=>x.date.startsWith(String(state.year)+'-'));const pays=data.settlements.filter(x=>x.depositDate.startsWith(String(state.year)+'-'));const validPaymentIds=new Set(validatedPayments().valid.map(p=>p.id));const agg=aggregate(records,pays,validPaymentIds);const per=months.map(m=>aggregate(monthShifts(m),deposits(m),validPaymentIds));const max=Math.max(1,...per.map(x=>x.gross));const bars=per.map((x,i)=>`<div class="bar-col"><div class="bar-inner"><div class="bar" style="height:${x.gross?Math.max(2,100*x.gross/max):0}%" title="${i+1}月 額面 ${money(x.gross)}"></div><div class="bar net" style="height:${x.hasPayment?Math.max(2,100*x.net/max):0}%" title="${i+1}月 手取り ${x.hasPayment?money(x.net):'未入力'}"></div></div><span class="bar-label">${i+1}月</span></div>`).join('');const annualDeposit=data.settlements.filter(x=>x.depositDate.startsWith(String(state.year)+'-')).reduce((n,x)=>n+x.net,0);const byCompany=data.employers.map(e=>{const sr=records.filter(x=>x.employerId===e.id),pr=pays.filter(x=>x.employerId===e.id);return{company:e.name,a:aggregate(sr,pr),count:sr.length}}).filter(x=>x.count>0||x.a.hasPayment).sort((a,b)=>b.a.gross-a.a.gross);return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>集計・分析</h1></div><div class="top-actions">${yearControl()}<button class="button" data-action="export-shifts">CSV出力</button></div></div><div class="kpi-grid">${kpi('年間額面（交通費込）',money(agg.gross),records.length+'件の勤務')}${kpi('年間額面（交通費抜）',money(agg.base),'交通費 '+money(agg.travel),'blue')}${kpi('年間源泉徴収額',agg.hasValidPayment?money(agg.tax):'—',agg.hasPayment?'振込月ベース':'未入力','amber')}${kpi('年間手取り',agg.hasPayment?money(agg.net):'—',agg.hasPayment?'振込月ベース':'未入力','pink')}</div><section class="card" style="margin-top:18px"><div class="card-heading"><div><h2>月別の収入推移</h2><div class="month-sub">額面は勤務月、手取り・源泉徴収額は振込月／単位：円</div></div><div class="legend"><span><b style="background:#9ed4d0"></b>交通費込み額面</span><span><b style="background:#226b86"></b>手取り</span></div></div><div class="year-bars" aria-label="月別の棒グラフ">${bars}</div><div class="table-scroll" style="margin-top:19px"><table><thead><tr><th>月</th><th class="num">額面（込）</th><th class="num">額面（抜）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${per.map((a,i)=>`<tr><td>${i+1}月</td><td class="num">${money(a.gross)}</td><td class="num">${money(a.base)}</td><td class="num">${money(a.travel)}</td><td class="num">${a.hasValidPayment?money(a.tax):'—'}</td><td class="num">${a.hasPayment?money(a.net):'—'}</td></tr>`).join('')}</tbody></table></div></section><div class="section-header"><h2>勤務先別の年間集計</h2><span class="pill gray">${state.year}年</span></div><section class="card"><div class="table-scroll"><table><thead><tr><th>勤務先</th><th class="num">勤務件数</th><th class="num">額面（込）</th><th class="num">額面（抜）</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${byCompany.length?byCompany.map(x=>`<tr><td>${esc(x.company)}</td><td class="num">${x.count||'—'}</td><td class="num">${x.count?money(x.a.gross):'—'}</td><td class="num">${x.count?money(x.a.base):'—'}</td><td class="num">${x.a.hasValidPayment?money(x.a.tax):'—'}</td><td class="num">${x.a.hasPayment?money(x.a.net):'—'}</td></tr>`).join(''):`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:25px">まだデータはありません</td></tr>`}</tbody></table></div></section><div class="section-header"><h2>仕事の種類別の年間集計</h2><span class="pill gray">${state.year}年</span></div><section class="card"><div class="table-scroll"><table><thead><tr><th>仕事の種類</th><th class="num">件数</th><th class="num">交通費抜き</th><th class="num">交通費</th><th class="num">額面合計</th></tr></thead><tbody>${[...new Set(records.map(x=>x.workTypeId||''))].map(id=>{const rs=records.filter(x=>(x.workTypeId||'')===id);return {name:workTypeName(id),count:rs.length,base:rs.reduce((n,x)=>n+x.base,0),travel:rs.reduce((n,x)=>n+x.travel,0)}}).sort((a,b)=>b.base-a.base).map(x=>`<tr><td>${esc(x.name)}</td><td class="num">${x.count}</td><td class="num">${money(x.base)}</td><td class="num">${money(x.travel)}</td><td class="num">${money(x.base+x.travel)}</td></tr>`).join('')||'<tr><td colspan="5" class="muted" style="text-align:center">まだ勤務記録はありません</td></tr>'}</tbody></table></div></section>`}
+function calendar(){
+ const [year,month]=state.month.split('-').map(Number);
+ const first=new Date(year,month-1,1).getDay(),last=new Date(year,month,0).getDate(),totalCells=Math.ceil((first+last)/7)*7;
+ const ss=monthShifts(state.month),expenses=monthExpenses(state.month);
+ const byDate=new Map(),expensesByDate=new Map();
+ for(const x of ss){if(!byDate.has(x.date))byDate.set(x.date,[]);byDate.get(x.date).push(x)}
+ for(const x of expenses){if(!expensesByDate.has(x.date))expensesByDate.set(x.date,[]);expensesByDate.get(x.date).push(x)}
+ let cells='';
+ for(let i=0;i<totalCells;i++){
+  const day=i-first+1,valid=day>0&&day<=last;
+  const date=valid?state.month+'-'+String(day).padStart(2,'0'):'';
+  const items=byDate.get(date)||[],outlays=expensesByDate.get(date)||[],gross=sumGross(items),spent=expenseTotal(outlays);
+  const activity=items.length||outlays.length;
+  cells+=`<button class="day ${valid?'':'other'} ${date===TODAY?'today':''}" ${valid?`data-action="open-day" data-date="${date}" aria-label="${day}日、給与${money(gross)}、支出${money(spent)}"`:'disabled aria-hidden="true"'}><span class="day-num">${valid?day:''}</span>${items.length?`<span class="day-total income-money" title="給与（交通費込）">+${shortMoney(gross)}</span>`:''}${outlays.length?`<span class="day-expense expense-money" title="支出">−${shortMoney(spent)}</span>`:''}${!activity&&valid?'<span class="day-add">＋</span>':''}</button>`;
+ }
+ return header('カレンダー')+`<div class="card calendar-card calendar-wrap"><div class="card-heading" style="padding:2px 6px 0"><h2>${monthTitle(state.month)}</h2><span class="calendar-legend"><b class="income-money">● 収入</b>　<b class="expense-money">● 支出</b></span></div><div class="weekday-grid">${['日','月','火','水','木','金','土'].map(x=>`<div class="weekday">${x}</div>`).join('')}</div><div class="calendar-grid">${cells}</div></div>
+ <div class="section-header"><h2>この月の勤務 <span class="pill gray">${ss.length}件</span></h2></div><div class="card">${ss.length?ss.map(shiftLine).join(''):empty('勤務の登録がありません','カレンダーの日付をタップしてください。')}</div>
+ <div class="section-header"><h2>この月の支出 <span class="pill gray">${expenses.length}件</span></h2><button class="button sm" data-action="add-expense">＋ 支出を登録</button></div>
+ <div class="card expense-summary"><div class="expense-sum-label">${monthTitle(state.month)}の支出合計</div><div class="expense-sum-number expense-money">${money(expenseTotal(expenses))}</div>${expenses.length?`<details class="expense-details"><summary>支出の内訳を見る（${expenses.length}件）</summary><div>${expenses.map(expenseLine).join('')}</div></details>`:''}</div>`;
+}
+// Work-type net and withholding are attributed by gross-weighted shares of linked shifts.
+// Gross and travel columns use the work date year; payment columns use the deposit date year.
+function allocateProportion(amount,items){
+ const weights=items.map(x=>x.weight),total=weights.reduce((a,b)=>a+b,0),denominator=total||items.length;
+ const parts=items.map((x,i)=>{const exact=amount*(total?x.weight:1)/denominator,whole=Math.floor(exact);return {id:x.id,value:whole,frac:exact-whole,idx:i}});
+ const spare=amount-parts.reduce((n,x)=>n+x.value,0);
+ parts.sort((a,b)=>b.frac-a.frac||a.idx-b.idx);
+ for(let i=0;i<spare;i++)parts[i%parts.length].value++;
+ return new Map(parts.map(x=>[x.id,x.value]));
+}
+function workTypeYearStats(workRecords,yearPays,validPaymentIds){
+ const result=new Map(),shiftById=new Map(data.shifts.map(s=>[s.id,s]));
+ const get=id=>{const key=id||'';if(!result.has(key))result.set(key,{name:workTypeName(key),count:0,gross:0,travel:0,withholding:0,net:0,hasWithholding:false,hasNet:false});return result.get(key)};
+ for(const s of workRecords){const x=get(s.workTypeId);x.count++;x.gross+=s.base+s.travel;x.travel+=s.travel}
+ for(const pay of yearPays){
+  if(!validPaymentIds.has(pay.id))continue;
+  const linked=(pay.shiftIds||[]).map(id=>shiftById.get(id)).filter(s=>s&&s.employerId===pay.employerId);if(!linked.length)continue;
+  const amounts=new Map();for(const s of linked){const id=s.workTypeId||'';amounts.set(id,(amounts.get(id)||0)+s.base+s.travel)}
+  const weights=[...amounts].map(([id,weight])=>({id,weight}));
+  const withheld=calculatedWithholding(pay);if(withheld===null)continue;
+  const taxShares=allocateProportion(withheld,weights),netShares=allocateProportion(pay.net,weights);
+  for(const {id} of weights){const x=get(id);x.withholding+=taxShares.get(id)||0;x.net+=netShares.get(id)||0;x.hasWithholding=true;x.hasNet=true}
+ }
+ return result;
+}
+function pieChart(rows,label){
+ const entries=rows.filter(x=>x.value>0),total=entries.reduce((s,x)=>s+x.value,0);
+ if(!total)return '<div class="empty" style="padding:18px">円グラフに表示する給与がありません</div>';
+ const colors=['#087e80','#3c76ab','#e39b47','#9969a7','#db6e86','#5b9b86','#c9a244','#6e84ad','#bd7d50','#5286a6','#8479c9','#5caaad'];
+ let prev=0;const segments=entries.map((x,i)=>{const end=prev+100*x.value/total,segment=`${colors[i%colors.length]} ${prev.toFixed(5)}% ${end.toFixed(5)}%`;prev=end;return segment});
+ return `<div class="pie-layout"><div class="pie-circle" role="img" aria-label="${esc(label)}" style="background:conic-gradient(${segments.join(',')})"><span class="pie-hole"><small>額面（込）</small><strong>${shortMoney(total)}</strong></span></div><div class="pie-legend">${entries.map((x,i)=>`<div class="pie-legend-item"><span class="pie-dot" style="background:${colors[i%colors.length]}"></span><span class="pie-name">${esc(x.name)}</span><strong>${(x.value/total*100).toFixed(1)}%</strong><span class="pie-amount">${money(x.value)}</span></div>`).join('')}</div></div>`;
+}
+function analytics(){const months=Array.from({length:12},(_,i)=>state.year+'-'+String(i+1).padStart(2,'0'));const records=data.shifts.filter(x=>x.date.startsWith(String(state.year)+'-'));const pays=data.settlements.filter(x=>x.depositDate.startsWith(String(state.year)+'-'));const validPaymentIds=new Set(validatedPayments().valid.map(p=>p.id));const agg=aggregate(records,pays,validPaymentIds);const per=months.map(m=>aggregate(monthShifts(m),deposits(m),validPaymentIds));const max=Math.max(1,...per.map(x=>x.gross));const bars=per.map((x,i)=>`<div class="bar-col"><div class="bar-inner"><div class="bar" style="height:${x.gross?Math.max(2,100*x.gross/max):0}%" title="${i+1}月 額面 ${money(x.gross)}"></div><div class="bar net" style="height:${x.hasPayment?Math.max(2,100*x.net/max):0}%" title="${i+1}月 手取り ${x.hasPayment?money(x.net):'未入力'}"></div></div><span class="bar-label">${i+1}月</span></div>`).join('');const byCompany=data.employers.map(e=>{const sr=records.filter(x=>x.employerId===e.id),pr=pays.filter(x=>x.employerId===e.id);return{key:e.id,name:e.name,a:aggregate(sr,pr,validPaymentIds),count:sr.length}}).filter(x=>x.count>0||x.a.hasPayment).sort((a,b)=>b.a.gross-a.a.gross);
+ const typeSummary=workTypeYearStats(records,pays,validPaymentIds);
+ const typeRows=[...typeSummary.values()].sort((a,b)=>b.gross-a.gross||a.name.localeCompare(b.name,'ja'));
+ return `<div class="topbar"><div class="page-heading"><h1>集計・分析</h1></div><div class="top-actions">${yearControl()}</div></div>
+ <div class="kpi-grid">${kpi('年間額面（交通費込）',money(agg.gross),records.length+'件の勤務')}${kpi('年間額面（交通費抜）',money(agg.base),'交通費 '+money(agg.travel),'blue')}${kpi('年間源泉徴収額',agg.hasValidPayment?money(agg.tax):'—',agg.hasPayment?'振込月ベース':'未入力','amber')}${kpi('年間手取り',agg.hasPayment?money(agg.net):'—',agg.hasPayment?'振込月ベース':'未入力','pink')}</div>
+ <section class="card" style="margin-top:18px"><div class="card-heading"><div><h2>月別の収入推移</h2><div class="month-sub">額面は勤務月、手取り・源泉徴収額は振込月／単位：円</div></div><div class="legend"><span><b style="background:#9ed4d0"></b>交通費込み額面</span><span><b style="background:#226b86"></b>手取り</span></div></div><div class="year-bars" aria-label="月別の棒グラフ">${bars}</div>
+ <div class="table-scroll" style="margin-top:19px"><table><thead><tr><th>月</th><th class="num">額面（込）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${per.map((a,i)=>`<tr><td>${i+1}月</td><td class="num">${money(a.gross)}</td><td class="num">${money(a.travel)}</td><td class="num">${a.hasValidPayment?money(a.tax):'—'}</td><td class="num">${a.hasPayment?money(a.net):'—'}</td></tr>`).join('')}</tbody></table></div></section>
+ <div class="section-header"><h2>勤務先別の年間集計</h2><button class="button sm pie-toggle" type="button" data-action="toggle-pie" data-kind="company" aria-expanded="${state.pies.company}">${state.pies.company?'閉じる':'◯ 円グラフ'}</button></div>
+ <section class="card">${state.pies.company?pieChart(byCompany.map(x=>({name:x.name,value:x.a.gross})),'勤務先別の額面（交通費込み）'):''}
+ <div class="table-scroll"><table><thead><tr><th>勤務先</th><th class="num">件数</th><th class="num">額面（込）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${byCompany.length?byCompany.map(x=>`<tr><td>${esc(x.name)}</td><td class="num">${x.count||'—'}</td><td class="num">${x.count?money(x.a.gross):'—'}</td><td class="num">${x.count?money(x.a.travel):'—'}</td><td class="num">${x.a.hasValidPayment?money(x.a.tax):'—'}</td><td class="num">${x.a.hasPayment?money(x.a.net):'—'}</td></tr>`).join(''):`<tr><td colspan="6" class="muted" style="text-align:center">まだ記録はありません</td></tr>`}</tbody></table></div></section>
+ <div class="section-header"><h2>仕事の種類別の年間集計</h2><button class="button sm pie-toggle" type="button" data-action="toggle-pie" data-kind="type" aria-expanded="${state.pies.type}">${state.pies.type?'閉じる':'◯ 円グラフ'}</button></div>
+ <section class="card">${state.pies.type?pieChart(typeRows.map(x=>({name:x.name,value:x.gross})),'仕事の種類別の額面（交通費込み）'):''}
+ <div class="table-scroll"><table><thead><tr><th>仕事の種類</th><th class="num">件数</th><th class="num">額面（込）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${typeRows.length?typeRows.map(x=>`<tr><td>${esc(x.name)}</td><td class="num">${x.count}</td><td class="num">${money(x.gross)}</td><td class="num">${money(x.travel)}</td><td class="num">${x.hasWithholding?money(x.withholding):'—'}</td><td class="num">${x.hasNet?money(x.net):'—'}</td></tr>`).join(''):`<tr><td colspan="6" class="muted" style="text-align:center">まだ勤務記録はありません</td></tr>`}</tbody></table></div></section>`;
+}
 function settings(){return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>設定・データ管理</h1></div></div><div class="settings-grid">
 <section class="card"><h2>勤務先と給与スケジュール</h2>
 <form id="employer-form" class="foot-action"><input id="new-employer" class="control" type="text" maxlength="100" required placeholder="勤務先名を追加" style="flex:1;min-width:150px"><button class="button primary" type="submit">＋ 追加</button></form>
 <div style="margin-top:16px">${data.employers.length?data.employers.map(e=>`<div class="setting-row"><div><b>${esc(e.name)}</b><small>${esc(scheduleLabel(e))} ／ 勤務${data.shifts.filter(x=>x.employerId===e.id).length}件</small></div><div class="actions"><button class="button sm" data-action="schedule-employer" data-id="${esc(e.id)}">変更</button><button class="button sm danger" data-action="delete-employer" data-id="${esc(e.id)}">削除</button></div></div>`).join(''):empty('勤務先がありません','先に勤務先を登録してください。')}</div></section>
 <section class="card"><h2>仕事の種類</h2><form id="worktype-form" class="foot-action"><input id="new-worktype" class="control" type="text" maxlength="100" required placeholder="例：当直、健診" style="flex:1;min-width:150px"><button class="button primary" type="submit">＋ 追加</button></form><div style="margin-top:15px">${data.workTypes.map(t=>`<div class="setting-row"><div><b>${esc(t.name)}</b></div><div class="actions"><button class="button sm" data-action="rename-worktype" data-id="${esc(t.id)}">名前</button><button class="button sm danger" data-action="delete-worktype" data-id="${esc(t.id)}">削除</button></div></div>`).join('')}</div></section>
 <section class="card"><h2>定型バイト</h2>${data.templates.length?data.templates.map(t=>`<div class="setting-row"><div><b>${esc(t.name)}</b><small>${esc(employerName(t.employerId))}・${money(t.base+t.travel)}</small></div><button class="button sm danger" data-action="template-delete" data-id="${esc(t.id)}">削除</button></div>`).join(''):empty('まだありません','勤務登録時に「定型バイトに保存」で追加できます。')}</section>
-<section class="card"><h2>バックアップ・書き出し</h2><p class="detail-note">データはiPhone内に保存されます。</p><div class="foot-action backup-actions"><button class="button primary" data-action="export-json">バックアップを保存</button><button class="button" data-action="import-json">バックアップを読み込む</button></div><input class="hidden" type="file" id="import-file" accept=".json,application/json" aria-label="バックアップファイル"><div class="divider"></div><div class="foot-action"><button class="button" data-action="export-shifts">勤務CSV</button><button class="button" data-action="export-payments">振込CSV</button></div><div class="info-box warning" style="margin-top:15px">更新前にはバックアップを保存してください。別端末への読み込みでは、その端末の既存データが置き換えられます。</div><div class="divider"></div><button class="button danger sm" data-action="delete-all">すべての記録を削除</button></section>
+<section class="card"><h2>バックアップ・書き出し</h2><p class="detail-note">データはiPhone内に保存されます。</p><div class="foot-action backup-actions"><button class="button primary" data-action="export-json">バックアップを保存</button><button class="button" data-action="import-json">バックアップを読み込む</button></div><input class="hidden" type="file" id="import-file" accept=".json,application/json" aria-label="バックアップファイル"><div class="divider"></div><div class="foot-action"><button class="button" data-action="export-csv">CSVを書き出す</button></div><div class="info-box warning" style="margin-top:15px">更新前にはバックアップを保存してください。別端末への読み込みでは、その端末の既存データが置き換えられます。</div><div class="divider"></div><button class="button danger sm" data-action="delete-all">すべての記録を削除</button></section>
 </div>`}
 const TAX_FIELDS=['social','pension','medical','futureIncome'];
 function getTaxProfile(y){const p=data.taxProfiles[String(y)]||{};return {social:num(p.social),pension:num(p.pension),medical:num(p.medical),futureIncome:num(p.futureIncome),salaryOverride:p.salaryOverride==null?null:num(p.salaryOverride),withheldOverride:p.withheldOverride==null?null:num(p.withheldOverride)}}
@@ -361,7 +485,7 @@ function taxProjection(year){
 function taxNumberField(key,label,value,description){return `<div class="field"><label for="tax-${key}">${label}</label><input class="control" id="tax-${key}" name="${key}" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="${value??''}" placeholder="0">${description?`<span class="help">${description}</span>`:''}</div>`}
 function tax(){
  const year=String(state.year),r=taxProjection(year),p=r.p,supported=[2026,2027].includes(state.year);
- return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>税金・ふるさと納税</h1></div><div class="top-actions">${yearControl()}</div></div>
+ return `<div class="topbar"><div class="page-heading"><h1>税金・ふるさと納税</h1></div><div class="top-actions">${yearControl()}</div></div>
  ${supported?`
  <form class="card" id="tax-form">
  <div class="card-heading"><h2>${year}年の給与収入（予測）</h2></div>
@@ -396,7 +520,6 @@ function shiftModal(id,date,preset){const x=id?data.shifts.find(x=>x.id===id):pr
 function sameShift(a,b,date){return a.date===date&&a.employerId===b.employerId&&a.workTypeId===b.workTypeId&&a.base===b.base&&a.travel===b.travel}
 function copyRecord(source,date){return {id:uid(),date,employerId:source.employerId,workTypeId:source.workTypeId||'',base:source.base,travel:source.travel,memo:source.memo||''}}
 function addTemplate(source){const initial=employerName(source.employerId)+'・'+workTypeName(source.workTypeId);const name=prompt('定型バイトの名前を入力してください',initial);if(name===null)return;const val=name.trim();if(!val||val.length>100){alert('名前は1～100文字で入力してください');return}data.templates.push({id:uid(),name:val,employerId:source.employerId,workTypeId:source.workTypeId||'',base:source.base,travel:source.travel,memo:source.memo||''});if(save())toast('定型バイトを保存しました')}
-function quickTemplateModal(){const inner=data.templates.length?data.templates.map(t=>`<div class="template-card"><div style="flex:1;min-width:0"><strong>${esc(t.name)}</strong><small style="display:block">${esc(employerName(t.employerId))}・${esc(workTypeName(t.workTypeId))}</small><b>${money(t.base+t.travel)}</b></div><div class="template-buttons"><button class="button sm primary" data-action="template-use" data-id="${esc(t.id)}">1日登録</button><button class="button sm" data-action="template-bulk" data-id="${esc(t.id)}">複数日登録</button></div></div>`).join(''):empty('テンプレートはまだありません','登録済み勤務の「定型登録」を使って作成してください。');modalTemplate('よく使うバイト',`<div class="info-box"><strong>金額は自動入力</strong>定型バイトを選んで日付だけ指定してください。複数日まとめて登録もできます。</div><div style="margin-top:14px">${inner}</div><div class="modal-bottom"><button class="button" data-action="close-modal">閉じる</button></div>`)}
 let bulkDraft=null;
 function bulkPicker(source,label){if(!source)return;bulkDraft={source,dates:new Set(),month:state.month,label};renderBulkPicker()}
 function renderBulkPicker(){const b=bulkDraft;if(!b)return;const [y,m]=b.month.split('-').map(Number),first=new Date(y,m-1,1).getDay(),last=new Date(y,m,0).getDate();let cells='';for(let n=0;n<first;n++)cells+='<span class="bulk-blank"></span>';for(let d=1;d<=last;d++){const date=b.month+'-'+String(d).padStart(2,'0'),chosen=b.dates.has(date);cells+=`<button type="button" class="bulk-day ${chosen?'selected':''}" data-action="bulk-toggle" data-date="${date}" aria-pressed="${chosen}">${d}${chosen?' ✓':''}</button>`}const selected=[...b.dates].sort();modalTemplate('複数日にまとめて登録',`<div class="info-box"><strong>${esc(b.label)}</strong>${esc(employerName(b.source.employerId))}・${esc(workTypeName(b.source.workTypeId))} ／ ${money(b.source.base+b.source.travel)}<div style="margin-top:4px">コピー先の日付を複数タップしてください。すでに同じ勤務がある日付は重複登録しません。</div></div><div class="bulk-top"><button class="button sm" data-action="bulk-prev">‹ 前月</button><strong>${monthTitle(b.month)}</strong><button class="button sm" data-action="bulk-next">翌月 ›</button></div><div class="bulk-week">${['日','月','火','水','木','金','土'].map(x=>`<b>${x}</b>`).join('')}</div><div class="bulk-grid">${cells}</div><p class="detail-note">選択した日付：${selected.length?selected.map(x=>x.replaceAll('-','/')).join('、'):'まだ選択されていません'}</p><div class="modal-bottom"><button class="button" data-action="close-modal">キャンセル</button><button class="button primary" data-action="bulk-save" ${!selected.length?'disabled':''}>${selected.length}日分を登録</button></div>`)}
@@ -454,7 +577,24 @@ function scheduleModal(id){const e=data.employers.find(x=>x.id===id);if(!e)retur
  <div class="info-box warning" style="margin-top:14px">既存の振込記録は保存時点の勤務との紐づけを保持します。締め日を後から変えた場合、登録済みの振込を確認してください。休日による前倒し・後ろ倒しは自動計算しません。</div>
  <div class="modal-bottom"><button type="button" class="button" data-action="close-modal">キャンセル</button><button type="submit" class="button primary">保存</button></div></form>`)
 }
-function dayModal(date){const ss=data.shifts.filter(x=>x.date===date);const dateStr=date.replaceAll('-','/');modalTemplate(dateStr+' の勤務',`<div class="card-heading"><h3>この日の勤務：${ss.length}件</h3><button class="button primary sm" data-action="add-shift-on" data-date="${date}">＋ この日に登録</button></div>${ss.length?ss.map(shiftLine).join(''):empty('この日の勤務はありません','勤務を登録するとカレンダーに金額が表示されます。')}<div class="modal-bottom"><button class="button" data-action="close-modal">閉じる</button></div>`)}
+function dayModal(date){
+ const ss=data.shifts.filter(x=>x.date===date),expenses=data.expenses.filter(x=>x.date===date),dateStr=date.replaceAll('-','/');
+ modalTemplate(dateStr,`<div class="card-heading"><h3>勤務 ${ss.length}件</h3><button class="button primary sm" data-action="add-shift-on" data-date="${date}">＋ 勤務</button></div>${ss.length?ss.map(shiftLine).join(''):''}
+ <div class="card-heading day-expense-heading"><h3>支出 ${expenses.length}件</h3><button class="button sm expense-button" data-action="add-expense-on" data-date="${date}">＋ 支出</button></div>${expenses.length?expenses.map(expenseLine).join(''):''}
+ <div class="modal-bottom"><button class="button" data-action="close-modal">閉じる</button></div>`);
+}
+function expenseModal(id=null,date=TODAY){
+ const x=id?data.expenses.find(e=>e.id===id):null;if(id&&!x)return;
+ const body=`<form id="expense-form" data-id="${esc(id||'')}"><div class="form-grid"><div class="field full"><label for="expense-date">日付 *</label><input id="expense-date" class="control" type="date" value="${esc(x?.date||date)}" required></div><div class="field full"><label for="expense-amount">支出額（円） *</label><input id="expense-amount" class="control" type="number" min="1" max="1000000000" step="1" inputmode="numeric" value="${x?.amount??''}" placeholder="例：2500" required></div><div class="field full"><label for="expense-memo">内容（任意）</label><input id="expense-memo" class="control" maxlength="300" value="${esc(x?.memo||'')}" placeholder="例：交通、食事、買い物"></div></div><div class="modal-bottom">${id?`<button class="button danger" type="button" data-action="delete-expense" data-id="${esc(id)}" style="margin-right:auto">削除</button>`:''}<button class="button" type="button" data-action="close-modal">キャンセル</button><button class="button primary" type="submit">${id?'更新':'登録'}</button></div></form>`;
+ modalTemplate(id?'支出を編集':'支出を登録',body);
+}
+function saveExpense(form){
+ const id=form.dataset.id,date=document.getElementById('expense-date').value,amount=Number(document.getElementById('expense-amount').value),memo=document.getElementById('expense-memo').value.trim();
+ if(!validDate(date)||!Number.isSafeInteger(amount)||amount<1||amount>1e9){alert('日付と支出額を確認してください。');return}
+ const entry={id:id||uid(),date,amount,memo};
+ if(id){const i=data.expenses.findIndex(x=>x.id===id);if(i<0)return;data.expenses[i]=entry}else data.expenses.push(entry);
+ if(save()){closeModal();toast(id?'支出を更新しました':'支出を登録しました')}
+}
 function toast(msg){const root=document.getElementById('toast-root');if(!root)return;root.innerHTML='<div class="toast">'+esc(msg)+'</div>';setTimeout(()=>{root.innerHTML=''},3000)}
 function saveShift(form){
  const id=form.dataset.id,date=document.getElementById('shift-date').value,base=Number(document.getElementById('shift-base').value),travel=Number(document.getElementById('shift-travel').value);
@@ -488,15 +628,22 @@ function savePayment(form){
 function csvCell(v){let s=String(v??'');if(/^[\s]*[=+@\-]/.test(s)&&isNaN(Number(s)))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
 function downloadFile(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000)}
 function csv(name,rows){downloadFile(name,'\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'text/csv;charset=utf-8')}
-function exportShifts(){const rows=[['勤務日','勤務先','仕事の種類','額面（交通費込み）','額面（交通費抜き）','交通費','メモ'],...data.shifts.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(x=>[x.date,employerName(x.employerId),workTypeName(x.workTypeId),x.base+x.travel,x.base,x.travel,x.memo])];csv('doctorpay_勤務_'+TODAY+'.csv',rows);toast('勤務CSVを書き出しました')}
-function exportPayments(){const rows=[['対象締め日','勤務先','振込日','源泉徴収額','手取り（振込金額）','紐づく勤務件数','メモ'],...data.settlements.slice().sort((a,b)=>a.depositDate.localeCompare(b.depositDate)).map(x=>[x.periodEnd,employerName(x.employerId),x.depositDate,calculatedWithholding(x)??'要確認',x.net,x.shiftIds?.length||0,x.memo])];csv('doctorpay_振込_'+TODAY+'.csv',rows);toast('振込CSVを書き出しました')}
-function importJSON(file){if(!file)return;if(file.size>5e6){alert('ファイルが大きすぎます（最大5MB）。');return}file.text().then(txt=>{let parsed;try{parsed=normalize(JSON.parse(txt))}catch(e){alert('読み込みに失敗しました：'+e.message);return}const msg='このバックアップを読み込むと、現在のこの端末の記録はすべて置き換わります。\n\n勤務 '+parsed.shifts.length+'件／振込 '+parsed.settlements.length+'件／仕事の種類 '+parsed.workTypes.length+'件／税金設定 '+Object.keys(parsed.taxProfiles).length+'年分\n\n現在の記録を保存してから操作することをおすすめします。続けますか？';if(!confirm(msg))return;data=parsed;if(save())toast('バックアップを読み込みました')}).catch(()=>alert('ファイルを読み込めませんでした'))}
+function exportCSV(){
+ // One file: each row has an explicit record type, so payments cannot be mistaken for individual shifts.
+ const rows=[['記録の種類','日付','勤務先','仕事の種類','額面（交通費込み）','交通費','源泉徴収額','手取り','支出額','メモ']];
+ for(const x of data.shifts)rows.push(['勤務',x.date,employerName(x.employerId),workTypeName(x.workTypeId),x.base+x.travel,x.travel,'','','',x.memo]);
+ for(const x of data.settlements)rows.push(['給与振込',x.depositDate,employerName(x.employerId),'','','',calculatedWithholding(x)??'要確認',x.net,'',x.memo]);
+ for(const x of data.expenses)rows.push(['支出',x.date,'','','','','','',x.amount,x.memo]);
+ csv('doctorpay_全記録_'+TODAY+'.csv',rows);toast('CSVを書き出しました');
+}
+function importJSON(file){if(!file)return;if(file.size>5e6){alert('ファイルが大きすぎます（最大5MB）。');return}file.text().then(txt=>{let parsed;try{parsed=normalize(JSON.parse(txt))}catch(e){alert('読み込みに失敗しました：'+e.message);return}const msg='このバックアップを読み込むと、現在のこの端末の記録はすべて置き換わります。\n\n勤務 '+parsed.shifts.length+'件／振込 '+parsed.settlements.length+'件／支出 '+parsed.expenses.length+'件／仕事の種類 '+parsed.workTypes.length+'件／税金設定 '+Object.keys(parsed.taxProfiles).length+'年分\n\n現在の記録を保存してから操作することをおすすめします。続けますか？';if(!confirm(msg))return;data=parsed;if(save())toast('バックアップを読み込みました')}).catch(()=>alert('ファイルを読み込めませんでした'))}
 function navTo(tab){state.tab=tab;render();scrollTo({top:0,behavior:'instant'})}
-document.addEventListener('click',e=>{const btn=e.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action,id=btn.dataset.id;switch(action){case'nav':navTo(btn.dataset.tab);break;case'prev-month':state.month=monthOffset(state.month,-1);render();break;case'next-month':state.month=monthOffset(state.month,1);render();break;case'prev-year':state.year--;render();break;case'next-year':state.year++;render();break;case'add-shift':shiftModal();break;case'quick-template':shiftModal();break;case'template-use':{const t=data.templates.find(x=>x.id===id);if(t)shiftModal(null,TODAY,t);break}case'template-bulk':{const t=data.templates.find(x=>x.id===id);if(t)bulkPicker(t,t.name);break}case'bulk-from-shift':{const t=data.shifts.find(x=>x.id===id);if(t)bulkPicker(t,'登録済み勤務 '+t.date);break}case'bulk-prev':if(bulkDraft){bulkDraft.month=monthOffset(bulkDraft.month,-1);renderBulkPicker()}break;case'bulk-next':if(bulkDraft){bulkDraft.month=monthOffset(bulkDraft.month,1);renderBulkPicker()}break;case'bulk-toggle':if(bulkDraft&&validDate(btn.dataset.date)){const d=btn.dataset.date;bulkDraft.dates.has(d)?bulkDraft.dates.delete(d):bulkDraft.dates.add(d);renderBulkPicker()}break;case'bulk-save':bulkSave();break;case'template-delete':{const t=data.templates.find(x=>x.id===id);if(t&&confirm('テンプレート「'+t.name+'」を削除しますか？')){data.templates=data.templates.filter(x=>x.id!==id);if(save())toast('テンプレートを削除しました')}break}case'add-shift-on':shiftModal(null,btn.dataset.date);break;case'edit-shift':shiftModal(id);break;case'open-day':dayModal(btn.dataset.date);break;case'add-payment':paymentModal();break;case'schedule-employer':scheduleModal(id);break;case'edit-payment':paymentModal(id);break;case'close-modal':closeModal();break;case'delete-shift':if(confirm('この勤務記録を削除しますか？')){data.shifts=data.shifts.filter(x=>x.id!==id);if(save()){closeModal();toast('勤務を削除しました')}}break;case'delete-payment':if(confirm('この振込記録を削除しますか？')){data.settlements=data.settlements.filter(x=>x.id!==id);if(save()){closeModal();toast('振込情報を削除しました')}}break;case'delete-employer':{const emp=data.employers.find(x=>x.id===id);if(!emp)return;if(data.shifts.some(x=>x.employerId===id)||data.settlements.some(x=>x.employerId===id)||data.templates.some(x=>x.employerId===id))return alert('この勤務先には勤務・振込記録があるため削除できません。名称変更は可能です。');if(confirm('「'+emp.name+'」を候補から削除しますか？')){data.employers=data.employers.filter(x=>x.id!==id);if(save())toast('勤務先を削除しました')}break}case'export-json':downloadFile('doctorpay_backup_'+TODAY+'.json',JSON.stringify(data,null,2),'application/json;charset=utf-8');toast('バックアップを保存しました');break;case'import-json':document.getElementById('import-file')?.click();break;case'export-shifts':exportShifts();break;case'export-payments':exportPayments();break;case'rename-worktype':{const obj=data.workTypes.find(x=>x.id===id);if(!obj)return;const name=prompt('仕事の種類の新しい名前を入力してください',obj.name);if(name===null)return;const val=name.trim();if(!val||val.length>100)return alert('1～100文字で入力してください');if(data.workTypes.some(x=>x.name===val&&x.id!==id))return alert('同じ種類が登録済みです');obj.name=val;if(save())toast('仕事の種類を変更しました');break}case'delete-worktype':{const obj=data.workTypes.find(x=>x.id===id);if(!obj)return;if(data.shifts.some(x=>x.workTypeId===id)||data.templates.some(x=>x.workTypeId===id))return alert('使用中の仕事の種類は削除できません。名前変更を利用してください。');if(confirm('「'+obj.name+'」を削除しますか？')){data.workTypes=data.workTypes.filter(x=>x.id!==id);if(save())toast('仕事の種類を削除しました')}break}case'delete-all':{if(!confirm('全勤務・全振込・勤務先をすべて削除します。元に戻せません。バックアップは保存しましたか？'))return;if(!confirm('最終確認：すべての記録を削除しますか？'))return;data=normalize({version:1,employers:[],shifts:[],settlements:[],updatedAt:null});if(save())toast('すべての記録を削除しました');break}}});
+document.addEventListener('click',e=>{const btn=e.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action,id=btn.dataset.id;switch(action){case'nav':navTo(btn.dataset.tab);break;case'prev-month':state.month=monthOffset(state.month,-1);render();break;case'next-month':state.month=monthOffset(state.month,1);render();break;case'prev-year':state.year--;render();break;case'next-year':state.year++;render();break;case'add-shift':shiftModal();break;case'quick-template':shiftModal();break;case'template-use':{const t=data.templates.find(x=>x.id===id);if(t)shiftModal(null,TODAY,t);break}case'template-bulk':{const t=data.templates.find(x=>x.id===id);if(t)bulkPicker(t,t.name);break}case'bulk-from-shift':{const t=data.shifts.find(x=>x.id===id);if(t)bulkPicker(t,'登録済み勤務 '+t.date);break}case'bulk-prev':if(bulkDraft){bulkDraft.month=monthOffset(bulkDraft.month,-1);renderBulkPicker()}break;case'bulk-next':if(bulkDraft){bulkDraft.month=monthOffset(bulkDraft.month,1);renderBulkPicker()}break;case'bulk-toggle':if(bulkDraft&&validDate(btn.dataset.date)){const d=btn.dataset.date;bulkDraft.dates.has(d)?bulkDraft.dates.delete(d):bulkDraft.dates.add(d);renderBulkPicker()}break;case'bulk-save':bulkSave();break;case'template-delete':{const t=data.templates.find(x=>x.id===id);if(t&&confirm('テンプレート「'+t.name+'」を削除しますか？')){data.templates=data.templates.filter(x=>x.id!==id);if(save())toast('テンプレートを削除しました')}break}case'add-shift-on':shiftModal(null,btn.dataset.date);break;case'edit-shift':shiftModal(id);break;case'open-day':dayModal(btn.dataset.date);break;case'add-expense':expenseModal(null,state.month===TODAY.slice(0,7)?TODAY:state.month+'-01');break;case'add-expense-on':expenseModal(null,btn.dataset.date);break;case'edit-expense':expenseModal(id);break;case'delete-expense':if(confirm('この支出を削除しますか？')){data.expenses=data.expenses.filter(x=>x.id!==id);if(save()){closeModal();toast('支出を削除しました')}}break;case'toggle-pie':if(['company','type'].includes(btn.dataset.kind)){state.pies[btn.dataset.kind]=!state.pies[btn.dataset.kind];render()}break;case'add-payment':paymentModal();break;case'schedule-employer':scheduleModal(id);break;case'edit-payment':paymentModal(id);break;case'close-modal':closeModal();break;case'delete-shift':if(confirm('この勤務記録を削除しますか？')){data.shifts=data.shifts.filter(x=>x.id!==id);if(save()){closeModal();toast('勤務を削除しました')}}break;case'delete-payment':if(confirm('この振込記録を削除しますか？')){data.settlements=data.settlements.filter(x=>x.id!==id);if(save()){closeModal();toast('振込情報を削除しました')}}break;case'delete-employer':{const emp=data.employers.find(x=>x.id===id);if(!emp)return;if(data.shifts.some(x=>x.employerId===id)||data.settlements.some(x=>x.employerId===id)||data.templates.some(x=>x.employerId===id))return alert('この勤務先には勤務・振込記録があるため削除できません。名称変更は可能です。');if(confirm('「'+emp.name+'」を候補から削除しますか？')){data.employers=data.employers.filter(x=>x.id!==id);if(save())toast('勤務先を削除しました')}break}case'export-json':downloadFile('doctorpay_backup_'+TODAY+'.json',JSON.stringify(data,null,2),'application/json;charset=utf-8');toast('バックアップを保存しました');break;case'import-json':document.getElementById('import-file')?.click();break;case'export-csv':exportCSV();break;case'rename-worktype':{const obj=data.workTypes.find(x=>x.id===id);if(!obj)return;const name=prompt('仕事の種類の新しい名前を入力してください',obj.name);if(name===null)return;const val=name.trim();if(!val||val.length>100)return alert('1～100文字で入力してください');if(data.workTypes.some(x=>x.name===val&&x.id!==id))return alert('同じ種類が登録済みです');obj.name=val;if(save())toast('仕事の種類を変更しました');break}case'delete-worktype':{const obj=data.workTypes.find(x=>x.id===id);if(!obj)return;if(data.shifts.some(x=>x.workTypeId===id)||data.templates.some(x=>x.workTypeId===id))return alert('使用中の仕事の種類は削除できません。名前変更を利用してください。');if(confirm('「'+obj.name+'」を削除しますか？')){data.workTypes=data.workTypes.filter(x=>x.id!==id);if(save())toast('仕事の種類を削除しました')}break}case'delete-all':{if(!confirm('全勤務・全振込・全支出・勤務先をすべて削除します。元に戻せません。バックアップは保存しましたか？'))return;if(!confirm('最終確認：すべての記録を削除しますか？'))return;data=normalize({version:1,employers:[],shifts:[],settlements:[],updatedAt:null});if(save())toast('すべての記録を削除しました');break}}});
 
 document.addEventListener('submit',e=>{
  if(e.target.id==='shift-form'){e.preventDefault();saveShift(e.target)}
  else if(e.target.id==='payment-form'){e.preventDefault();savePayment(e.target)}
+ else if(e.target.id==='expense-form'){e.preventDefault();saveExpense(e.target)}
  else if(e.target.id==='employer-form'){e.preventDefault();const name=document.getElementById('new-employer').value.trim();if(!name)return;if(data.employers.some(x=>x.name===name))return alert('この名前は登録済みです');data.employers.push({id:uid(),name,closingDay:'last',payDay:'last',payMonthOffset:1});if(save())toast('勤務先を追加しました')}
  else if(e.target.id==='schedule-form'){e.preventDefault();const emp=data.employers.find(x=>x.id===e.target.dataset.id);if(!emp)return;const name=document.getElementById('schedule-name').value.trim();if(!name||name.length>100)return alert('勤務先名を入力してください。');if(data.employers.some(x=>x.id!==emp.id&&x.name===name))return alert('同じ勤務先名は登録済みです。');emp.name=name;emp.closingDay=payDayNum(document.getElementById('schedule-close').value);emp.payDay=payDayNum(document.getElementById('schedule-day').value);emp.payMonthOffset=Number(document.getElementById('schedule-offset').value);if(save()){closeModal();toast('給与スケジュールを更新しました')}}
  else if(e.target.id==='worktype-form'){e.preventDefault();const name=document.getElementById('new-worktype').value.trim();if(!name)return;if(data.workTypes.some(x=>x.name===name))return alert('この名前は登録済みです');data.workTypes.push({id:uid(),name});if(save())toast('仕事の種類を追加しました')}
