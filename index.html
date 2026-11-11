@@ -290,7 +290,7 @@ function normalize(v){
  const taxProfiles={};
  if(v.taxProfiles&&typeof v.taxProfiles==='object'&&!Array.isArray(v.taxProfiles))for(const [y,t] of Object.entries(v.taxProfiles)){
   if(!/^20\d{2}$/.test(y)||!t||typeof t!=='object')continue;
-  taxProfiles[y]={social:num(t.social),pension:num(t.pension),medical:num(t.medical),futureIncome:num(t.futureIncome),salaryOverride:t.salaryOverride==null?null:num(t.salaryOverride),withheldOverride:t.withheldOverride==null?null:num(t.withheldOverride)};
+  taxProfiles[y]={social:num(t.social),pension:num(t.pension),medical:num(t.medical),futureIncome:num(t.futureIncome),salaryOverride:t.salaryOverride==null?null:num(t.salaryOverride),withheldOverride:t.withheldOverride==null?null:num(t.withheldOverride),hasUnder23Dependent:t.hasUnder23Dependent!==false};
  }
  const expenses=(Array.isArray(v.expenses)?v.expenses:[]).filter(x=>x&&validDate(x.date)&&Number.isSafeInteger(Number(x.amount))&&Number(x.amount)>0&&Number(x.amount)<=1000000000).map(x=>({id:String(x.id||uid()),date:x.date,amount:num(x.amount),memo:String(x.memo||'').slice(0,300)}));
  return {version:6,employers,workTypes,shifts,settlements,templates,taxProfiles,expenses,updatedAt:typeof v.updatedAt==='string'?v.updatedAt:null};
@@ -458,21 +458,23 @@ function settings(){return `<div class="topbar"><div><div class="eyebrow">DOCTOR
 <section class="card"><h2>バックアップ・書き出し</h2><p class="detail-note">データはiPhone内に保存されます。</p><div class="foot-action backup-actions"><button class="button primary" data-action="export-json">バックアップを保存</button><button class="button" data-action="import-json">バックアップを読み込む</button></div><input class="hidden" type="file" id="import-file" accept=".json,application/json" aria-label="バックアップファイル"><div class="divider"></div><div class="foot-action"><button class="button" data-action="export-csv">CSVを書き出す</button></div><div class="info-box warning" style="margin-top:15px">更新前にはバックアップを保存してください。別端末への読み込みでは、その端末の既存データが置き換えられます。</div><div class="divider"></div><button class="button danger sm" data-action="delete-all">すべての記録を削除</button></section>
 </div>`}
 const TAX_FIELDS=['social','pension','medical','futureIncome'];
-function getTaxProfile(y){const p=data.taxProfiles[String(y)]||{};return {social:num(p.social),pension:num(p.pension),medical:num(p.medical),futureIncome:num(p.futureIncome),salaryOverride:p.salaryOverride==null?null:num(p.salaryOverride),withheldOverride:p.withheldOverride==null?null:num(p.withheldOverride)}}
+function getTaxProfile(y){const p=data.taxProfiles[String(y)]||{};return {social:num(p.social),pension:num(p.pension),medical:num(p.medical),futureIncome:num(p.futureIncome),salaryOverride:p.salaryOverride==null?null:num(p.salaryOverride),hasUnder23Dependent:p.hasUnder23Dependent!==false}}
 function salaryDeduction(v){if(v<=0)return 0;if(v<=2200000)return Math.min(v,740000);if(v<=3600000)return Math.min(v,v*.30+80000);if(v<=6600000)return v*.20+440000;if(v<=8500000)return v*.10+1100000;return 1950000}
+// 給与年収850万円超かつ23歳未満の扶養親族がいる場合。夫婦双方の適用可。
+function dependentIncomeAdjustment(salary,hasDependent){return hasDependent&&salary>8500000?Math.ceil((Math.min(salary,10000000)-8500000)*.1):0}
 function incomeBasicDeduction(income){if(income<=4890000)return 1040000;if(income<=6550000)return 670000;if(income<=23500000)return 620000;if(income<=24000000)return 480000;if(income<=24500000)return 320000;if(income<=25000000)return 160000;return 0}
 function residentBasicDeduction(income){if(income<=24000000)return 430000;if(income<=24500000)return 290000;if(income<=25000000)return 150000;return 0}
 function incomeBracket(v){if(v<1950000)return [.05,0];if(v<3300000)return [.10,97500];if(v<6950000)return [.20,427500];if(v<9000000)return [.23,636000];if(v<18000000)return [.33,1536000];if(v<40000000)return [.40,2796000];return [.45,4796000]}
 function incomeTaxAt(taxable){const amount=Math.floor(Math.max(0,taxable)/1000)*1000;if(!amount)return 0;const [rate,deduct]=incomeBracket(amount);return Math.max(0,Math.floor((amount*rate-deduct)*1.021))}
 function taxProjection(year){
  const p=getTaxProfile(year),yearShifts=data.shifts.filter(x=>projectedYearForShift(x)===Number(year));
- const salaryFromShifts=yearShifts.reduce((sum,x)=>sum+x.base,0);
- const autoSalaryPast=yearShifts.filter(x=>x.date<=TODAY).reduce((sum,x)=>sum+x.base,0);
+ let salaryFromShifts=0,autoSalaryPast=0;
+ for(const shift of yearShifts){salaryFromShifts+=shift.base;if(shift.date<=TODAY)autoSalaryPast+=shift.base}
  const autoSalaryFuture=salaryFromShifts-autoSalaryPast;
  const salaryBase=p.salaryOverride===null?salaryFromShifts:p.salaryOverride;
  const salary=salaryBase+p.futureIncome,deductions=p.social+p.pension+p.medical;
- function taxParts(annual){const salaryIncome=Math.max(0,annual-salaryDeduction(annual)),basic=incomeBasicDeduction(salaryIncome),residentBasic=residentBasicDeduction(salaryIncome);return{salaryIncome,basic,taxableIncome:Math.max(0,salaryIncome-basic-deductions),residentTaxable:Math.max(0,salaryIncome-residentBasic-deductions)}}
- const {salaryIncome,basic,taxableIncome,residentTaxable}=taxParts(salary);
+ function taxParts(annual){const incomeAdjustment=dependentIncomeAdjustment(annual,p.hasUnder23Dependent),salaryIncome=Math.max(0,annual-salaryDeduction(annual)-incomeAdjustment),basic=incomeBasicDeduction(salaryIncome),residentBasic=residentBasicDeduction(salaryIncome);return{incomeAdjustment,salaryIncome,basic,taxableIncome:Math.max(0,salaryIncome-basic-deductions),residentTaxable:Math.max(0,salaryIncome-residentBasic-deductions)}}
+ const {incomeAdjustment,salaryIncome,basic,taxableIncome,residentTaxable}=taxParts(salary);
  const residentAdjusted=Math.floor(residentTaxable/1000)*1000;
  const residentAdjustment=residentAdjusted<=2000000?Math.min(2500,residentAdjusted*.05):2500;
  const residentBefore=Math.max(0,Math.floor(residentAdjusted*.10-residentAdjustment));
@@ -487,7 +489,7 @@ function taxProjection(year){
  const hasWithholding=matched.payments.length>0;
  const estimatedIncomeTax=incomeTaxAt(taxParts(matchedSalary).taxableIncome);
  const difference=hasWithholding&&matchedSalary>0?annualWithholding-estimatedIncomeTax:null;
- return {p,salary,salaryBase,salaryFromShifts,autoSalaryPast,autoSalaryFuture,salaryIncome,basic,deductions,taxableIncome,residentTaxable,residentBefore,residentAdjustment,rate,cap,annualWithholding,totalNet,hasWithholding,estimatedIncomeTax,difference,records:matched.payments.length,matchedShifts:matched.wages.length,matchedSalary,matchedGross,excluded:matched.excluded,excludedPayments:matched.excludedPayments,shifts:yearShifts.length};
+ return {p,salary,salaryBase,salaryFromShifts,autoSalaryPast,autoSalaryFuture,incomeAdjustment,salaryIncome,basic,deductions,taxableIncome,residentTaxable,residentBefore,residentAdjustment,rate,cap,annualWithholding,totalNet,hasWithholding,estimatedIncomeTax,difference,records:matched.payments.length,matchedShifts:matched.wages.length,matchedSalary,matchedGross,excluded:matched.excluded,excludedPayments:matched.excludedPayments,shifts:yearShifts.length};
 }
 function taxNumberField(key,label,value,description){return `<div class="field"><label for="tax-${key}">${label}</label><input class="control" id="tax-${key}" name="${key}" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="${value??''}" placeholder="0">${description?`<span class="help">${description}</span>`:''}</div>`}
 function tax(){
@@ -505,6 +507,7 @@ function tax(){
  ${taxNumberField('pension','確定拠出年金の本人掛金（年間）',p.pension,'控除対象となるiDeCo・企業型DCの本人拠出分。')}
  ${taxNumberField('medical','医療費控除額（年間）',p.medical,'医療費の支払総額ではなく、控除対象になる金額。')}
  </div>
+ <div class="info-box" style="margin-top:16px"><label class="check-line" for="tax-under23"><input id="tax-under23" type="checkbox" ${p.hasUnder23Dependent?'checked':''}><strong style="margin:0">23歳未満の子どもがいる</strong></label><div style="margin-top:5px">配偶者側の扶養でも対象。年収850万円超の場合に控除を自動適用します。</div></div>
  <details class="advanced"><summary>年間額の補正（源泉徴収票と異なる場合のみ）</summary><p class="detail-note">年間給与収入が異なる場合のみ補正できます。</p><div class="form-grid">${taxNumberField('salaryOverride','登録済み給与の代わりに使う年間収入（空欄なら自動）',p.salaryOverride,'この数値に「今後の未登録収入見込み」が加算されます。')}</div></details>
  <div class="modal-bottom"><button class="button primary" type="submit">保存して再計算</button></div></form>
  <div class="hero" style="margin-top:18px"><div><h2>${year}年のふるさと納税</h2></div><div><div class="hero-label">寄附上限額（推定）</div><div class="hero-number">${r.salary>0?money(r.cap):'—'}</div></div></div>
@@ -515,7 +518,7 @@ function tax(){
  <div class="rowline"><span>対応する勤務がある手取り</span><strong>${r.records?money(r.totalNet):'—'}</strong></div>
  ${excludedPaymentList(r.excludedPayments)}
  </section>
- <div class="section-header"><h2>計算の内訳</h2></div><section class="card"><div class="table-scroll"><table><tbody><tr><td>登録済みの給与（支払予定年ベース）</td><td class="num">${money(r.salaryFromShifts)}</td></tr><tr><td>うち登録済みの未来日付</td><td class="num">${money(r.autoSalaryFuture)}</td></tr>${p.salaryOverride!==null?`<tr><td>補正後のベース給与収入</td><td class="num">${money(r.salaryBase)}</td></tr>`:''}<tr><td>今後の未登録予定収入</td><td class="num">${money(p.futureIncome)}</td></tr><tr><td><strong>ふるさと納税に使用した予測年収</strong></td><td class="num"><strong>${money(r.salary)}</strong></td></tr><tr><td>給与所得控除後の所得</td><td class="num">${money(r.salaryIncome)}</td></tr><tr><td>所得税の基礎控除（自動）</td><td class="num">${money(r.basic)}</td></tr><tr><td>社会保険・DC・医療費の控除合計</td><td class="num">${money(r.deductions)}</td></tr><tr><td>所得税の課税所得（予測）</td><td class="num">${money(r.taxableIncome)}</td></tr><tr><td>住民税の所得割（概算）</td><td class="num">${money(r.residentBefore)}</td></tr><tr><td>ふるさと納税特例分に用いる税率</td><td class="num">${(r.rate*100).toFixed(0)}%</td></tr></tbody></table></div></section>
+ <div class="section-header"><h2>計算の内訳</h2></div><section class="card"><div class="table-scroll"><table><tbody><tr><td>登録済みの給与（支払予定年ベース）</td><td class="num">${money(r.salaryFromShifts)}</td></tr><tr><td>うち登録済みの未来日付</td><td class="num">${money(r.autoSalaryFuture)}</td></tr>${p.salaryOverride!==null?`<tr><td>補正後のベース給与収入</td><td class="num">${money(r.salaryBase)}</td></tr>`:''}<tr><td>今後の未登録予定収入</td><td class="num">${money(p.futureIncome)}</td></tr><tr><td><strong>ふるさと納税に使用した予測年収</strong></td><td class="num"><strong>${money(r.salary)}</strong></td></tr><tr><td>所得金額調整控除（23歳未満・自動）</td><td class="num">${money(r.incomeAdjustment)}</td></tr><tr><td>給与所得（調整控除後）</td><td class="num">${money(r.salaryIncome)}</td></tr><tr><td>所得税の基礎控除（自動）</td><td class="num">${money(r.basic)}</td></tr><tr><td>社会保険・DC・医療費の控除合計</td><td class="num">${money(r.deductions)}</td></tr><tr><td>所得税の課税所得（予測）</td><td class="num">${money(r.taxableIncome)}</td></tr><tr><td>住民税の所得割（概算）</td><td class="num">${money(r.residentBefore)}</td></tr><tr><td>ふるさと納税特例分に用いる税率</td><td class="num">${(r.rate*100).toFixed(0)}%</td></tr></tbody></table></div></section>
  `:`<div class="info-box warning" style="margin-top:14px"><strong>この年は税シミュレーション対象外です</strong>2026年・2027年の税制で試算します。</div>`}`;
 }
 function render(){document.getElementById('side-nav').innerHTML=nav();document.getElementById('mobile-nav').innerHTML=mobileNav();document.getElementById('app').innerHTML=({home,calendar,analytics,tax,settings}[state.tab]||home)()}
@@ -654,7 +657,7 @@ document.addEventListener('submit',e=>{
  else if(e.target.id==='employer-form'){e.preventDefault();const name=document.getElementById('new-employer').value.trim();if(!name)return;if(data.employers.some(x=>x.name===name))return alert('この名前は登録済みです');data.employers.push({id:uid(),name,closingDay:'last',payDay:'last',payMonthOffset:1});if(save())toast('勤務先を追加しました')}
  else if(e.target.id==='schedule-form'){e.preventDefault();const emp=data.employers.find(x=>x.id===e.target.dataset.id);if(!emp)return;const name=document.getElementById('schedule-name').value.trim();if(!name||name.length>100)return alert('勤務先名を入力してください。');if(data.employers.some(x=>x.id!==emp.id&&x.name===name))return alert('同じ勤務先名は登録済みです。');emp.name=name;emp.closingDay=payDayNum(document.getElementById('schedule-close').value);emp.payDay=payDayNum(document.getElementById('schedule-day').value);emp.payMonthOffset=Number(document.getElementById('schedule-offset').value);if(save()){closeModal();toast('給与スケジュールを更新しました')}}
  else if(e.target.id==='worktype-form'){e.preventDefault();const name=document.getElementById('new-worktype').value.trim();if(!name)return;if(data.workTypes.some(x=>x.name===name))return alert('この名前は登録済みです');data.workTypes.push({id:uid(),name});if(save())toast('仕事の種類を追加しました')}
- else if(e.target.id==='tax-form'){e.preventDefault();const p={};for(const k of TAX_FIELDS){const raw=document.getElementById('tax-'+k).value.trim(),n=raw===''?0:Number(raw);if(!Number.isSafeInteger(n)||n<0||n>1e9){alert('金額を確認してください：'+k);return}p[k]=n}for(const k of ['salaryOverride']){const raw=document.getElementById('tax-'+k).value.trim(),n=raw===''?null:Number(raw);if(n!==null&&(!Number.isSafeInteger(n)||n<0||n>1e9)){alert('年間補正額を確認してください：'+k);return}p[k]=n}data.taxProfiles[String(state.year)]=p;if(save())toast('年収見込みと控除を保存しました')}
+ else if(e.target.id==='tax-form'){e.preventDefault();const p={};for(const k of TAX_FIELDS){const raw=document.getElementById('tax-'+k).value.trim(),n=raw===''?0:Number(raw);if(!Number.isSafeInteger(n)||n<0||n>1e9){alert('金額を確認してください：'+k);return}p[k]=n}for(const k of ['salaryOverride']){const raw=document.getElementById('tax-'+k).value.trim(),n=raw===''?null:Number(raw);if(n!==null&&(!Number.isSafeInteger(n)||n<0||n>1e9)){alert('年間補正額を確認してください：'+k);return}p[k]=n}p.hasUnder23Dependent=document.getElementById('tax-under23').checked;data.taxProfiles[String(state.year)]=p;if(save())toast('年収見込みと控除を保存しました')}
 });
 
 document.addEventListener('change',e=>{if(e.target.id==='month-picker'){if(validMonth(e.target.value)){state.month=e.target.value;render()}}else if(e.target.id==='shift-employer'){const n=document.getElementById('new-employer-wrap');if(n)n.classList.toggle('hidden',e.target.value!=='__new__')}else if(e.target.id==='shift-template'&&e.target.value){const t=data.templates.find(x=>x.id===e.target.value);const chosen=document.getElementById('shift-date')?.value;if(t)shiftModal(null,chosen,t)}else if(e.target.id==='shift-worktype'){const n=document.getElementById('new-worktype-wrap');if(n)n.classList.toggle('hidden',e.target.value!=='__new__')}else if(e.target.id==='pay-employer'){updatePeriodOptions()}else if(e.target.id==='pay-period'){updatePaymentTarget()}else if(e.target.id==='import-file'){importJSON(e.target.files[0]);e.target.value=''}});
