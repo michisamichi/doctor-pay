@@ -1,688 +1,81 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#10263e">
-<meta name="description" content="医師の単発勤務に特化した、無料・端末内保存の給与管理アプリ">
-<title>ドクターペイ｜単発勤務の給与管理</title>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
-<style>
-:root {color-scheme:light; --navy:#10263e; --navy2:#1d3954; --ink:#192d42; --muted:#738295; --line:#e5ebf0; --page:#f6f8fb; --card:#fff; --teal:#007e85; --teal-light:#e9f6f5; --amber:#c77717; --amber-bg:#fff4df; --rose:#bb4265; --shadow:0 7px 26px rgba(26,53,78,.045);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;}
-*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink);font-size:14px;line-height:1.6}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:var(--teal)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #74ced0;outline-offset:2px}h1,h2,h3,p{margin:0}h1{font-size:clamp(22px,2.5vw,31px);letter-spacing:-.035em;line-height:1.35}h2{font-size:17px;line-height:1.4}h3{font-size:14px}small,.muted{color:var(--muted)}.shell{min-height:100vh}.sidebar{width:246px;background:var(--navy);color:white;position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column;padding:29px 16px;z-index:10}.brand{display:flex;gap:12px;align-items:center;padding:4px 10px 35px}.brand-mark{display:grid;place-items:center;background:#d3f4e9;color:#066c70;width:42px;height:42px;border-radius:13px;font-size:25px;font-weight:800}.brand strong{font-size:18px;letter-spacing:.02em}.brand span{display:block;color:#96b2c4;font-size:11px;letter-spacing:.05em;margin-top:-2px}.side-link{display:flex;align-items:center;gap:13px;width:100%;border:0;background:transparent;color:#a8bdcd;padding:13px 16px;border-radius:11px;text-align:left;margin-bottom:5px;font-weight:650}.side-link:hover,.side-link.active{background:#2b4b61;color:white}.side-link svg{flex:none}.sidebar-bottom{margin-top:auto;padding:16px 12px 4px;color:#86a4b8;font-size:11px}.side-pill{display:inline-block;border:1px solid #49667b;border-radius:100px;padding:4px 9px;margin-bottom:10px}.main{margin-left:246px;max-width:1650px;padding:37px clamp(20px,3vw,48px) 70px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:27px}.eyebrow{font-size:12px;color:var(--teal);letter-spacing:.11em;font-weight:750;margin-bottom:5px}.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.button{display:inline-flex;justify-content:center;align-items:center;gap:7px;background:white;color:var(--ink);border:1px solid #dce4eb;padding:10px 14px;border-radius:10px;font-weight:700;white-space:nowrap;min-height:42px;box-shadow:0 1px 0 rgba(0,0,0,.01)}.button:hover{background:#f8fafb}.button.primary{background:var(--teal);color:white;border-color:var(--teal)}.button.primary:hover{background:#00686e}.button.ghost{background:transparent;border-color:transparent;box-shadow:none}.button.danger{color:#b53f55}.button.sm{padding:6px 10px;min-height:33px;font-size:12px}.button.icon{min-width:39px;padding:6px}.button:disabled{opacity:.5;cursor:default}.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);padding:21px 23px}.card.tight{padding:0}.card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px;flex-wrap:wrap}.section-header{display:flex;justify-content:space-between;align-items:center;margin:28px 0 14px;gap:10px;flex-wrap:wrap}.section-header h2{font-size:19px}.pill{border-radius:100px;padding:4px 9px;background:var(--teal-light);color:#00737a;font-size:11px;font-weight:750}.pill.gray{background:#eff2f6;color:#647487}.pill.amber{background:var(--amber-bg);color:var(--amber)}.hero{border-radius:19px;background:linear-gradient(112deg,#143f58 0%,#0f6871 100%);color:white;padding:27px 29px;margin-bottom:19px;display:flex;justify-content:space-between;align-items:center;gap:20px}.hero h2{font-size:19px;margin-bottom:8px}.hero p{color:#c6e0e6;font-size:12px;line-height:1.7}.hero-number{font-size:clamp(24px,3vw,36px);font-weight:800;letter-spacing:-.04em;white-space:nowrap}.hero-label{font-size:11px;color:#c6e0e6;text-align:right}.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.kpi{min-width:0}.kpi .title{color:var(--muted);font-size:12px;font-weight:650;display:flex;align-items:center;gap:8px}.kpi .value{font-size:clamp(20px,2vw,30px);font-weight:800;letter-spacing:-.05em;white-space:nowrap;margin:14px 0 5px;font-variant-numeric:tabular-nums}.kpi .detail{font-size:11px;color:#94a1ae}.dot{display:inline-block;width:8px;height:8px;border-radius:3px;background:var(--teal)}.dot.blue{background:#356fba}.dot.amber{background:#dba73d}.dot.pink{background:#bd6d86}.month-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.month-picker-wrap{display:inline-flex;position:relative;min-height:42px;align-items:center;border:1px solid #dce4eb;border-radius:9px;background:white;overflow:hidden}.month-display{display:flex;align-items:center;justify-content:center;padding:9px 15px;min-width:125px;font-size:13px;font-weight:750;color:var(--ink);white-space:nowrap;pointer-events:none}.month-picker{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}.rowline{display:flex;align-items:center;gap:11px;justify-content:space-between;border-bottom:1px solid var(--line);padding:13px 0}.rowline:last-child{border-bottom:0}.rowline .lead{display:flex;gap:10px;align-items:center;min-width:0}.date-badge{border-radius:10px;background:#f1f5f7;min-width:53px;text-align:center;padding:7px 9px;font-weight:750;font-size:12px}.rowline .names{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rowline .sub{font-size:11px;color:var(--muted)}.rowline .money{text-align:right;font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}.rowline .actions{display:flex;gap:3px;justify-content:flex-end;margin-top:3px}.empty{padding:32px 16px;text-align:center;color:var(--muted);background:#fafcfd;border:1px dashed #dce5ea;border-radius:13px}.empty .big{font-size:32px;margin-bottom:6px}.empty b{display:block;color:var(--ink);margin-bottom:4px}.empty .button{margin-top:14px}.calendar-wrap{overflow:hidden}.weekday-grid,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.weekday{text-align:center;padding:8px 0 14px;color:var(--muted);font-size:12px;font-weight:750}.weekday:first-child{color:var(--rose)}.weekday:last-child{color:#3d73b5}.day{min-width:0;min-height:126px;border:0;border-top:1px solid var(--line);border-right:1px solid var(--line);background:white;text-align:left;padding:9px;display:flex;flex-direction:column;gap:3px;transition:background .15s}.day:nth-child(7n){border-right:0}.day.other{background:#fbfcfd;color:#b9c2cc}.day:hover{background:#eff9f7}.day.today .day-num{background:var(--teal);color:white}.day-num{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-weight:750;font-size:12px}.day-total{color:#006a72;font-size:12px;font-weight:800;margin-top:4px;letter-spacing:-.02em}.day-company{font-size:10px;border-radius:4px;padding:2px 4px;background:#f0f3f6;color:#51687d;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:100%}.day-add{margin-top:auto;color:#a0b4bc;font-size:12px}.info-box{background:#edf7f7;border:1px solid #d7eeed;border-radius:12px;padding:13px 16px;color:#315d64;font-size:12px}.info-box.warning{background:var(--amber-bg);border-color:#fae5be;color:#815c24}.info-box strong{display:block;margin-bottom:3px}.split-summaries{display:grid;grid-template-columns:1fr 1fr;gap:12px}.small-stat{border:1px solid var(--line);background:#fbfcfe;border-radius:12px;padding:14px}.small-stat span{color:var(--muted);font-size:11px}.small-stat strong{display:block;font-size:23px;line-height:1.5}.table-scroll{overflow:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap}th{text-align:left;font-weight:700;color:#718093;border-bottom:1px solid var(--line);background:#fafcfd;padding:11px 12px}td{border-bottom:1px solid #eff2f4;padding:12px}tr:last-child td{border-bottom:0}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}td .button{min-height:30px}.year-bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));align-items:end;gap:9px;height:220px;padding:16px 0 0;border-bottom:1px solid var(--line)}.bar-col{min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px}.bar-inner{width:100%;height:100%;display:flex;justify-content:center;align-items:flex-end;gap:3px;position:relative}.bar{width:min(30px,45%);border-radius:5px 5px 0 0;background:#9ed4d0;min-height:0;transition:height .2s}.bar.net{background:#226b86}.bar-label{height:20px;font-size:11px;color:var(--muted);white-space:nowrap}.legend{display:flex;gap:14px;align-items:center;font-size:11px;color:var(--muted);flex-wrap:wrap}.legend b{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:5px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field.full{grid-column:1/-1}.field label{font-weight:720;font-size:12px}.field .help{font-size:11px;color:var(--muted)}.control{width:100%;min-width:0;min-height:43px;border-radius:10px;border:1px solid #d7e0e7;background:white;color:var(--ink);padding:10px 12px;outline-offset:2px}.control:focus{border-color:#49afb0}.field textarea{min-height:74px;resize:vertical}.preview{background:#f0f9f8;border:1px solid #d8eeec;border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}.preview span{color:#54747b;font-size:12px}.preview strong{font-size:22px;color:#006d74}.modal-wrap{position:fixed;inset:0;z-index:30;background:rgba(11,29,44,.48);padding:16px;display:flex;align-items:center;justify-content:center;overflow-y:auto}.modal{width:min(100%,570px);max-height:min(92vh,850px);overflow-y:auto;background:white;border-radius:20px;box-shadow:0 30px 90px #11223455;padding:23px}.modal-top{display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:20px}.modal-top h2{font-size:21px}.modal-bottom{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}.hidden{display:none!important}.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#153b46;color:white;padding:12px 20px;border-radius:12px;box-shadow:0 15px 30px #193d4b33;z-index:99;max-width:90vw;text-align:center}.mobile-top{display:none}.mobile-nav{display:none}.text-button{padding:0;background:none;border:0;color:var(--teal);font-weight:750}.setting-block{margin-bottom:22px}.setting-block p{color:var(--muted);font-size:12px;margin:6px 0 15px}.divider{border-top:1px solid var(--line);margin:22px 0}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.setting-row:last-child{border:0}.setting-row .actions{display:flex;gap:7px;flex-wrap:wrap}.setting-row b{word-break:break-word}.setting-row small{display:block}.settings-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}.detail-note{font-size:12px;color:var(--muted);margin:10px 0}.footer-note{color:#90a1b2;font-size:11px;margin:24px 0 0;text-align:center}.tag{font-size:11px;background:#f1f5f7;border-radius:100px;padding:3px 9px;color:#577383;display:inline-block}.month-sub{color:var(--muted);font-size:12px;margin-top:6px}.selected-note{color:#235e68;background:#edf8f6;border-radius:10px;padding:9px 12px;font-size:12px}.foot-action{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.calendar-legend{color:var(--muted);font-size:11px}.fab{display:none}
-@media(max-width:1100px){.sidebar{width:208px}.main{margin-left:208px;padding:25px 20px 65px}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.day{min-height:110px;padding:7px}.settings-grid{grid-template-columns:1fr}}
-@media(max-width:740px){.sidebar{display:none}.mobile-top{display:flex;position:sticky;top:0;z-index:9;height:58px;background:#fff;border-bottom:1px solid var(--line);padding:0 16px;align-items:center;justify-content:space-between}.mobile-top .brand-small{display:flex;gap:8px;align-items:center;font-weight:800;font-size:16px;color:var(--navy)}.mobile-top .brand-small i{background:var(--teal-light);border-radius:9px;width:30px;height:30px;display:grid;place-items:center;font-style:normal;color:var(--teal);font-size:20px}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:11;background:#fff;border-top:1px solid var(--line);padding:7px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -5px 18px #15344910;justify-content:space-around}.mobile-nav button{display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;min-width:60px;border:0;background:transparent;color:#8293a2;font-size:10px;padding:5px 0}.mobile-nav button.active{color:var(--teal);font-weight:800}.main{margin-left:0;padding:21px 13px calc(90px + env(safe-area-inset-bottom))}.topbar{align-items:flex-start;flex-direction:column;gap:13px;margin-bottom:16px}.topbar .top-actions{width:100%;justify-content:space-between}.top-actions .button{flex:1}.kpi-grid{gap:10px}.card{padding:16px}.hero{padding:19px 18px;align-items:flex-start;flex-direction:column;gap:14px}.hero-number{font-size:30px}.hero-label{text-align:left}.section-grid{grid-template-columns:1fr}.section-header{margin:21px 0 12px}.year-bars{height:180px;gap:4px}.bar-col{gap:5px}.bar-label{font-size:10px}.day{min-height:81px;padding:4px 3px;gap:2px}.weekday{font-size:10px;padding-bottom:9px}.day-num{width:23px;height:23px;font-size:11px}.day-total{font-size:10px;margin-top:2px;letter-spacing:-.07em}.day-company{display:none}.day-add{font-size:10px;margin-top:0}.calendar-card{padding:10px 7px}.month-display{min-width:130px;padding-left:10px;padding-right:10px}.modal-wrap{padding:8px;align-items:flex-end}.modal{border-radius:19px 19px 9px 9px;max-height:94dvh;padding:21px 16px calc(21px + env(safe-area-inset-bottom))}.form-grid{gap:12px}.form-grid.two-mobile{grid-template-columns:1fr 1fr}.split-summaries{gap:8px}.small-stat{padding:11px}.small-stat strong{font-size:19px}.rowline .sub{font-size:10px}.footer-note{padding-bottom:10px}}
-@media(max-width:370px){.kpi .value{font-size:20px}.day-total{font-size:9px}.button{padding:9px 10px}.month-display{min-width:120px;font-size:12px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-
-/* v2: tax settings and 6-tab mobile navigation */
-@media(max-width:740px){.mobile-nav button{min-width:0;flex:1;font-size:9px;padding:5px 1px}.mobile-nav button svg{width:18px;height:18px}}
-@media(max-width:380px){.mobile-nav button{font-size:8px}}
-#tax-form .help{line-height:1.55}
-#tax-form h3{color:var(--ink)}
-#tax-form .modal-bottom{justify-content:flex-end}
-</style>
-
-<style id="v3-styles">
-.quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.check-line{display:flex;gap:10px;align-items:center;cursor:pointer}.check-line input{width:18px;height:18px}.template-card{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:9px}.template-buttons{display:flex;gap:6px;flex-wrap:wrap}.bulk-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0 10px}.bulk-week,.bulk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.bulk-week b{text-align:center;font-size:11px;color:var(--muted);padding:4px}.bulk-day{border:1px solid var(--line);background:#fff;border-radius:9px;min-height:43px;color:var(--ink);font-size:14px;font-weight:700}.bulk-day.selected{background:var(--teal);color:white;border-color:var(--teal)}.bulk-day:hover{border-color:var(--teal)}.advanced{border-top:1px solid var(--line);padding-top:14px;margin-top:18px}.advanced summary{cursor:pointer;font-weight:700;color:var(--teal);padding:6px 0}.advanced .form-grid{margin-top:12px}@media(max-width:650px){.quick-actions .button{flex:1}.bulk-day{min-height:40px}.template-card .template-buttons{width:100%}}
-</style>
-<style id="v3-1-tax-styles">.tax-earnings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0}.tax-earning{background:#f6f9fb;border:1px solid var(--line);border-radius:12px;padding:15px;min-width:0}.tax-earning.emphasis{background:#f0faf9;border-color:#cfe6e4}.tax-earning span,.tax-forecast-total span{display:block;font-size:12px;color:#53687b;font-weight:700}.tax-earning strong{font-size:clamp(17px,2vw,23px);display:block;margin:8px 0;font-variant-numeric:tabular-nums}.tax-earning small,.tax-forecast-total small{display:block;line-height:1.55;font-size:11px;color:#748596}.tax-number-input{margin:8px 0}.tax-forecast-total{border:1px solid #cfeae5;border-radius:12px;padding:15px;background:#e9f6f5;margin-bottom:10px}.tax-forecast-total strong{display:block;font-size:clamp(22px,3.3vw,30px);color:#036870;line-height:1.5}@media(max-width:650px){.tax-earnings-grid{grid-template-columns:1fr}.tax-earning{padding:12px}.tax-forecast-total{padding:12px}}</style><style id="v5-styles">.home-buttons{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}.home-buttons .button{flex:1;min-width:150px}.salary-hero{padding:23px 26px}.salary-hero h2{font-size:17px;margin-bottom:5px}.salary-hero .hero-number{font-size:clamp(28px,3.5vw,40px)}.refund-card h2{margin-bottom:16px}.refund-result{border-radius:14px;border:1px solid #c6e7e3;background:#eaf8f5;padding:19px;margin-bottom:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.refund-result span{font-size:13px;color:#315e65;font-weight:750}.refund-result strong{font-size:clamp(26px,4vw,40px);color:#046e75;white-space:nowrap;font-variant-numeric:tabular-nums}.refund-card .rowline strong{font-variant-numeric:tabular-nums}.mobile-nav button{flex:1;min-width:0}@media(max-width:740px){.home-buttons{flex-wrap:nowrap;gap:8px}.home-buttons .button{min-width:0;padding:10px 6px;font-size:12px}.salary-hero{padding:18px 20px}.refund-result{align-items:flex-start;flex-direction:column;gap:4px}.refund-result strong{font-size:32px}}</style>
-<style id="v5-2-styles">
-.refund-hero{margin:0 0 16px;min-height:124px}
-.refund-hero .hero-number{font-size:clamp(28px,4vw,40px);font-variant-numeric:tabular-nums}
-.excluded-payments{margin-top:18px;border:1px solid #f0d8a6;background:#fffaf0;border-radius:13px;padding:16px}
-.excluded-payments-heading{font-size:13px;color:#85571c;margin-bottom:10px}
-.excluded-payment{border-radius:11px;border:1px solid #f1dfbc;background:white;padding:12px 14px;margin-top:9px}
-.excluded-payment-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.excluded-payment-top strong{font-size:14px;color:var(--ink)}
-.excluded-payment-date{display:block;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.excluded-payment-amounts{display:flex;flex-wrap:wrap;gap:5px 15px;font-size:12px;color:#485f73;margin:9px 0}
-.excluded-payment-reason{font-size:12px;font-weight:700;color:#98601d}
-@media(max-width:740px){.refund-hero{min-height:0;flex-direction:column;align-items:flex-start;gap:2px;padding:20px}.refund-hero .hero-number{font-size:clamp(28px,8vw,38px)}.excluded-payments{padding:12px}}
-</style>
-<style id="v5-4-iphone-design">
-/* Common visual tokens; the behavior, form IDs and JS calculations are unchanged. */
-:root{--ink:#20364a;--muted:#6a7d8c;--line:#e5edf1;--page:#f6f8fa;--card:#fff;--teal:#087d7e;--teal-light:#eaf6f4;--shadow:0 3px 15px rgba(18,48,63,.035)}
-.card{border-radius:17px;box-shadow:var(--shadow)}
-.button{border-radius:11px;font-weight:700;transition:background .15s,border-color .15s;box-shadow:none}
-.button.primary{background:#087e80;border-color:#087e80}
-.button.primary:hover{background:#086e71}
-.control,.month-picker-wrap{border-radius:11px}
-.pill{letter-spacing:0;border-radius:9px}
-.hero{background:linear-gradient(118deg,#17475d 0%,#0d7475 100%);border-radius:18px;box-shadow:none}
-.kpi .title{font-weight:700}
-.kpi .value{font-variant-numeric:tabular-nums}
-.info-box{background:#f0f8f6;border-color:#d9ece8;color:#315d63}
-.rowline{gap:9px}
-.table-scroll{-webkit-overflow-scrolling:touch}
-@media(max-width:740px){
-  html,body{overflow-x:clip}
-  body{font-size:14px;line-height:1.52;-webkit-text-size-adjust:100%}
-  .mobile-top{height:calc(54px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 17px 0;border-bottom-color:#e9eef1;background:rgba(255,255,255,.98)}
-  .mobile-top .brand-small{font-size:16px;gap:9px;letter-spacing:-.01em}
-  .mobile-top .brand-small i{width:30px;height:30px;font-size:20px;border-radius:10px}
-  .main{padding:17px 14px calc(96px + env(safe-area-inset-bottom))}
-  .topbar{gap:11px;margin-bottom:15px}
-  .topbar .eyebrow{display:none}
-  .topbar h1{font-size:23px;font-weight:800;letter-spacing:-.035em}
-  .topbar .top-actions{width:100%;margin:0;justify-content:flex-start}
-  .top-actions .button{flex:0 0 auto}
-  .month-controls{display:flex;gap:8px;width:100%;align-items:center}
-  .month-controls .button.icon{min-width:44px;min-height:44px;font-size:22px;padding:6px 12px;background:#fff}
-  .month-controls .month-picker-wrap{flex:1;min-height:44px}
-  .month-display{font-size:14px;min-width:0;width:100%;padding:9px 8px}
-  .month-controls>strong{flex:1;text-align:center;font-size:16px!important}
-  .home-buttons{gap:9px;margin-bottom:14px}
-  .home-buttons .button{font-size:13px;min-height:48px;padding:10px 5px;line-height:1.4;white-space:normal}
-  .card{border-radius:16px;padding:17px 15px}
-  .card-heading{margin-bottom:12px;gap:8px}
-  .card-heading h2,.section-header h2{font-size:16px}
-  .section-header{margin:22px 0 10px}
-  .hero{border-radius:17px;padding:20px 19px;margin-bottom:13px;gap:5px}
-  .hero h2{font-size:15px;line-height:1.45;margin:0 0 6px}
-  .hero-number,.salary-hero .hero-number{font-size:clamp(29px,8vw,35px);line-height:1.26;letter-spacing:-.055em;white-space:normal;overflow-wrap:anywhere}
-  .salary-hero{padding:19px 19px}
-  .kpi-grid{gap:9px}
-  .kpi{padding:15px 13px;min-height:115px}
-  .kpi .title{font-size:11px;line-height:1.4;gap:6px;white-space:normal}
-  .kpi .value{font-size:clamp(19px,5.5vw,25px);line-height:1.3;margin:13px 0 5px;white-space:normal;overflow-wrap:anywhere}
-  .kpi .detail{font-size:11px;line-height:1.3;color:#8496a2}
-  .dot{flex:none;width:7px;height:7px}
-  .section-grid{gap:13px}
-  .rowline{gap:10px;padding:12px 0;align-items:flex-start}
-  .rowline .lead{flex:1;min-width:0;align-items:center}
-  .rowline .lead>div:nth-child(2){min-width:0}
-  .rowline .names{font-size:13px;max-width:100%;display:block;line-height:1.45}
-  .rowline .sub{font-size:11px;line-height:1.45;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
-  .rowline .money{font-size:14px}
-  .rowline .actions{margin-top:5px;gap:9px}
-  .rowline .text-button{font-size:12px}
-  .date-badge{min-width:48px;padding:6px 7px}
-  .empty{padding:23px 12px;border-radius:12px;background:#fbfcfd}
-  .empty .big{font-size:23px;margin-bottom:4px;color:#90a8b4}
-  .empty b{font-size:13px}
-  .empty .muted{font-size:12px}
-  .mobile-nav{padding:7px 8px calc(6px + env(safe-area-inset-bottom));gap:4px;border-top-color:#e4ecf0;box-shadow:0 -3px 19px rgba(21,52,73,.06)}
-  .mobile-nav button{flex:1;min-width:0;min-height:51px;border-radius:11px;padding:5px 2px;font-size:11px;font-weight:650;line-height:1.3;gap:4px;white-space:nowrap;color:#718494}
-  .mobile-nav button svg{width:20px;height:20px}
-  .mobile-nav button.active{background:#eaf6f4;color:#086e73}
-  .weekday{font-size:11px;padding:6px 0 9px}
-  .calendar-card{padding:12px 7px}
-  .calendar-card .card-heading{margin-bottom:8px}
-  .calendar-legend{font-size:10px}
-  .day{min-height:77px;padding:6px 3px;gap:2px}
-  .day-num{font-size:12px;width:24px;height:24px}
-  .day-total{font-size:11px;letter-spacing:-.04em;word-break:break-all}
-  .day-add{font-size:10px}
-  .year-bars{height:172px}
-  .bar-label{font-size:10px}
-  .table-scroll{margin-left:-2px;margin-right:-2px}
-  table{font-size:12px}
-  th,td{padding:10px 9px}
-  .legend{gap:12px;font-size:11px}
-  .month-sub{font-size:11px;line-height:1.45}
-  #tax-form .form-grid{grid-template-columns:1fr}
-  .tax-earnings-grid{gap:10px;margin:10px 0}
-  .tax-earning{padding:14px 13px}
-  .tax-earning span,.tax-forecast-total span{font-size:12px}
-  .tax-earning strong{font-size:22px;margin:7px 0 2px}
-  .tax-forecast-total{padding:15px 14px;border-radius:13px}
-  .tax-forecast-total strong{font-size:26px;overflow-wrap:anywhere}
-  .tax-forecast-total small{font-size:11px}
-  .refund-card h2{margin-bottom:13px}
-  .refund-card .rowline{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
-  .refund-card .rowline>strong{font-size:13px;white-space:nowrap;text-align:right}
-  .refund-hero{padding:18px;margin-bottom:13px}
-  .refund-hero h2{font-size:15px;margin:0}
-  .refund-hero .hero-number{font-size:clamp(29px,8vw,37px)}
-  .split-summaries{gap:9px}
-  .small-stat{padding:13px 11px;border-radius:13px}
-  .small-stat strong{font-size:clamp(17px,5.1vw,23px);overflow-wrap:anywhere}
-  .setting-row{gap:10px;padding:12px 0}
-  .setting-row>div:first-child{min-width:0;flex:1}
-  .setting-row .actions{gap:6px}
-  .setting-row .actions .button{min-height:42px}
-  .settings-grid{gap:13px}
-  .foot-action{gap:9px}
-  .foot-action .button{min-height:44px}
-  .backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .backup-actions .button{font-size:12px;padding:10px 6px;min-width:0;white-space:normal}
-  .modal-wrap{padding:6px 0 0}
-  .modal{width:100%;border-radius:20px 20px 0 0;max-height:92dvh;padding:20px 17px calc(15px + env(safe-area-inset-bottom))}
-  .modal-top{margin-bottom:15px;align-items:center}
-  .modal-top h2{font-size:20px}
-  .modal-top .eyebrow{display:none}
-  .modal-top>.button.icon{min-width:44px;min-height:44px}
-  .modal-bottom{gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
-  .modal-bottom .button{min-height:44px}
-  .form-grid{gap:12px}
-  .field label{font-size:13px}
-  .control{font-size:16px;min-height:46px}
-  textarea.control{min-height:85px}
-  .help{font-size:11px;line-height:1.45}
-  .info-box{font-size:12px;padding:12px 13px;border-radius:12px}
-  .excluded-payments{padding:13px;margin-top:15px}
-  .excluded-payment{padding:12px}
-}
-@media(max-width:360px){
- .main{padding-left:11px;padding-right:11px}
- .home-buttons .button{font-size:12px}
- .mobile-nav{gap:1px;padding-left:4px;padding-right:4px}
- .mobile-nav button{font-size:10px}
- .kpi .value{font-size:19px}
- .day{min-height:70px}
- .backup-actions{grid-template-columns:1fr}
-}
-</style>
-<style id="v5-5-styles">
-/* v5.5.2: 200,000-yen reference lines; intentionally no numeric y-axis labels. */
-.bar-chart-frame{padding-left:0}
-.year-bars{position:relative}
-.year-bars .bar-col{position:relative;z-index:1}
-.chart-guides{position:absolute;top:16px;bottom:27px;left:0;right:0;pointer-events:none;z-index:0}
-.chart-guide{position:absolute;left:0;right:0;border-top:1px solid rgba(85,107,121,.19)}
-
-/* Compact, non-sticky mobile page header; controls are on the same row as page title. */
-@media(max-width:740px){
- .mobile-top{display:none!important}
- .main{padding-top:calc(18px + env(safe-area-inset-top));}
- .topbar{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:7px;min-width:0;margin-bottom:15px}
- .topbar>.page-heading{min-width:0;flex:0 1 auto}
- .topbar h1{font-size:clamp(17px,5vw,22px);white-space:nowrap;line-height:1.35}
- .topbar .top-actions{width:auto;flex:0 0 auto;margin:0;justify-content:flex-end}
- .topbar .month-controls{width:auto;gap:3px;flex-wrap:nowrap}
- .topbar .month-controls .button.icon{min-width:32px;min-height:37px;font-size:20px;padding:3px 6px;border-radius:9px}
- .topbar .month-controls .month-picker-wrap{min-height:37px;flex:0 1 auto;width:104px;min-width:0}
- .topbar .month-display{font-size:12px;padding:7px 3px;width:100%;min-width:0}
- .topbar .month-controls>strong{flex:0 0 54px;font-size:14px!important;padding:0 1px!important}
- .topbar:has(.month-controls>strong) h1{font-size:clamp(15px,4.8vw,21px)}
- .day-total,.day-expense{display:block;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.055em;font-size:10px;line-height:1.2;overflow:hidden;text-overflow:clip;max-width:100%}
- .day{gap:3px;min-height:81px}
- .calendar-legend{font-size:10px;white-space:nowrap}
- .pie-layout{flex-direction:column;gap:16px}
- .pie-circle{width:182px;height:182px;flex:0 0 182px}
- .pie-legend{width:100%}
-}
-@media(max-width:370px){
- .topbar h1{font-size:16px}
- .topbar:has(.month-controls>strong) h1{font-size:14px}
- .topbar .month-controls .button.icon{min-width:29px;padding:3px 4px}
- .topbar .month-controls .month-picker-wrap{width:93px}
- .topbar .month-display{font-size:11px}
- .day-total,.day-expense{font-size:9px}
-}
-.income-money{color:#087e80!important}
-.expense-money{color:#c44c68!important}
-.day-expense{margin-top:2px}
-.calendar-legend b{font-weight:700}
-.day-expense-heading{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
-.expense-button{color:#a83d59;border-color:#edd0d7}
-.expense-summary{border-color:#f1dce2}
-.expense-sum-label{font-size:12px;color:var(--muted);font-weight:700}
-.expense-sum-number{font-size:clamp(25px,4vw,34px);font-weight:800;letter-spacing:-.04em;margin-top:4px;font-variant-numeric:tabular-nums}
-.expense-details{margin-top:14px;border-top:1px solid var(--line);padding-top:11px}
-.expense-details summary{cursor:pointer;color:var(--teal);font-weight:700;font-size:13px}
-.expense-details .rowline{gap:8px}
-.expense-details .rowline .names{white-space:normal;overflow-wrap:anywhere}
-.pie-toggle{color:#087e80;border-color:#c8e2df}
-.pie-layout{display:flex;gap:23px;align-items:center;justify-content:flex-start;margin-bottom:17px;padding:16px 3px;border-bottom:1px solid var(--line)}
-.pie-circle{flex:0 0 200px;width:200px;height:200px;border-radius:50%;display:grid;place-items:center}
-.pie-hole{display:flex;flex-direction:column;align-items:center;justify-content:center;width:58%;height:58%;border-radius:50%;background:white;text-align:center;box-shadow:0 1px 9px #0001}
-.pie-hole small{font-size:11px;color:var(--muted)}
-.pie-hole strong{font-size:18px;color:var(--ink)}
-.pie-legend{min-width:0;flex:1;display:grid;gap:9px}
-.pie-legend-item{display:grid;grid-template-columns:9px minmax(0,1fr) 46px auto;align-items:center;gap:6px;font-size:12px}
-.pie-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pie-dot{width:9px;height:9px;border-radius:50%}
-.pie-legend-item strong{font-size:11px;text-align:right}
-.pie-amount{font-size:11px;color:var(--muted);text-align:right;white-space:nowrap}
-.expense-heading-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.expense-summary .pie-layout{margin-top:12px}
-@media(max-width:740px){
- .expense-heading{align-items:flex-start}
- .expense-heading-actions{gap:6px}
- .expense-heading-actions .button{padding:6px 8px}
- .expense-summary .pie-layout{flex-direction:column;gap:12px;padding:14px 0 17px}
- .expense-summary .pie-circle{flex:0 0 182px;width:182px;height:182px}
- .expense-summary .pie-legend{width:100%}
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1222">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="SAHOVERSE">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="SAHOVERSE - 2人で遊べるオリジナルカードゲーム。">
+  <link rel="manifest" href="./manifest.webmanifest?v=80">
+  <link rel="apple-touch-icon" sizes="180x180" href="./sahoverse-icon-180.png?v=80">
+  <link rel="icon" href="./sahoverse-icon-192.png?v=80" type="image/png">
+  <link rel="stylesheet" href="./style.css?v=80">
+  <title>SAHOVERSE｜カードバトル</title>
 </head>
 <body>
-<div class="shell">
- <aside class="sidebar">
-  <div class="brand"><div class="brand-mark">＋</div><div><strong>ドクターペイ</strong><span>DOCTOR PAY</span></div></div>
-  <nav id="side-nav" aria-label="メインメニュー"></nav>
-  <div class="sidebar-bottom"><span class="side-pill">無料・個人用</span><div>給与データはこの端末のブラウザ内に保存します。</div></div>
- </aside>
-  <main class="main" id="app" aria-live="polite"></main>
- <nav class="mobile-nav" id="mobile-nav" aria-label="モバイルメニュー"></nav>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><img src="./sahoverse-icon-180.png?v=80" alt="" class="brand-logo"><span>SAHO<b>VERSE</b></span></div>
+    <span id="network" class="network">読み込み中</span>
+  </header>
+  <main id="view" aria-live="polite"></main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="fx-overlay" class="fx-overlay" aria-hidden="true"></div>
 </div>
-<div id="modal-root"></div><div id="toast-root" role="status" aria-live="polite"></div>
 <script>
-'use strict';
+// This script runs even when ES modules or Firebase configuration fail.
 (function(){
-const KEY='doctorpay_local_v1';
-const svg={home:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-8h6v8"/></svg>',calendar:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>',chart:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round"><path d="M4 21V3M4 21h17M9 17v-5M14 17V7M19 17v-9"/></svg>',tax:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',settings:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M10 2h4l.7 2.4 2 1.2 2.4-.6 2 3.5-1.7 1.8v2.4l1.7 1.8-2 3.5-2.4-.6-2 1.2L14 21h-4l-.7-2.4-2-1.2-2.4.6-2-3.5 1.7-1.8v-2.4L3 8.5 5 5l2.4.6 2-1.2z"/></svg>'};
-const pages=[['home','給与登録'],['calendar','カレンダー'],['analytics','集計・分析'],['tax','税金・ふるさと納税'],['settings','設定']];
-const TODAY=localISO(new Date());
-let state={tab:'home',month:TODAY.slice(0,7),year:Number(TODAY.slice(0,4)),day:null,employerScope:'year',pies:{company:false,type:false,expense:false}};
-let data=load();
-function localISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function monthOffset(s,n){const [y,m]=s.split('-').map(Number); const d=new Date(y,m-1+n,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
-function monthTitle(s){const [y,m]=s.split('-').map(Number);return y+'年'+m+'月'}
-const JA_NUMBER=new Intl.NumberFormat('ja-JP');
-function money(n){return JA_NUMBER.format(Math.round(Number(n)||0))+'円'}
-function shortMoney(n){n=Number(n)||0;return n>=100000 ? (n/10000).toLocaleString('ja-JP',{maximumFractionDigits:1})+'万' : JA_NUMBER.format(n)}
-function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function validMonth(s){return typeof s==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(s)}
-function validDate(s){if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T12:00:00');return !isNaN(d)&&localISO(d)===s}
-function uid(){return 'id-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10)}
-function num(v){let n=Number(v);return Number.isFinite(n)?Math.max(0,Math.round(n)):0}
-function normalize(v){
- if(!v||![1,2,3,4,5,6].includes(v.version)||!Array.isArray(v.shifts)||!Array.isArray(v.employers)||!Array.isArray(v.settlements))throw Error('対応していないバックアップ形式です');
- const employers=v.employers.filter(x=>x&&x.id&&x.name).map(x=>({id:String(x.id),name:String(x.name).slice(0,100),closingDay:payDayNum(x.closingDay,'last'),payDay:payDayNum(x.payDay,'last'),payMonthOffset:[0,1,2].includes(Number(x.payMonthOffset))?Number(x.payMonthOffset):1}));
- const ids=new Set(employers.map(x=>x.id));
- const defaults=[{id:'type-night',name:'当直'},{id:'type-checkup',name:'健診'},{id:'type-influenza',name:'インフル問診'}];
- const workTypes=(Array.isArray(v.workTypes)?v.workTypes:defaults).filter(x=>x&&x.id&&x.name).map(x=>({id:String(x.id),name:String(x.name).slice(0,100)}));
- const typeIds=new Set(workTypes.map(x=>x.id));
- const shifts=v.shifts.filter(x=>x&&validDate(x.date)&&ids.has(String(x.employerId))).map(x=>({id:String(x.id||uid()),date:x.date,employerId:String(x.employerId),workTypeId:typeIds.has(String(x.workTypeId))?String(x.workTypeId):'',base:num(x.base),travel:num(x.travel),memo:String(x.memo||'').slice(0,1000)}));
- const shiftIds=new Set(shifts.map(x=>x.id));
- const settlements=v.settlements.filter(x=>x&&validMonth(x.workMonth)&&validDate(x.depositDate)&&(x.employerId==='all'||ids.has(String(x.employerId)))).map(x=>{
-  let linked;
-  if(Array.isArray(x.shiftIds))linked=x.shiftIds.map(String).filter(id=>shiftIds.has(id));
-  else linked=x.employerId==='all'?[]:shifts.filter(s=>s.employerId===x.employerId&&s.date.slice(0,7)===x.workMonth).map(s=>s.id);
-  // 旧バージョンの税額と交通費チェック欄は使わない。すべて交通費込み額面と入金額との差額で再計算する。
-  return{id:String(x.id||uid()),workMonth:x.workMonth,periodEnd:validDate(x.periodEnd)?x.periodEnd:lastDayOfMonth(x.workMonth),depositDate:x.depositDate,employerId:String(x.employerId),shiftIds:[...new Set(linked)],net:num(x.net),memo:String(x.memo||'').slice(0,1000)};
- });
- const templates=(Array.isArray(v.templates)?v.templates:[]).filter(x=>x&&x.id&&ids.has(String(x.employerId))).map(x=>({id:String(x.id),name:String(x.name||'よく使う勤務').slice(0,100),employerId:String(x.employerId),workTypeId:typeIds.has(String(x.workTypeId))?String(x.workTypeId):'',base:num(x.base),travel:num(x.travel),memo:String(x.memo||'').slice(0,1000)}));
- const taxProfiles={};
- if(v.taxProfiles&&typeof v.taxProfiles==='object'&&!Array.isArray(v.taxProfiles))for(const [y,t] of Object.entries(v.taxProfiles)){
-  if(!/^20\d{2}$/.test(y)||!t||typeof t!=='object')continue;
-  taxProfiles[y]={social:num(t.social),pension:num(t.pension),medical:num(t.medical),futureIncome:num(t.futureIncome),salaryOverride:t.salaryOverride==null?null:num(t.salaryOverride),withheldOverride:t.withheldOverride==null?null:num(t.withheldOverride),hasUnder23Dependent:t.hasUnder23Dependent!==false};
- }
- const expenses=(Array.isArray(v.expenses)?v.expenses:[]).filter(x=>x&&validDate(x.date)&&Number.isSafeInteger(Number(x.amount))&&Number(x.amount)>0&&Number(x.amount)<=1000000000).map(x=>({id:String(x.id||uid()),date:x.date,amount:num(x.amount),memo:String(x.memo||'').slice(0,300)}));
- return {version:6,employers,workTypes,shifts,settlements,templates,taxProfiles,expenses,updatedAt:typeof v.updatedAt==='string'?v.updatedAt:null};
-}
-function payDayNum(v,def='last'){return v==='last'||v===31||v==='31'?'last':(Number.isInteger(Number(v))&&Number(v)>=1&&Number(v)<=30?Number(v):def)}
-function lastDayOfMonth(month){const [y,m]=month.split('-').map(Number);return localISO(new Date(y,m,0))}
-function isoInMonth(month,day){const [y,m]=month.split('-').map(Number);return localISO(new Date(y,m-1,Math.min(day==='last'?31:day,new Date(y,m,0).getDate())))}
-function nextDay(date){const [y,m,d]=date.split('-').map(Number);return localISO(new Date(y,m-1,d+1))}
-function employerById(id){const e=data.employers.find(x=>x.id===id)||{};return {...e,closingDay:e.closingDay??'last',payDay:e.payDay??'last',payMonthOffset:e.payMonthOffset??1}}
-function periodEndForShift(shift){const emp=employerById(shift.employerId),month=shift.date.slice(0,7),end=isoInMonth(month,emp.closingDay);return shift.date<=end?end:isoInMonth(monthOffset(month,1),emp.closingDay)}
-function expectedPayDate(end,employerId){const emp=employerById(employerId);return isoInMonth(monthOffset(end.slice(0,7),emp.payMonthOffset),emp.payDay)}
-function periodStart(end,employerId){const emp=employerById(employerId);return nextDay(isoInMonth(monthOffset(end.slice(0,7),-1),emp.closingDay))}
-function periodLabel(end,id){return `${periodStart(end,id).replaceAll('-','/')}〜${end.replaceAll('-','/')}`}
-function scheduleLabel(e){return `${e.closingDay==='last'?'末日':e.closingDay+'日'}締め・${e.payMonthOffset===0?'当月':e.payMonthOffset===1?'翌月':'翌々月'}${e.payDay==='last'?'末日':e.payDay+'日'}払い`}
-function periodGroups(employerId){const grouped=new Map();for(const x of data.shifts.filter(x=>x.employerId===employerId)){const end=periodEndForShift(x);if(!grouped.has(end))grouped.set(end,[]);grouped.get(end).push(x)}return [...grouped.entries()].map(([end,shifts])=>({end,shifts,payDate:expectedPayDate(end,employerId)})).sort((a,b)=>b.end.localeCompare(a.end))}
-function linkedShifts(payment){return data.shifts.filter(x=>payment.shiftIds?.includes(x.id)&&x.employerId===payment.employerId)}
-function sumGross(shifts){return shifts.reduce((n,s)=>n+s.base+s.travel,0)}
-function projectedYearForShift(shift){const payment=data.settlements.filter(p=>p.employerId===shift.employerId&&p.shiftIds?.includes(shift.id)).sort((a,b)=>a.depositDate.localeCompare(b.depositDate))[0];return Number((payment?.depositDate||expectedPayDate(periodEndForShift(shift),shift.employerId)).slice(0,4))}
-function calculatedWithholding(p){
- const shifts=linkedShifts(p);
- if(!shifts.length)return null;
- const gross=sumGross(shifts);
- return Number.isSafeInteger(p.net)&&p.net>=0&&p.net<=gross?gross-p.net:null;
-}
-function validatedPayments(){
- const seen=new Set(),valid=[],invalid=[];
- for(const p of [...data.settlements].sort((a,b)=>a.depositDate.localeCompare(b.depositDate)||a.id.localeCompare(b.id))){
-  const rawLinked=data.shifts.filter(s=>p.shiftIds?.includes(s.id));
-  const ss=rawLinked.filter(s=>s.employerId===p.employerId),gross=sumGross(ss);
-  const value=Number.isSafeInteger(p.net)&&p.net>=0&&p.net<=gross?gross-p.net:null;
-  const duplicated=ss.some(s=>seen.has(s.id));
-  let reason='';
-  if(p.employerId==='all')reason='旧形式の一括振込で、勤務との紐づけがありません';
-  else if(rawLinked.some(s=>s.employerId!==p.employerId))reason='紐づいた勤務の勤務先が異なります';
-  else if(!ss.length)reason='対応する勤務が紐づいていません';
-  else if(!Number.isSafeInteger(p.net)||p.net<0)reason='手取り金額を確認してください';
-  else if(p.net>gross)reason='手取りが交通費込み額面を'+money(p.net-gross)+'上回っています';
-  else if(duplicated)reason='同じ勤務が別の給与振込にも紐づいています';
-  else if(value===null)reason='金額または紐づけを確認してください';
-  if(reason){invalid.push({payment:p,reason,gross,shiftCount:ss.length});continue}
-  ss.forEach(s=>seen.add(s.id));valid.push(p);
- }
- return {valid,invalid};
-}
-function linkedForYear(year){
- const report=validatedPayments();
- const payments=report.valid.filter(p=>p.depositDate.startsWith(String(year)+'-'));
- const ids=new Set(payments.flatMap(p=>linkedShifts(p).map(s=>s.id)));
- const wages=data.shifts.filter(s=>ids.has(s.id));
- const excludedPayments=report.invalid.filter(x=>x.payment.depositDate.startsWith(String(year)+'-'));
- return {payments,wages,withholding:payments.reduce((n,p)=>n+calculatedWithholding(p),0),net:payments.reduce((n,p)=>n+p.net,0),excluded:excludedPayments.length,excludedPayments};
-}
-function excludedPaymentList(payments){
- if(!payments.length)return '';
- return `<section class="excluded-payments" aria-label="還付試算から除外した給与振込"><div class="excluded-payments-heading"><strong>還付試算から除外した振込 ${payments.length}件</strong></div>${payments.map(({payment:p,reason,gross,shiftCount})=>`<div class="excluded-payment"><div class="excluded-payment-top"><div><strong>${esc(employerName(p.employerId))}</strong><span class="excluded-payment-date">振込日 ${esc(p.depositDate.replaceAll('-','/'))}</span></div>${p.employerId==='all'?'':`<button type="button" class="button sm" data-action="edit-payment" data-id="${esc(p.id)}">編集</button>`}</div><div class="excluded-payment-amounts"><span>手取り ${money(p.net)}</span><span>対象勤務 ${shiftCount}件</span><span>交通費込み額面 ${shiftCount?money(gross):'—'}</span></div><div class="excluded-payment-reason">${esc(reason)}</div></div>`).join('')}</section>`;
-}
-function load(){try{const txt=localStorage.getItem(KEY);if(txt)return normalize(JSON.parse(txt))}catch(e){console.error('データ読み込み失敗:',e);setTimeout(()=>toast('保存データを読み込めません。設定からバックアップを確認してください。'),0)}return normalize({version:1,employers:[],shifts:[],settlements:[],updatedAt:null})}
-function save(){try{data.version=6;data.updatedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(data));render();return true}catch(e){alert('端末への保存に失敗しました。ブラウザの空き容量・プライベートモードを確認してください。');return false}}
-function employerName(id){return id==='all'?'旧式の一括振込（要修正）':(data.employers.find(e=>e.id===id)||{}).name||'不明な勤務先'}
-function workTypeName(id){return (data.workTypes.find(t=>t.id===id)||{}).name||'未設定'}
-function monthExpenses(m){return data.expenses.filter(x=>x.date.slice(0,7)===m).sort((a,b)=>a.date.localeCompare(b.date)||a.id.localeCompare(b.id))}
-function expenseTotal(items){return items.reduce((total,x)=>total+x.amount,0)}
-function expenseLine(x){return `<div class="rowline expense-row"><div class="lead"><div class="date-badge">${esc(x.date.slice(5).replace('-','/'))}</div><div style="min-width:0"><div class="names">${esc(x.memo||'支出')}</div></div></div><div><div class="money expense-money">−${money(x.amount)}</div><div class="actions"><button class="text-button" data-action="edit-expense" data-id="${esc(x.id)}">編集</button></div></div></div>`}
-function monthShifts(m){return data.shifts.filter(x=>x.date.slice(0,7)===m).sort((a,b)=>a.date.localeCompare(b.date)||employerName(a.employerId).localeCompare(employerName(b.employerId),'ja'))}
-function deposits(m){return data.settlements.filter(x=>x.depositDate.slice(0,7)===m).sort((a,b)=>a.depositDate.localeCompare(b.depositDate))}
-function aggregate(shifts,settlements,validPaymentIds){
- const ids=validPaymentIds??new Set(validatedPayments().valid.map(p=>p.id));
- const good=settlements.filter(p=>ids.has(p.id));
- return {base:shifts.reduce((a,x)=>a+x.base,0),travel:shifts.reduce((a,x)=>a+x.travel,0),gross:sumGross(shifts),tax:good.reduce((a,p)=>a+calculatedWithholding(p),0),net:settlements.reduce((a,x)=>a+x.net,0),hasPayment:settlements.length>0,hasValidPayment:good.length>0};
-}
-function kpi(title,value,sub,color){return `<div class="card kpi"><div class="title"><i class="dot ${color||''}"></i>${title}</div><div class="value">${value}</div><div class="detail">${sub}</div></div>`}
-function nav(){return pages.map(([id,name])=>`<button class="side-link ${state.tab===id?'active':''}" data-action="nav" data-tab="${id}" aria-current="${state.tab===id?'page':'false'}">${svg[id==='analytics'?'chart':id]}<span>${name}</span></button>`).join('')}
-function mobileNav(){const labels={home:'給与登録',calendar:'カレンダー',analytics:'集計',tax:'税金',settings:'設定'};return pages.map(([id,name])=>`<button data-action="nav" data-tab="${id}" class="${state.tab===id?'active':''}" aria-label="${name}">${svg[id==='analytics'?'chart':id]}<span>${labels[id]}</span></button>`).join('')}
-function monthControl(){return `<div class="month-controls"><button class="button icon" data-action="prev-month" aria-label="前月">‹</button><label class="month-picker-wrap"><span class="month-display">${monthTitle(state.month)} ▾</span><input class="month-picker" type="month" id="month-picker" value="${state.month}" aria-label="対象月"></label><button class="button icon" data-action="next-month" aria-label="翌月">›</button></div>`}
-function yearControl(){return `<div class="month-controls"><button class="button icon" data-action="prev-year" aria-label="前年">‹</button><strong style="font-size:17px;padding:0 8px">${state.year}年</strong><button class="button icon" data-action="next-year" aria-label="翌年">›</button></div>`}
-function header(title,subtitle='',showMonth=true){
- return `<div class="topbar"><div class="page-heading"><h1>${title}</h1>${subtitle?`<div class="month-sub">${subtitle}</div>`:''}</div>${showMonth?`<div class="top-actions">${monthControl()}</div>`:''}</div>`;
-}
-function shiftLine(x){const dt=new Date(x.date+'T12:00:00'),md=(dt.getMonth()+1)+'/'+dt.getDate();return `<div class="rowline"><div class="lead"><div class="date-badge">${md}<div class="muted">${'日月火水木金土'[dt.getDay()]}</div></div><div style="min-width:0"><div class="names">${esc(employerName(x.employerId))} <span class="pill gray">${esc(workTypeName(x.workTypeId))}</span></div><div class="sub">交通費抜 ${money(x.base)}${x.memo?' ・ '+esc(x.memo):''}</div></div></div><div><div class="money">${money(x.base+x.travel)}</div><div class="actions"><button class="text-button" data-action="edit-shift" data-id="${esc(x.id)}">編集</button><button class="text-button" data-action="bulk-from-shift" data-id="${esc(x.id)}">コピー</button></div></div></div>`}
-function settlementLine(x){
- const withholding=calculatedWithholding(x);
- return `<div class="rowline"><div class="lead"><div class="date-badge">${esc(x.depositDate.slice(5).replace('-','/'))}</div><div style="min-width:0"><div class="names">${esc(employerName(x.employerId))}</div><div class="sub">${x.employerId==='all'?'旧形式・勤務への紐づけなし':`対象 ${esc(periodLabel(x.periodEnd,x.employerId))}・${x.shiftIds?.length||0}件`} ／ 源泉徴収額 ${withholding===null?'要確認':money(withholding)}${x.memo?' ・ '+esc(x.memo):''}</div></div></div><div><div class="money">${money(x.net)}</div><div class="actions"><button class="text-button" data-action="edit-payment" data-id="${esc(x.id)}">編集</button></div></div></div>`;
-}
-function empty(title,sub,action,text){return `<div class="empty"><div class="big">▤</div><b>${title}</b><div>${sub}</div>${action?`<button class="button sm primary" data-action="${action}">${text||'登録する'}</button>`:''}</div>`}
-function home(){
- const s=monthShifts(state.month),p=deposits(state.month),a=aggregate(s,p),title=monthTitle(state.month);
- return header('給与登録')+`<div class="home-buttons"><button class="button primary" data-action="add-shift">＋ 勤務を登録</button><button class="button" data-action="add-payment">＋ 給与振込を登録</button></div>
- <div class="hero salary-hero"><div><h2>${title}の給与（交通費込）</h2><div class="hero-number">${money(a.gross)}</div></div></div>
- <div class="kpi-grid">${kpi('交通費込み額面',money(a.gross),s.length+'件の勤務記録')}${kpi('交通費抜き額面',money(a.base),'交通費 '+money(a.travel),'blue')}${kpi('源泉徴収額',a.hasValidPayment?money(a.tax):'—','振込月ベース','amber')}${kpi('手取り',a.hasPayment?money(a.net):'—','振込月ベース','pink')}</div>
- <div class="section-grid" style="margin-top:19px"><section class="card"><div class="card-heading"><h2>勤務の一覧 <span class="pill gray">${s.length}件</span></h2></div>${s.length?s.slice(0,8).map(shiftLine).join(''):empty('まだ勤務がありません','')}</section>
- <section class="card"><div class="card-heading"><h2>給与振込 <span class="pill gray">${p.length}件</span></h2></div>${p.length?p.map(settlementLine).join(''):empty('まだ振込がありません','')}</section></div>`;
-}
-function calendar(){
- const [year,month]=state.month.split('-').map(Number);
- const first=new Date(year,month-1,1).getDay(),last=new Date(year,month,0).getDate(),totalCells=Math.ceil((first+last)/7)*7;
- const ss=monthShifts(state.month),expenses=monthExpenses(state.month);
- const byDate=new Map(),expensesByDate=new Map();
- for(const x of ss){if(!byDate.has(x.date))byDate.set(x.date,[]);byDate.get(x.date).push(x)}
- for(const x of expenses){if(!expensesByDate.has(x.date))expensesByDate.set(x.date,[]);expensesByDate.get(x.date).push(x)}
- let cells='';
- for(let i=0;i<totalCells;i++){
-  const day=i-first+1,valid=day>0&&day<=last;
-  const date=valid?state.month+'-'+String(day).padStart(2,'0'):'';
-  const items=byDate.get(date)||[],outlays=expensesByDate.get(date)||[],gross=sumGross(items),spent=expenseTotal(outlays);
-  const activity=items.length||outlays.length;
-  cells+=`<button class="day ${valid?'':'other'} ${date===TODAY?'today':''}" ${valid?`data-action="open-day" data-date="${date}" aria-label="${day}日、給与${money(gross)}、支出${money(spent)}"`:'disabled aria-hidden="true"'}><span class="day-num">${valid?day:''}</span>${items.length?`<span class="day-total income-money" title="給与（交通費込）">+${shortMoney(gross)}</span>`:''}${outlays.length?`<span class="day-expense expense-money" title="支出">−${shortMoney(spent)}</span>`:''}${!activity&&valid?'<span class="day-add">＋</span>':''}</button>`;
- }
- return header('カレンダー')+`<div class="card calendar-card calendar-wrap"><div class="card-heading" style="padding:2px 6px 0"><h2>${monthTitle(state.month)}</h2><span class="calendar-legend"><b class="income-money">● 収入</b>　<b class="expense-money">● 支出</b></span></div><div class="weekday-grid">${['日','月','火','水','木','金','土'].map(x=>`<div class="weekday">${x}</div>`).join('')}</div><div class="calendar-grid">${cells}</div></div>
- <div class="section-header"><h2>この月の勤務 <span class="pill gray">${ss.length}件</span></h2></div><div class="card">${ss.length?ss.map(shiftLine).join(''):empty('勤務の登録がありません','カレンダーの日付をタップしてください。')}</div>
- <div class="section-header expense-heading"><h2>この月の支出 <span class="pill gray">${expenses.length}件</span></h2><div class="expense-heading-actions"><button class="button sm pie-toggle" type="button" data-action="toggle-pie" data-kind="expense" aria-expanded="${state.pies.expense}">${state.pies.expense?'閉じる':'◯ 円グラフ'}</button><button class="button sm" data-action="add-expense">＋ 支出を登録</button></div></div>
- <div class="card expense-summary"><div class="expense-sum-label">${monthTitle(state.month)}の支出合計</div><div class="expense-sum-number expense-money">${money(expenseTotal(expenses))}</div>${state.pies.expense?pieChart(expensePieRows(expenses),'この月の支出内訳','支出合計','支出'):''}${expenses.length?`<details class="expense-details"><summary>支出の内訳を見る（${expenses.length}件）</summary><div>${expenses.map(expenseLine).join('')}</div></details>`:''}</div>`;
-}
-// Work-type net and withholding are attributed by gross-weighted shares of linked shifts.
-// Gross and travel columns use the work date year; payment columns use the deposit date year.
-function allocateProportion(amount,items){
- const weights=items.map(x=>x.weight),total=weights.reduce((a,b)=>a+b,0),denominator=total||items.length;
- const parts=items.map((x,i)=>{const exact=amount*(total?x.weight:1)/denominator,whole=Math.floor(exact);return {id:x.id,value:whole,frac:exact-whole,idx:i}});
- const spare=amount-parts.reduce((n,x)=>n+x.value,0);
- parts.sort((a,b)=>b.frac-a.frac||a.idx-b.idx);
- for(let i=0;i<spare;i++)parts[i%parts.length].value++;
- return new Map(parts.map(x=>[x.id,x.value]));
-}
-function workTypeYearStats(workRecords,yearPays,validPaymentIds){
- const result=new Map(),shiftById=new Map(data.shifts.map(s=>[s.id,s]));
- const get=id=>{const key=id||'';if(!result.has(key))result.set(key,{name:workTypeName(key),count:0,gross:0,travel:0,withholding:0,net:0,hasWithholding:false,hasNet:false});return result.get(key)};
- for(const s of workRecords){const x=get(s.workTypeId);x.count++;x.gross+=s.base+s.travel;x.travel+=s.travel}
- for(const pay of yearPays){
-  if(!validPaymentIds.has(pay.id))continue;
-  const linked=(pay.shiftIds||[]).map(id=>shiftById.get(id)).filter(s=>s&&s.employerId===pay.employerId);if(!linked.length)continue;
-  const amounts=new Map();for(const s of linked){const id=s.workTypeId||'';amounts.set(id,(amounts.get(id)||0)+s.base+s.travel)}
-  const weights=[...amounts].map(([id,weight])=>({id,weight}));
-  const withheld=calculatedWithholding(pay);if(withheld===null)continue;
-  const taxShares=allocateProportion(withheld,weights),netShares=allocateProportion(pay.net,weights);
-  for(const {id} of weights){const x=get(id);x.withholding+=taxShares.get(id)||0;x.net+=netShares.get(id)||0;x.hasWithholding=true;x.hasNet=true}
- }
- return result;
-}
-function expensePieRows(expenses){
- const groups=new Map();
- for(const x of expenses){const name=x.memo.trim()||'内容未入力';groups.set(name,(groups.get(name)||0)+x.amount)}
- return [...groups].map(([name,value])=>({name,value})).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name,'ja'));
-}
-function pieChart(rows,label,totalLabel='額面（込）',emptyLabel='給与'){
- const entries=rows.filter(x=>x.value>0),total=entries.reduce((s,x)=>s+x.value,0);
- if(!total)return `<div class="empty" style="padding:18px">円グラフに表示する${esc(emptyLabel)}がありません</div>`;
- const colors=['#087e80','#3c76ab','#e39b47','#9969a7','#db6e86','#5b9b86','#c9a244','#6e84ad','#bd7d50','#5286a6','#8479c9','#5caaad'];
- let prev=0;const segments=entries.map((x,i)=>{const end=prev+100*x.value/total,segment=`${colors[i%colors.length]} ${prev.toFixed(5)}% ${end.toFixed(5)}%`;prev=end;return segment});
- return `<div class="pie-layout"><div class="pie-circle" role="img" aria-label="${esc(label)}" style="background:conic-gradient(${segments.join(',')})"><span class="pie-hole"><small>${esc(totalLabel)}</small><strong>${shortMoney(total)}</strong></span></div><div class="pie-legend">${entries.map((x,i)=>`<div class="pie-legend-item"><span class="pie-dot" style="background:${colors[i%colors.length]}"></span><span class="pie-name">${esc(x.name)}</span><strong>${(x.value/total*100).toFixed(1)}%</strong><span class="pie-amount">${money(x.value)}</span></div>`).join('')}</div></div>`;
-}
-function analytics(){const months=Array.from({length:12},(_,i)=>state.year+'-'+String(i+1).padStart(2,'0'));const records=data.shifts.filter(x=>x.date.startsWith(String(state.year)+'-'));const pays=data.settlements.filter(x=>x.depositDate.startsWith(String(state.year)+'-'));const validPaymentIds=new Set(validatedPayments().valid.map(p=>p.id));const agg=aggregate(records,pays,validPaymentIds);const per=months.map(m=>aggregate(monthShifts(m),deposits(m),validPaymentIds));const max=Math.max(1,...per.map(x=>Math.max(x.gross,x.net)));const axisMax=Math.max(200000,Math.ceil(max/200000)*200000);const stepCount=axisMax/200000;const guides=Array.from({length:stepCount},(_,i)=>{const amount=(i+1)*200000;return `<div class="chart-guide" style="bottom:${(100*amount/axisMax).toFixed(4)}%"></div>`}).join('');const bars=per.map((x,i)=>`<div class="bar-col"><div class="bar-inner"><div class="bar" style="height:${x.gross?Math.max(2,100*x.gross/axisMax):0}%" title="${i+1}月 額面 ${money(x.gross)}"></div><div class="bar net" style="height:${x.hasPayment?Math.max(2,100*x.net/axisMax):0}%" title="${i+1}月 手取り ${x.hasPayment?money(x.net):'未入力'}"></div></div><span class="bar-label">${i+1}月</span></div>`).join('');const byCompany=data.employers.map(e=>{const sr=records.filter(x=>x.employerId===e.id),pr=pays.filter(x=>x.employerId===e.id);return{key:e.id,name:e.name,a:aggregate(sr,pr,validPaymentIds),count:sr.length}}).filter(x=>x.count>0||x.a.hasPayment).sort((a,b)=>b.a.gross-a.a.gross);
- const typeSummary=workTypeYearStats(records,pays,validPaymentIds);
- const typeRows=[...typeSummary.values()].sort((a,b)=>b.gross-a.gross||a.name.localeCompare(b.name,'ja'));
- return `<div class="topbar"><div class="page-heading"><h1>集計・分析</h1></div><div class="top-actions">${yearControl()}</div></div>
- <div class="kpi-grid">${kpi('年間額面（交通費込）',money(agg.gross),records.length+'件の勤務')}${kpi('年間額面（交通費抜）',money(agg.base),'交通費 '+money(agg.travel),'blue')}${kpi('年間源泉徴収額',agg.hasValidPayment?money(agg.tax):'—',agg.hasPayment?'振込月ベース':'未入力','amber')}${kpi('年間手取り',agg.hasPayment?money(agg.net):'—',agg.hasPayment?'振込月ベース':'未入力','pink')}</div>
- <section class="card" style="margin-top:18px"><div class="card-heading"><div><h2>月別の収入推移</h2><div class="month-sub">額面は勤務月、手取り・源泉徴収額は振込月／単位：円</div></div><div class="legend"><span><b style="background:#9ed4d0"></b>交通費込み額面</span><span><b style="background:#226b86"></b>手取り</span></div></div><div class="bar-chart-frame"><div class="year-bars" aria-label="月別の棒グラフ（20万円ごとの横線・数値目盛りなし）"><div class="chart-guides" aria-hidden="true">${guides}</div>${bars}</div></div>
- <div class="table-scroll" style="margin-top:19px"><table><thead><tr><th>月</th><th class="num">額面（込）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${per.map((a,i)=>`<tr><td>${i+1}月</td><td class="num">${money(a.gross)}</td><td class="num">${money(a.travel)}</td><td class="num">${a.hasValidPayment?money(a.tax):'—'}</td><td class="num">${a.hasPayment?money(a.net):'—'}</td></tr>`).join('')}</tbody></table></div></section>
- <div class="section-header"><h2>勤務先別の年間集計</h2><button class="button sm pie-toggle" type="button" data-action="toggle-pie" data-kind="company" aria-expanded="${state.pies.company}">${state.pies.company?'閉じる':'◯ 円グラフ'}</button></div>
- <section class="card">${state.pies.company?pieChart(byCompany.map(x=>({name:x.name,value:x.a.gross})),'勤務先別の額面（交通費込み）'):''}
- <div class="table-scroll"><table><thead><tr><th>勤務先</th><th class="num">件数</th><th class="num">額面（込）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${byCompany.length?byCompany.map(x=>`<tr><td>${esc(x.name)}</td><td class="num">${x.count||'—'}</td><td class="num">${x.count?money(x.a.gross):'—'}</td><td class="num">${x.count?money(x.a.travel):'—'}</td><td class="num">${x.a.hasValidPayment?money(x.a.tax):'—'}</td><td class="num">${x.a.hasPayment?money(x.a.net):'—'}</td></tr>`).join(''):`<tr><td colspan="6" class="muted" style="text-align:center">まだ記録はありません</td></tr>`}</tbody></table></div></section>
- <div class="section-header"><h2>仕事の種類別の年間集計</h2><button class="button sm pie-toggle" type="button" data-action="toggle-pie" data-kind="type" aria-expanded="${state.pies.type}">${state.pies.type?'閉じる':'◯ 円グラフ'}</button></div>
- <section class="card">${state.pies.type?pieChart(typeRows.map(x=>({name:x.name,value:x.gross})),'仕事の種類別の額面（交通費込み）'):''}
- <div class="table-scroll"><table><thead><tr><th>仕事の種類</th><th class="num">件数</th><th class="num">額面（込）</th><th class="num">交通費</th><th class="num">源泉徴収額</th><th class="num">手取り</th></tr></thead><tbody>${typeRows.length?typeRows.map(x=>`<tr><td>${esc(x.name)}</td><td class="num">${x.count}</td><td class="num">${money(x.gross)}</td><td class="num">${money(x.travel)}</td><td class="num">${x.hasWithholding?money(x.withholding):'—'}</td><td class="num">${x.hasNet?money(x.net):'—'}</td></tr>`).join(''):`<tr><td colspan="6" class="muted" style="text-align:center">まだ勤務記録はありません</td></tr>`}</tbody></table></div></section>`;
-}
-function settings(){return `<div class="topbar"><div><div class="eyebrow">DOCTOR PAY</div><h1>設定・データ管理</h1></div></div><div class="settings-grid">
-<section class="card"><h2>勤務先と給与スケジュール</h2>
-<form id="employer-form" class="foot-action"><input id="new-employer" class="control" type="text" maxlength="100" required placeholder="勤務先名を追加" style="flex:1;min-width:150px"><button class="button primary" type="submit">＋ 追加</button></form>
-<div style="margin-top:16px">${data.employers.length?data.employers.map(e=>`<div class="setting-row"><div><b>${esc(e.name)}</b><small>${esc(scheduleLabel(e))} ／ 勤務${data.shifts.filter(x=>x.employerId===e.id).length}件</small></div><div class="actions"><button class="button sm" data-action="schedule-employer" data-id="${esc(e.id)}">変更</button><button class="button sm danger" data-action="delete-employer" data-id="${esc(e.id)}">削除</button></div></div>`).join(''):empty('勤務先がありません','先に勤務先を登録してください。')}</div></section>
-<section class="card"><h2>仕事の種類</h2><form id="worktype-form" class="foot-action"><input id="new-worktype" class="control" type="text" maxlength="100" required placeholder="例：当直、健診" style="flex:1;min-width:150px"><button class="button primary" type="submit">＋ 追加</button></form><div style="margin-top:15px">${data.workTypes.map(t=>`<div class="setting-row"><div><b>${esc(t.name)}</b></div><div class="actions"><button class="button sm" data-action="rename-worktype" data-id="${esc(t.id)}">名前</button><button class="button sm danger" data-action="delete-worktype" data-id="${esc(t.id)}">削除</button></div></div>`).join('')}</div></section>
-<section class="card"><h2>定型バイト</h2>${data.templates.length?data.templates.map(t=>`<div class="setting-row"><div><b>${esc(t.name)}</b><small>${esc(employerName(t.employerId))}・${money(t.base+t.travel)}</small></div><button class="button sm danger" data-action="template-delete" data-id="${esc(t.id)}">削除</button></div>`).join(''):empty('まだありません','勤務登録時に「定型バイトに保存」で追加できます。')}</section>
-<section class="card"><h2>バックアップ・書き出し</h2><p class="detail-note">データはiPhone内に保存されます。</p><div class="foot-action backup-actions"><button class="button primary" data-action="export-json">バックアップを保存</button><button class="button" data-action="import-json">バックアップを読み込む</button></div><input class="hidden" type="file" id="import-file" accept=".json,application/json" aria-label="バックアップファイル"><div class="divider"></div><div class="foot-action"><button class="button" data-action="export-csv">CSVを書き出す</button></div><div class="info-box warning" style="margin-top:15px">更新前にはバックアップを保存してください。別端末への読み込みでは、その端末の既存データが置き換えられます。</div><div class="divider"></div><button class="button danger sm" data-action="delete-all">すべての記録を削除</button></section>
-</div>`}
-const TAX_FIELDS=['social','pension','medical','futureIncome'];
-function getTaxProfile(y){const p=data.taxProfiles[String(y)]||{};return {social:num(p.social),pension:num(p.pension),medical:num(p.medical),futureIncome:num(p.futureIncome),salaryOverride:p.salaryOverride==null?null:num(p.salaryOverride),hasUnder23Dependent:p.hasUnder23Dependent!==false}}
-function salaryDeduction(v){if(v<=0)return 0;if(v<=2200000)return Math.min(v,740000);if(v<=3600000)return Math.min(v,v*.30+80000);if(v<=6600000)return v*.20+440000;if(v<=8500000)return v*.10+1100000;return 1950000}
-// 給与年収850万円超かつ23歳未満の扶養親族がいる場合。夫婦双方の適用可。
-function dependentIncomeAdjustment(salary,hasDependent){return hasDependent&&salary>8500000?Math.ceil((Math.min(salary,10000000)-8500000)*.1):0}
-function incomeBasicDeduction(income){if(income<=4890000)return 1040000;if(income<=6550000)return 670000;if(income<=23500000)return 620000;if(income<=24000000)return 480000;if(income<=24500000)return 320000;if(income<=25000000)return 160000;return 0}
-function residentBasicDeduction(income){if(income<=24000000)return 430000;if(income<=24500000)return 290000;if(income<=25000000)return 150000;return 0}
-function incomeBracket(v){if(v<1950000)return [.05,0];if(v<3300000)return [.10,97500];if(v<6950000)return [.20,427500];if(v<9000000)return [.23,636000];if(v<18000000)return [.33,1536000];if(v<40000000)return [.40,2796000];return [.45,4796000]}
-function incomeTaxAt(taxable){const amount=Math.floor(Math.max(0,taxable)/1000)*1000;if(!amount)return 0;const [rate,deduct]=incomeBracket(amount);return Math.max(0,Math.floor((amount*rate-deduct)*1.021))}
-function taxProjection(year){
- const p=getTaxProfile(year),yearShifts=data.shifts.filter(x=>projectedYearForShift(x)===Number(year));
- let salaryFromShifts=0,autoSalaryPast=0;
- for(const shift of yearShifts){salaryFromShifts+=shift.base;if(shift.date<=TODAY)autoSalaryPast+=shift.base}
- const autoSalaryFuture=salaryFromShifts-autoSalaryPast;
- const salaryBase=p.salaryOverride===null?salaryFromShifts:p.salaryOverride;
- const salary=salaryBase+p.futureIncome,deductions=p.social+p.pension+p.medical;
- function taxParts(annual){const incomeAdjustment=dependentIncomeAdjustment(annual,p.hasUnder23Dependent),salaryIncome=Math.max(0,annual-salaryDeduction(annual)-incomeAdjustment),basic=incomeBasicDeduction(salaryIncome),residentBasic=residentBasicDeduction(salaryIncome);return{incomeAdjustment,salaryIncome,basic,taxableIncome:Math.max(0,salaryIncome-basic-deductions),residentTaxable:Math.max(0,salaryIncome-residentBasic-deductions)}}
- const {incomeAdjustment,salaryIncome,basic,taxableIncome,residentTaxable}=taxParts(salary);
- const residentAdjusted=Math.floor(residentTaxable/1000)*1000;
- const residentAdjustment=residentAdjusted<=2000000?Math.min(2500,residentAdjusted*.05):2500;
- const residentBefore=Math.max(0,Math.floor(residentAdjusted*.10-residentAdjustment));
- const specialTaxBase=Math.max(0,residentAdjusted-50000-Math.max(0,basic-480000));
- const rate=specialTaxBase>0?incomeBracket(specialTaxBase)[0]:0;
- const specialRate=.9-rate*1.021;
- const theoretical=(residentBefore>0&&specialRate>0)?2000+residentBefore*.20/specialRate:0;
- const cap=Math.max(0,Math.floor(Math.min(theoretical,Math.max(0,salaryIncome*.30))));
- // 申告差額の計算には、対象年に実際に振込登録され、勤務記録との紐づけが存在するものだけを含める。
- const matched=linkedForYear(year),matchedSalary=matched.wages.reduce((n,x)=>n+x.base,0),matchedGross=sumGross(matched.wages);
- const annualWithholding=matched.withholding,totalNet=matched.net;
- const hasWithholding=matched.payments.length>0;
- const estimatedIncomeTax=incomeTaxAt(taxParts(matchedSalary).taxableIncome);
- const difference=hasWithholding&&matchedSalary>0?annualWithholding-estimatedIncomeTax:null;
- return {p,salary,salaryBase,salaryFromShifts,autoSalaryPast,autoSalaryFuture,incomeAdjustment,salaryIncome,basic,deductions,taxableIncome,residentTaxable,residentBefore,residentAdjustment,rate,cap,annualWithholding,totalNet,hasWithholding,estimatedIncomeTax,difference,records:matched.payments.length,matchedShifts:matched.wages.length,matchedSalary,matchedGross,excluded:matched.excluded,excludedPayments:matched.excludedPayments,shifts:yearShifts.length};
-}
-function taxNumberField(key,label,value,description){return `<div class="field"><label for="tax-${key}">${label}</label><input class="control" id="tax-${key}" name="${key}" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="${value??''}" placeholder="0">${description?`<span class="help">${description}</span>`:''}</div>`}
-function tax(){
- const year=String(state.year),r=taxProjection(year),p=r.p,supported=[2026,2027].includes(state.year);
- return `<div class="topbar"><div class="page-heading"><h1>税金・ふるさと納税</h1></div><div class="top-actions">${yearControl()}</div></div>
- ${supported?`
- <form class="card" id="tax-form">
- <div class="card-heading"><h2>${year}年の給与収入（予測）</h2></div>
- <div class="tax-earnings-grid"><div class="tax-earning"><span>登録済み給与（交通費抜）</span><strong>${money(r.salaryFromShifts)}</strong></div><div class="tax-earning emphasis"><span>未登録の予定収入</span><div class="tax-number-input"><input class="control" type="number" id="tax-futureIncome" min="0" max="1000000000" step="1" inputmode="numeric" value="${p.futureIncome}" placeholder="例：500000"></div><small>未登録分のみ入力（交通費抜）</small></div></div>
- <div class="tax-forecast-total"><span>ふるさと納税の予測年収</span><strong>${money(r.salary)}</strong><small>${p.salaryOverride!==null?'年間給与額を補正しています。':''}登録済み給与${p.salaryOverride===null?'':'（補正後）'} ${money(r.salaryBase)} ＋ 未登録の予定収入 ${money(p.futureIncome)}</small></div>
- <div class="section-header"><h2>${year}年の年間控除</h2></div>
- <div class="info-box">基礎控除は自動計算されます。</div>
- <div class="form-grid" style="margin-top:15px">
- ${taxNumberField('social','社会保険料控除額（年間）',p.social,'本人負担の健康保険料・国民年金等を合計。')}
- ${taxNumberField('pension','確定拠出年金の本人掛金（年間）',p.pension,'控除対象となるiDeCo・企業型DCの本人拠出分。')}
- ${taxNumberField('medical','医療費控除額（年間）',p.medical,'医療費の支払総額ではなく、控除対象になる金額。')}
- </div>
- <div class="info-box" style="margin-top:16px"><label class="check-line" for="tax-under23"><input id="tax-under23" type="checkbox" ${p.hasUnder23Dependent?'checked':''}><strong style="margin:0">23歳未満の子どもがいる</strong></label><div style="margin-top:5px">配偶者側の扶養でも対象。年収850万円超の場合に控除を自動適用します。</div></div>
- <details class="advanced"><summary>年間額の補正（源泉徴収票と異なる場合のみ）</summary><p class="detail-note">年間給与収入が異なる場合のみ補正できます。</p><div class="form-grid">${taxNumberField('salaryOverride','登録済み給与の代わりに使う年間収入（空欄なら自動）',p.salaryOverride,'この数値に「今後の未登録収入見込み」が加算されます。')}</div></details>
- <div class="modal-bottom"><button class="button primary" type="submit">保存して再計算</button></div></form>
- <div class="hero" style="margin-top:18px"><div><h2>${year}年のふるさと納税</h2></div><div><div class="hero-label">寄附上限額（推定）</div><div class="hero-number">${r.salary>0?money(r.cap):'—'}</div></div></div>
- <section class="card refund-card"><h2>還付・追加納税の概算</h2>
- <div class="hero refund-hero"><div><h2>${r.difference===null?'現時点の暫定還付差額':r.difference>=0?'現時点の暫定還付差額':'現時点の暫定追加納税差額'}</h2></div><div class="hero-number">${r.difference===null?'—':money(Math.abs(r.difference))}</div></div>
- <div class="split-summaries"><div class="small-stat"><span>源泉徴収額（自動計算）</span><strong>${r.hasWithholding?money(r.annualWithholding):'—'}</strong></div><div class="small-stat"><span>年間所得税の概算</span><strong>${r.matchedSalary>0?money(r.estimatedIncomeTax):'—'}</strong></div></div>
- <div class="rowline"><span>対応する勤務がある額面（交通費込）</span><strong>${r.records?money(r.matchedGross):'—'}</strong></div>
- <div class="rowline"><span>対応する勤務がある手取り</span><strong>${r.records?money(r.totalNet):'—'}</strong></div>
- ${excludedPaymentList(r.excludedPayments)}
- </section>
- <div class="section-header"><h2>計算の内訳</h2></div><section class="card"><div class="table-scroll"><table><tbody><tr><td>登録済みの給与（支払予定年ベース）</td><td class="num">${money(r.salaryFromShifts)}</td></tr><tr><td>うち登録済みの未来日付</td><td class="num">${money(r.autoSalaryFuture)}</td></tr>${p.salaryOverride!==null?`<tr><td>補正後のベース給与収入</td><td class="num">${money(r.salaryBase)}</td></tr>`:''}<tr><td>今後の未登録予定収入</td><td class="num">${money(p.futureIncome)}</td></tr><tr><td><strong>ふるさと納税に使用した予測年収</strong></td><td class="num"><strong>${money(r.salary)}</strong></td></tr><tr><td>所得金額調整控除（23歳未満・自動）</td><td class="num">${money(r.incomeAdjustment)}</td></tr><tr><td>給与所得（調整控除後）</td><td class="num">${money(r.salaryIncome)}</td></tr><tr><td>所得税の基礎控除（自動）</td><td class="num">${money(r.basic)}</td></tr><tr><td>社会保険・DC・医療費の控除合計</td><td class="num">${money(r.deductions)}</td></tr><tr><td>所得税の課税所得（予測）</td><td class="num">${money(r.taxableIncome)}</td></tr><tr><td>住民税の所得割（概算）</td><td class="num">${money(r.residentBefore)}</td></tr><tr><td>ふるさと納税特例分に用いる税率</td><td class="num">${(r.rate*100).toFixed(0)}%</td></tr></tbody></table></div></section>
- `:`<div class="info-box warning" style="margin-top:14px"><strong>この年は税シミュレーション対象外です</strong>2026年・2027年の税制で試算します。</div>`}`;
-}
-function render(){document.getElementById('side-nav').innerHTML=nav();document.getElementById('mobile-nav').innerHTML=mobileNav();document.getElementById('app').innerHTML=({home,calendar,analytics,tax,settings}[state.tab]||home)()}
-function modalTemplate(title,body,footer){document.getElementById('modal-root').innerHTML=`<div class="modal-wrap" id="modal-wrap"><div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="modal-top"><div><div class="eyebrow">DOCTOR PAY</div><h2>${esc(title)}</h2></div><button class="button icon" data-action="close-modal" aria-label="閉じる">✕</button></div>${body}${footer||''}</div></div>`;document.body.style.overflow='hidden';setTimeout(()=>document.querySelector('.modal input:not([type="hidden"]),.modal select')?.focus(),20)}
-function closeModal(){document.getElementById('modal-root').innerHTML='';document.body.style.overflow=''}
-function employerOptions(selected,includeAll=false){return (includeAll?'<option value="all"'+(selected==='all'?' selected':'')+'>全勤務先まとめて</option>':'')+data.employers.map(e=>`<option value="${esc(e.id)}" ${selected===e.id?'selected':''}>${esc(e.name)}</option>`).join('')}
-function shiftModal(id,date,preset){const x=id?data.shifts.find(x=>x.id===id):preset||null;if(id&&!x)return;const hasCompanies=data.employers.length>0;const selected=x?.employerId||data.employers[0]?.id||'__new__';const body=`<form id="shift-form" data-id="${esc(id||'')}">${!id&&data.templates.length?`<div class="field" style="margin-bottom:14px"><label for="shift-template">よく使うバイト（任意）</label><select id="shift-template" class="control"><option value="">新規入力</option>${data.templates.map(t=>`<option value="${esc(t.id)}">${esc(t.name)}</option>`).join('')}</select></div>`:''}<div class="form-grid"><div class="field"><label for="shift-date">勤務日 *</label><input type="date" id="shift-date" class="control" value="${esc(id?x.date:date||TODAY)}" required></div><div class="field"><label for="shift-employer">勤務先 *</label><select id="shift-employer" class="control" required>${employerOptions(selected)}<option value="__new__" ${!hasCompanies?'selected':''}>＋ 新しい勤務先を追加</option></select></div><div class="field full ${selected==='__new__'?'':'hidden'}" id="new-employer-wrap"><label for="shift-new-employer">新しい勤務先の名前 *</label><input id="shift-new-employer" class="control" maxlength="100" placeholder="例：〇〇病院"></div><div class="field"><label for="shift-worktype">仕事の種類</label><select id="shift-worktype" class="control"><option value="">未設定</option>${data.workTypes.map(t=>`<option value="${esc(t.id)}" ${x?.workTypeId===t.id?'selected':''}>${esc(t.name)}</option>`).join('')}<option value="__new__">＋ 新しい種類を追加</option></select></div><div class="field hidden" id="new-worktype-wrap"><label for="shift-new-worktype">新しい仕事の種類</label><input id="shift-new-worktype" class="control" maxlength="100" placeholder="例：外来"></div><div class="field"><label for="shift-base">額面（交通費抜き） *</label><input type="number" id="shift-base" class="control" min="0" max="1000000000" step="1" inputmode="numeric" value="${x?.base??''}" placeholder="例：80000" required></div><div class="field"><label for="shift-travel">交通費</label><input type="number" id="shift-travel" class="control" min="0" max="1000000000" step="1" inputmode="numeric" value="${x?.travel??0}" required></div><div class="field full"><div class="preview"><span>交通費込みの額面（自動計算）</span><strong id="shift-total">${money((x?.base||0)+(x?.travel||0))}</strong></div></div><div class="field full"><label for="shift-memo">メモ（任意）</label><textarea id="shift-memo" class="control" maxlength="1000">${esc(x?.memo||'')}</textarea></div><div class="field full"><label class="check-line"><input type="checkbox" id="also-template"> この条件を「よく使うバイト」にも保存</label><span class="help">次回から日付を選ぶだけで登録できます。</span></div></div><div class="modal-bottom">${id?`<button type="button" class="button danger" data-action="delete-shift" data-id="${esc(id)}" style="margin-right:auto">削除</button><button type="button" class="button" data-action="bulk-from-shift" data-id="${esc(id)}">コピー</button>`:''}<button type="button" class="button" data-action="close-modal">キャンセル</button><button type="submit" class="button primary">${id?'更新する':'登録する'}</button></div></form>`;modalTemplate(id?'勤務を編集':'勤務を登録',body)}
-
-function sameShift(a,b,date){return a.date===date&&a.employerId===b.employerId&&a.workTypeId===b.workTypeId&&a.base===b.base&&a.travel===b.travel}
-function copyRecord(source,date){return {id:uid(),date,employerId:source.employerId,workTypeId:source.workTypeId||'',base:source.base,travel:source.travel,memo:source.memo||''}}
-function addTemplate(source){const initial=employerName(source.employerId)+'・'+workTypeName(source.workTypeId);const name=prompt('定型バイトの名前を入力してください',initial);if(name===null)return;const val=name.trim();if(!val||val.length>100){alert('名前は1～100文字で入力してください');return}data.templates.push({id:uid(),name:val,employerId:source.employerId,workTypeId:source.workTypeId||'',base:source.base,travel:source.travel,memo:source.memo||''});if(save())toast('定型バイトを保存しました')}
-let bulkDraft=null;
-function bulkPicker(source,label){if(!source)return;bulkDraft={source,dates:new Set(),month:state.month,label};renderBulkPicker()}
-function renderBulkPicker(){const b=bulkDraft;if(!b)return;const [y,m]=b.month.split('-').map(Number),first=new Date(y,m-1,1).getDay(),last=new Date(y,m,0).getDate();let cells='';for(let n=0;n<first;n++)cells+='<span class="bulk-blank"></span>';for(let d=1;d<=last;d++){const date=b.month+'-'+String(d).padStart(2,'0'),chosen=b.dates.has(date);cells+=`<button type="button" class="bulk-day ${chosen?'selected':''}" data-action="bulk-toggle" data-date="${date}" aria-pressed="${chosen}">${d}${chosen?' ✓':''}</button>`}const selected=[...b.dates].sort();modalTemplate('複数日にまとめて登録',`<div class="info-box"><strong>${esc(b.label)}</strong>${esc(employerName(b.source.employerId))}・${esc(workTypeName(b.source.workTypeId))} ／ ${money(b.source.base+b.source.travel)}<div style="margin-top:4px">コピー先の日付を複数タップしてください。すでに同じ勤務がある日付は重複登録しません。</div></div><div class="bulk-top"><button class="button sm" data-action="bulk-prev">‹ 前月</button><strong>${monthTitle(b.month)}</strong><button class="button sm" data-action="bulk-next">翌月 ›</button></div><div class="bulk-week">${['日','月','火','水','木','金','土'].map(x=>`<b>${x}</b>`).join('')}</div><div class="bulk-grid">${cells}</div><p class="detail-note">選択した日付：${selected.length?selected.map(x=>x.replaceAll('-','/')).join('、'):'まだ選択されていません'}</p><div class="modal-bottom"><button class="button" data-action="close-modal">キャンセル</button><button class="button primary" data-action="bulk-save" ${!selected.length?'disabled':''}>${selected.length}日分を登録</button></div>`)}
-function bulkSave(){if(!bulkDraft||!bulkDraft.dates.size)return;let inserted=0,skipped=0;for(const date of bulkDraft.dates){if(data.shifts.some(x=>sameShift(x,bulkDraft.source,date))){skipped++;continue}data.shifts.push(copyRecord(bulkDraft.source,date));inserted++}bulkDraft=null;if(save()){closeModal();toast(`${inserted}件を追加しました${skipped?'（重複'+skipped+'件を除外）':''}`)}}
-
-function paymentModal(id){
- const x=id?data.settlements.find(x=>x.id===id):null;if(id&&!x)return;
- if(!data.employers.length)return alert('最初に勤務先を登録してください。');
- const employerId=x?.employerId==='all'?(data.employers[0]?.id||''):x?.employerId||data.employers[0].id;
- const body=`<form id="payment-form" data-id="${esc(x?.id||'')}"><div class="form-grid">
- <div class="field full"><label for="pay-employer">勤務先 *</label><select id="pay-employer" class="control" required>${employerOptions(employerId,false)}</select></div>
- <div class="field full"><label for="pay-period">対象の締め期間 *</label><select id="pay-period" class="control" required></select><span class="help">勤務先の締め日から自動で期間を作成します。必要なら「設定」で締め日を変更してください。</span></div>
- <div class="field full"><div id="payment-target-total" class="selected-note"></div></div>
- <div class="field"><label for="pay-date">実際の振込日 *</label><input type="date" id="pay-date" class="control" value="${esc(x?.depositDate||TODAY)}" required></div>
- <div class="field full"><label for="pay-net">実際の手取り（振込金額） *</label><input type="number" id="pay-net" class="control" min="0" max="1000000000" step="1" inputmode="numeric" value="${x?.net??''}" required placeholder="例：77000"></div>
- <div class="field full"><div class="preview pay-preview"><span id="pay-derived-label">源泉徴収額（交通費込み額面 − 手取り）</span><strong id="pay-derived-tax">—</strong></div></div>
- <div class="field full"><label for="pay-memo">メモ（任意）</label><textarea id="pay-memo" class="control" maxlength="1000">${esc(x?.memo||'')}</textarea></div></div>
- <div class="modal-bottom">${x?`<button type="button" class="button danger" data-action="delete-payment" data-id="${esc(x.id)}" style="margin-right:auto">削除</button>`:''}<button type="button" class="button" data-action="close-modal">キャンセル</button><button type="submit" class="button primary">${x?'更新する':'登録する'}</button></div></form>`;
- modalTemplate(x?'給与振込を編集':'給与振込を登録',body);
- updatePeriodOptions(x?.periodEnd||null,x?.depositDate||null);
-}
-function updatePeriodOptions(preferred=null,keepDate=null){
- const id=document.getElementById('pay-employer')?.value,select=document.getElementById('pay-period');if(!select)return;
- const groups=periodGroups(id);
- if(preferred&&!groups.some(g=>g.end===preferred)){const p=data.settlements.find(x=>x.periodEnd===preferred&&x.employerId===id);if(p)groups.unshift({end:preferred,shifts:linkedShifts(p),payDate:expectedPayDate(preferred,id)})}
- select.innerHTML=groups.map(g=>`<option value="${g.end}">${periodLabel(g.end,id)} (${g.shifts.length}件・${money(sumGross(g.shifts))})</option>`).join('')||'<option value="">この勤務先の勤務記録がありません</option>';
- const selected=groups.find(g=>g.end===preferred)?.end||groups[0]?.end||'';
- if(selected)select.value=selected;
- updatePaymentTarget(keepDate);
-}
-function updatePaymentTarget(keepDate=null){
- const employerId=document.getElementById('pay-employer')?.value,end=document.getElementById('pay-period')?.value,out=document.getElementById('payment-target-total');if(!out)return;
- const group=periodGroups(employerId).find(g=>g.end===end);
- const old=data.settlements.find(p=>p.employerId===employerId&&p.periodEnd===end);
- const shifts=group?.shifts||(old?linkedShifts(old):[]);
- const gross=sumGross(shifts);
- out.textContent=shifts.length?`対象勤務 ${shifts.length}件 ／ 交通費込み額面 ${money(gross)} ／ 支払予定日 ${expectedPayDate(end,employerId)}`:'対象の勤務がありません。先に勤務を登録してください。';
- const date=document.getElementById('pay-date');if(date){if(keepDate)date.value=keepDate;else if(end)date.value=expectedPayDate(end,employerId)}
- updatePayPreview();
-}
-function updatePayPreview(){
- const employerId=document.getElementById('pay-employer')?.value,end=document.getElementById('pay-period')?.value,netInput=document.getElementById('pay-net'),preview=document.getElementById('pay-derived-tax');if(!preview||!netInput)return;
- const g=periodGroups(employerId).find(g=>g.end===end);
- const gross=g?sumGross(g.shifts):0;
- const raw=netInput.value.trim();const net=Number(raw);
- preview.textContent=raw===''?'—':net>gross?'金額を確認':money(gross-net);
- preview.style.color=net>gross?'#b53f55':'';
-}
-function scheduleModal(id){const e=data.employers.find(x=>x.id===id);if(!e)return;
- const optionDays=(selected)=>`<option value="last" ${selected==='last'?'selected':''}>末日</option>`+Array.from({length:30},(_,i)=>i+1).map(n=>`<option value="${n}" ${selected===n?'selected':''}>${n}日</option>`).join('');
- modalTemplate('勤務先の変更',`<form id="schedule-form" data-id="${esc(id)}"><div class="form-grid" style="margin-top:15px"><div class="field full"><label for="schedule-name">勤務先の名前</label><input class="control" id="schedule-name" type="text" maxlength="100" required value="${esc(e.name)}"></div>
- <div class="field"><label for="schedule-close">締め日</label><select class="control" id="schedule-close">${optionDays(e.closingDay)}</select></div>
- <div class="field"><label for="schedule-offset">支払月</label><select class="control" id="schedule-offset"><option value="0" ${e.payMonthOffset===0?'selected':''}>当月</option><option value="1" ${e.payMonthOffset===1?'selected':''}>翌月</option><option value="2" ${e.payMonthOffset===2?'selected':''}>翌々月</option></select></div>
- <div class="field"><label for="schedule-day">支払日</label><select class="control" id="schedule-day">${optionDays(e.payDay)}</select></div></div>
- <div class="info-box warning" style="margin-top:14px">既存の振込記録は保存時点の勤務との紐づけを保持します。締め日を後から変えた場合、登録済みの振込を確認してください。休日による前倒し・後ろ倒しは自動計算しません。</div>
- <div class="modal-bottom"><button type="button" class="button" data-action="close-modal">キャンセル</button><button type="submit" class="button primary">保存</button></div></form>`)
-}
-function dayModal(date){
- const ss=data.shifts.filter(x=>x.date===date),expenses=data.expenses.filter(x=>x.date===date),dateStr=date.replaceAll('-','/');
- modalTemplate(dateStr,`<div class="card-heading"><h3>勤務 ${ss.length}件</h3><button class="button primary sm" data-action="add-shift-on" data-date="${date}">＋ 勤務</button></div>${ss.length?ss.map(shiftLine).join(''):''}
- <div class="card-heading day-expense-heading"><h3>支出 ${expenses.length}件</h3><button class="button sm expense-button" data-action="add-expense-on" data-date="${date}">＋ 支出</button></div>${expenses.length?expenses.map(expenseLine).join(''):''}
- <div class="modal-bottom"><button class="button" data-action="close-modal">閉じる</button></div>`);
-}
-function expenseModal(id=null,date=TODAY){
- const x=id?data.expenses.find(e=>e.id===id):null;if(id&&!x)return;
- const body=`<form id="expense-form" data-id="${esc(id||'')}"><div class="form-grid"><div class="field full"><label for="expense-date">日付 *</label><input id="expense-date" class="control" type="date" value="${esc(x?.date||date)}" required></div><div class="field full"><label for="expense-amount">支出額（円） *</label><input id="expense-amount" class="control" type="number" min="1" max="1000000000" step="1" inputmode="numeric" value="${x?.amount??''}" placeholder="例：2500" required></div><div class="field full"><label for="expense-memo">内容（任意）</label><input id="expense-memo" class="control" maxlength="300" value="${esc(x?.memo||'')}" placeholder="例：交通、食事、買い物"></div></div><div class="modal-bottom">${id?`<button class="button danger" type="button" data-action="delete-expense" data-id="${esc(id)}" style="margin-right:auto">削除</button>`:''}<button class="button" type="button" data-action="close-modal">キャンセル</button><button class="button primary" type="submit">${id?'更新':'登録'}</button></div></form>`;
- modalTemplate(id?'支出を編集':'支出を登録',body);
-}
-function saveExpense(form){
- const id=form.dataset.id,date=document.getElementById('expense-date').value,amount=Number(document.getElementById('expense-amount').value),memo=document.getElementById('expense-memo').value.trim();
- if(!validDate(date)||!Number.isSafeInteger(amount)||amount<1||amount>1e9){alert('日付と支出額を確認してください。');return}
- const entry={id:id||uid(),date,amount,memo};
- if(id){const i=data.expenses.findIndex(x=>x.id===id);if(i<0)return;data.expenses[i]=entry}else data.expenses.push(entry);
- if(save()){closeModal();toast(id?'支出を更新しました':'支出を登録しました')}
-}
-function toast(msg){const root=document.getElementById('toast-root');if(!root)return;root.innerHTML='<div class="toast">'+esc(msg)+'</div>';setTimeout(()=>{root.innerHTML=''},3000)}
-function saveShift(form){
- const id=form.dataset.id,date=document.getElementById('shift-date').value,base=Number(document.getElementById('shift-base').value),travel=Number(document.getElementById('shift-travel').value);
- let employerId=document.getElementById('shift-employer').value,workTypeId=document.getElementById('shift-worktype').value;
- if(!validDate(date)||!Number.isInteger(base)||!Number.isInteger(travel)||base<0||travel<0||base>1e9||travel>1e9){alert('勤務日と金額を確認してください。');return}
- if(employerId==='__new__'){const name=document.getElementById('shift-new-employer').value.trim();if(!name||name.length>100){alert('勤務先の名前を入力してください。');return}const existing=data.employers.find(x=>x.name===name);if(existing)employerId=existing.id;else{employerId=uid();data.employers.push({id:employerId,name,closingDay:'last',payDay:'last',payMonthOffset:1})}}
- if(!data.employers.some(x=>x.id===employerId)){alert('勤務先を選んでください。');return}
- if(workTypeId==='__new__'){const name=document.getElementById('shift-new-worktype').value.trim();if(!name||name.length>100){alert('仕事の種類の名前を入力してください。');return}const existing=data.workTypes.find(x=>x.name===name);if(existing)workTypeId=existing.id;else{workTypeId=uid();data.workTypes.push({id:workTypeId,name})}}
- if(workTypeId&&!data.workTypes.some(x=>x.id===workTypeId)){alert('仕事の種類を選んでください。');return}
- const next={id:id||uid(),date,employerId,workTypeId,base,travel,memo:document.getElementById('shift-memo').value.trim()};
- const saveAsTemplate=document.getElementById('also-template')?.checked;
- if(id){const i=data.shifts.findIndex(x=>x.id===id);if(i<0)return;data.shifts[i]=next}else data.shifts.push(next);
- if(save()){closeModal();if(saveAsTemplate)addTemplate(next);toast(id?'勤務を更新しました':'勤務を登録しました');if(id&&data.settlements.some(p=>p.shiftIds?.includes(id)&&calculatedWithholding(p)===null))alert('この勤務に対応する給与振込の金額を確認してください。')}
-}
-function savePayment(form){
- const id=form.dataset.id,employerId=document.getElementById('pay-employer').value,periodEnd=document.getElementById('pay-period').value,depositDate=document.getElementById('pay-date').value,net=Number(document.getElementById('pay-net').value);
- if(!data.employers.some(x=>x.id===employerId)||!validDate(periodEnd)||!validDate(depositDate)||!Number.isSafeInteger(net)||net<0||net>1e9){alert('勤務先・締め期間・振込日・手取りを確認してください。');return}
- const group=periodGroups(employerId).find(x=>x.end===periodEnd)||(()=>{const old=data.settlements.find(p=>p.id===id&&p.periodEnd===periodEnd&&p.employerId===employerId);return old?{end:periodEnd,shifts:linkedShifts(old)}:null})();
- if(!group||!group.shifts.length){alert('対象の勤務がありません。勤務先の締め日と勤務日を確認してください。');return}
- const gross=sumGross(group.shifts);
- if(net>gross){alert('手取りが対象勤務の交通費込み額面を超えています。振込金額・対象期間・勤務の報酬額を確認してください。');return}
- if(data.settlements.some(x=>x.id!==id&&x.employerId===employerId&&x.periodEnd===periodEnd)){
-  alert('この勤務先・締め期間の振込はすでに登録されています。ホーム画面の振込記録から編集してください。');return;
- }
- const linked=group.shifts.map(x=>x.id);
- if(data.settlements.some(x=>x.id!==id&&x.shiftIds?.some(sid=>linked.includes(sid)))){alert('同じ勤務を別の振込に重複登録できません。');return}
- const next={id:id||uid(),workMonth:periodEnd.slice(0,7),periodEnd,employerId,depositDate,shiftIds:linked,net,memo:document.getElementById('pay-memo').value.trim()};
- if(id){const i=data.settlements.findIndex(x=>x.id===id);if(i<0)return;data.settlements[i]=next}else data.settlements.push(next);
- if(save()){closeModal();toast(id?'振込情報を更新しました':'振込情報を登録しました')}
-}
-function csvCell(v){let s=String(v??'');if(/^[\s]*[=+@\-]/.test(s)&&isNaN(Number(s)))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
-function downloadFile(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000)}
-function csv(name,rows){downloadFile(name,'\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'text/csv;charset=utf-8')}
-function exportCSV(){
- // One file: each row has an explicit record type, so payments cannot be mistaken for individual shifts.
- const rows=[['記録の種類','日付','勤務先','仕事の種類','額面（交通費込み）','交通費','源泉徴収額','手取り','支出額','メモ']];
- for(const x of data.shifts)rows.push(['勤務',x.date,employerName(x.employerId),workTypeName(x.workTypeId),x.base+x.travel,x.travel,'','','',x.memo]);
- for(const x of data.settlements)rows.push(['給与振込',x.depositDate,employerName(x.employerId),'','','',calculatedWithholding(x)??'要確認',x.net,'',x.memo]);
- for(const x of data.expenses)rows.push(['支出',x.date,'','','','','','',x.amount,x.memo]);
- csv('doctorpay_全記録_'+TODAY+'.csv',rows);toast('CSVを書き出しました');
-}
-function importJSON(file){if(!file)return;if(file.size>5e6){alert('ファイルが大きすぎます（最大5MB）。');return}file.text().then(txt=>{let parsed;try{parsed=normalize(JSON.parse(txt))}catch(e){alert('読み込みに失敗しました：'+e.message);return}const msg='このバックアップを読み込むと、現在のこの端末の記録はすべて置き換わります。\n\n勤務 '+parsed.shifts.length+'件／振込 '+parsed.settlements.length+'件／支出 '+parsed.expenses.length+'件／仕事の種類 '+parsed.workTypes.length+'件／税金設定 '+Object.keys(parsed.taxProfiles).length+'年分\n\n現在の記録を保存してから操作することをおすすめします。続けますか？';if(!confirm(msg))return;data=parsed;if(save())toast('バックアップを読み込みました')}).catch(()=>alert('ファイルを読み込めませんでした'))}
-function navTo(tab){state.tab=tab;render();scrollTo({top:0,behavior:'instant'})}
-document.addEventListener('click',e=>{const btn=e.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action,id=btn.dataset.id;switch(action){case'nav':navTo(btn.dataset.tab);break;case'prev-month':state.month=monthOffset(state.month,-1);render();break;case'next-month':state.month=monthOffset(state.month,1);render();break;case'prev-year':state.year--;render();break;case'next-year':state.year++;render();break;case'add-shift':shiftModal();break;case'quick-template':shiftModal();break;case'template-use':{const t=data.templates.find(x=>x.id===id);if(t)shiftModal(null,TODAY,t);break}case'template-bulk':{const t=data.templates.find(x=>x.id===id);if(t)bulkPicker(t,t.name);break}case'bulk-from-shift':{const t=data.shifts.find(x=>x.id===id);if(t)bulkPicker(t,'登録済み勤務 '+t.date);break}case'bulk-prev':if(bulkDraft){bulkDraft.month=monthOffset(bulkDraft.month,-1);renderBulkPicker()}break;case'bulk-next':if(bulkDraft){bulkDraft.month=monthOffset(bulkDraft.month,1);renderBulkPicker()}break;case'bulk-toggle':if(bulkDraft&&validDate(btn.dataset.date)){const d=btn.dataset.date;bulkDraft.dates.has(d)?bulkDraft.dates.delete(d):bulkDraft.dates.add(d);renderBulkPicker()}break;case'bulk-save':bulkSave();break;case'template-delete':{const t=data.templates.find(x=>x.id===id);if(t&&confirm('テンプレート「'+t.name+'」を削除しますか？')){data.templates=data.templates.filter(x=>x.id!==id);if(save())toast('テンプレートを削除しました')}break}case'add-shift-on':shiftModal(null,btn.dataset.date);break;case'edit-shift':shiftModal(id);break;case'open-day':dayModal(btn.dataset.date);break;case'add-expense':expenseModal(null,state.month===TODAY.slice(0,7)?TODAY:state.month+'-01');break;case'add-expense-on':expenseModal(null,btn.dataset.date);break;case'edit-expense':expenseModal(id);break;case'delete-expense':if(confirm('この支出を削除しますか？')){data.expenses=data.expenses.filter(x=>x.id!==id);if(save()){closeModal();toast('支出を削除しました')}}break;case'toggle-pie':if(['company','type','expense'].includes(btn.dataset.kind)){state.pies[btn.dataset.kind]=!state.pies[btn.dataset.kind];render()}break;case'add-payment':paymentModal();break;case'schedule-employer':scheduleModal(id);break;case'edit-payment':paymentModal(id);break;case'close-modal':closeModal();break;case'delete-shift':if(confirm('この勤務記録を削除しますか？')){data.shifts=data.shifts.filter(x=>x.id!==id);if(save()){closeModal();toast('勤務を削除しました')}}break;case'delete-payment':if(confirm('この振込記録を削除しますか？')){data.settlements=data.settlements.filter(x=>x.id!==id);if(save()){closeModal();toast('振込情報を削除しました')}}break;case'delete-employer':{const emp=data.employers.find(x=>x.id===id);if(!emp)return;if(data.shifts.some(x=>x.employerId===id)||data.settlements.some(x=>x.employerId===id)||data.templates.some(x=>x.employerId===id))return alert('この勤務先には勤務・振込記録があるため削除できません。名称変更は可能です。');if(confirm('「'+emp.name+'」を候補から削除しますか？')){data.employers=data.employers.filter(x=>x.id!==id);if(save())toast('勤務先を削除しました')}break}case'export-json':downloadFile('doctorpay_backup_'+TODAY+'.json',JSON.stringify(data,null,2),'application/json;charset=utf-8');toast('バックアップを保存しました');break;case'import-json':document.getElementById('import-file')?.click();break;case'export-csv':exportCSV();break;case'rename-worktype':{const obj=data.workTypes.find(x=>x.id===id);if(!obj)return;const name=prompt('仕事の種類の新しい名前を入力してください',obj.name);if(name===null)return;const val=name.trim();if(!val||val.length>100)return alert('1～100文字で入力してください');if(data.workTypes.some(x=>x.name===val&&x.id!==id))return alert('同じ種類が登録済みです');obj.name=val;if(save())toast('仕事の種類を変更しました');break}case'delete-worktype':{const obj=data.workTypes.find(x=>x.id===id);if(!obj)return;if(data.shifts.some(x=>x.workTypeId===id)||data.templates.some(x=>x.workTypeId===id))return alert('使用中の仕事の種類は削除できません。名前変更を利用してください。');if(confirm('「'+obj.name+'」を削除しますか？')){data.workTypes=data.workTypes.filter(x=>x.id!==id);if(save())toast('仕事の種類を削除しました')}break}case'delete-all':{if(!confirm('全勤務・全振込・全支出・勤務先をすべて削除します。元に戻せません。バックアップは保存しましたか？'))return;if(!confirm('最終確認：すべての記録を削除しますか？'))return;data=normalize({version:1,employers:[],shifts:[],settlements:[],updatedAt:null});if(save())toast('すべての記録を削除しました');break}}});
-
-document.addEventListener('submit',e=>{
- if(e.target.id==='shift-form'){e.preventDefault();saveShift(e.target)}
- else if(e.target.id==='payment-form'){e.preventDefault();savePayment(e.target)}
- else if(e.target.id==='expense-form'){e.preventDefault();saveExpense(e.target)}
- else if(e.target.id==='employer-form'){e.preventDefault();const name=document.getElementById('new-employer').value.trim();if(!name)return;if(data.employers.some(x=>x.name===name))return alert('この名前は登録済みです');data.employers.push({id:uid(),name,closingDay:'last',payDay:'last',payMonthOffset:1});if(save())toast('勤務先を追加しました')}
- else if(e.target.id==='schedule-form'){e.preventDefault();const emp=data.employers.find(x=>x.id===e.target.dataset.id);if(!emp)return;const name=document.getElementById('schedule-name').value.trim();if(!name||name.length>100)return alert('勤務先名を入力してください。');if(data.employers.some(x=>x.id!==emp.id&&x.name===name))return alert('同じ勤務先名は登録済みです。');emp.name=name;emp.closingDay=payDayNum(document.getElementById('schedule-close').value);emp.payDay=payDayNum(document.getElementById('schedule-day').value);emp.payMonthOffset=Number(document.getElementById('schedule-offset').value);if(save()){closeModal();toast('給与スケジュールを更新しました')}}
- else if(e.target.id==='worktype-form'){e.preventDefault();const name=document.getElementById('new-worktype').value.trim();if(!name)return;if(data.workTypes.some(x=>x.name===name))return alert('この名前は登録済みです');data.workTypes.push({id:uid(),name});if(save())toast('仕事の種類を追加しました')}
- else if(e.target.id==='tax-form'){e.preventDefault();const p={};for(const k of TAX_FIELDS){const raw=document.getElementById('tax-'+k).value.trim(),n=raw===''?0:Number(raw);if(!Number.isSafeInteger(n)||n<0||n>1e9){alert('金額を確認してください：'+k);return}p[k]=n}for(const k of ['salaryOverride']){const raw=document.getElementById('tax-'+k).value.trim(),n=raw===''?null:Number(raw);if(n!==null&&(!Number.isSafeInteger(n)||n<0||n>1e9)){alert('年間補正額を確認してください：'+k);return}p[k]=n}p.hasUnder23Dependent=document.getElementById('tax-under23').checked;data.taxProfiles[String(state.year)]=p;if(save())toast('年収見込みと控除を保存しました')}
-});
-
-document.addEventListener('change',e=>{if(e.target.id==='month-picker'){if(validMonth(e.target.value)){state.month=e.target.value;render()}}else if(e.target.id==='shift-employer'){const n=document.getElementById('new-employer-wrap');if(n)n.classList.toggle('hidden',e.target.value!=='__new__')}else if(e.target.id==='shift-template'&&e.target.value){const t=data.templates.find(x=>x.id===e.target.value);const chosen=document.getElementById('shift-date')?.value;if(t)shiftModal(null,chosen,t)}else if(e.target.id==='shift-worktype'){const n=document.getElementById('new-worktype-wrap');if(n)n.classList.toggle('hidden',e.target.value!=='__new__')}else if(e.target.id==='pay-employer'){updatePeriodOptions()}else if(e.target.id==='pay-period'){updatePaymentTarget()}else if(e.target.id==='import-file'){importJSON(e.target.files[0]);e.target.value=''}});
-document.addEventListener('input',e=>{if(e.target.id==='pay-net')updatePayPreview();if(e.target.id==='shift-base'||e.target.id==='shift-travel'){const base=Number(document.getElementById('shift-base')?.value||0),travel=Number(document.getElementById('shift-travel')?.value||0),o=document.getElementById('shift-total');if(o)o.textContent=money(base+travel)}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('modal-wrap'))closeModal()});
-document.getElementById('modal-root').addEventListener('click',e=>{if(e.target.id==='modal-wrap')closeModal()});
-render();
-if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
-// 給与データは公開APIなどに公開せず、端末内にのみ保存します。
+  window.__DUEL_READY=false;
+  var failed=false, failureMessage='';
+  function showProblem(message){
+    if(window.__DUEL_READY || failed)return;
+    failed=true;
+    var view=document.getElementById('view');
+    var network=document.getElementById('network');
+    if(network){network.textContent='起動エラー';network.className='network off';}
+    if(!view)return;
+    view.replaceChildren();
+    var section=document.createElement('section');section.className='panel';
+    section.style.margin='16px';
+    var h=document.createElement('h2');h.textContent='ゲームを起動できませんでした';
+    var p=document.createElement('p');p.className='small';
+    p.textContent='一部のJavaScriptファイル、または端末の保存領域に問題がある可能性があります。ゲームの容量が原因とは限りません。';
+    var detail=document.createElement('p');detail.className='small muted';
+    detail.style.overflowWrap='anywhere';
+    detail.textContent='診断：'+String(message||failureMessage||'読み込みが完了していません').slice(0,500);
+    var reload=document.createElement('button');reload.className='btn primary wide';reload.textContent='もう一度開く';
+    reload.addEventListener('click',function(){location.reload();});
+    var reset=document.createElement('button');reset.className='btn ghost wide mt8';reset.textContent='ゲームの端末保存データを初期化して再試行';
+    reset.addEventListener('click',function(){
+      if(!confirm('この端末に保存されたSAHOVERSEのデッキ・カード・パック・設定が消えます。Firebaseの共有データは消えません。実行しますか？'))return;
+      try{var keys=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith('duel-'))keys.push(k);}
+        keys.forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+      location.reload();
+    });
+    section.append(h,p,detail,reload,reset);view.append(section);
+  }
+  window.DUEL_BOOT_FAILURE=showProblem;
+  window.addEventListener('error',function(e){
+    if(!window.__DUEL_READY && e.error){failureMessage=e.error.message||String(e.error);showProblem(failureMessage);}
+  });
+  window.addEventListener('unhandledrejection',function(e){
+    if(!window.__DUEL_READY){failureMessage=e.reason?.message||String(e.reason);showProblem(failureMessage);}
+  });
+  window.addEventListener('DOMContentLoaded',function(){
+    var view=document.getElementById('view');
+    if(view && !view.hasChildNodes()){
+      var p=document.createElement('p');p.className='small muted';p.style.padding='16px';
+      p.textContent='準備中…';view.append(p);
+    }
+    setTimeout(function(){if(!window.__DUEL_READY)showProblem(failureMessage||'8秒以内に起動処理が完了しませんでした');},8000);
+  });
 })();
+</script>
+<script type="module">
+// Unlike a static import, a failed dependency is caught and shown on the page.
+import('./app.js?v=80').catch(error=>window.DUEL_BOOT_FAILURE(error?.message||String(error)));
 </script>
 </body>
 </html>
